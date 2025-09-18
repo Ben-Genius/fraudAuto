@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-red: #E53935;
+  --color-primary-yellow: #FDD835;
+  --color-primary-black: #000000;
+  
+  --color-secondary-dark-red: #C62828;
+  --color-secondary-orange: #FB8C00;
+  --color-secondary-light-yellow: #FFF176;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-red hover:bg-secondary-dark-red text-white font-medium py-2 px-4 rounded-lg transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary-light-yellow hover:bg-primary-yellow text-primary-black font-medium py-2 px-4 rounded-lg transition-colors;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-orange focus:border-transparent;
+  }
+}
