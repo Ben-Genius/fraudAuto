@@ -2,8 +2,6 @@
 import { useState } from 'react';
 import { Search, Shield, AlertTriangle, Car, CheckCircle, XCircle, MapPin, Download, Share2, Eye, TrendingDown, DollarSign, User, FileText, BarChart3 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Badge } from '../../components/ui/badge';
 
 const VinDecoder = () => {
   const [vin, setVin] = useState('');
@@ -83,85 +81,82 @@ const VinDecoder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="min-h-screen bg-white pt-20">
+      <div className="max-w-7xl mx-auto px-6 py-16">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Ghana VIN Decoder & Vehicle History Report
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-light text-gray-900 mb-6 tracking-tight">
+            Ghana VIN Decoder
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
             Comprehensive vehicle verification powered by Ghana DVLA, Police Service, and insurance databases
           </p>
         </div>
 
         {/* VIN Input */}
-        <Card className="max-w-2xl mx-auto mb-12 border shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5 text-primary-red" />
-              Enter 17-Character VIN Number
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={vin}
-                  onChange={(e) => setVin(e.target.value.toUpperCase())}
-                  placeholder="Enter VIN (e.g., SCBFR7ZA5CC072256)"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-red focus:border-transparent text-lg font-mono"
-                  maxLength={17}
-                />
-                <Badge className="absolute right-3 top-3 bg-primary-red">
-                  {vin.length}/17
-                </Badge>
+        <div className="max-w-2xl mx-auto mb-16 bg-gray-50 rounded-3xl p-8 shadow-xl">
+          <div className="text-center mb-8">
+            <Search className="h-8 w-8 text-primary-red mx-auto mb-4" />
+            <h2 className="text-2xl font-medium text-gray-900 mb-2">Enter VIN Number</h2>
+            <p className="text-gray-600">17-character vehicle identification number</p>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="relative">
+              <input
+                type="text"
+                value={vin}
+                onChange={(e) => setVin(e.target.value.toUpperCase())}
+                placeholder="SCBFR7ZA5CC072256"
+                className="w-full px-6 py-4 bg-white rounded-2xl text-xl font-mono text-center tracking-widest shadow-sm focus:shadow-lg focus:outline-none transition-all duration-300"
+                maxLength={17}
+              />
+              <div className="absolute right-4 top-4 px-3 py-1 bg-primary-red text-white text-sm rounded-full font-medium">
+                {vin.length}/17
               </div>
-              <div className="flex gap-3">
-                <Button 
-                  type="submit" 
-                  className="flex-1 bg-primary-red hover:bg-red-700"
-                  disabled={vin.length !== 17}
-                >
-                  Generate Report - GHS 25
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="outline"
-                  onClick={() => {
-                    setVin('SCBFR7ZA5CC072256');
-                    setShowSample(true);
-                  }}
-                >
-                  <Eye className="h-4 w-4 mr-2" />
-                  Sample
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+            </div>
+            <div className="flex gap-4">
+              <Button 
+                type="submit" 
+                className="flex-1 bg-primary-red hover:bg-red-700 text-white py-4 rounded-2xl text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={vin.length !== 17}
+              >
+                Generate Report - GHS 25
+              </Button>
+              <Button 
+                type="button" 
+                className="px-6 py-4 bg-white text-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={() => {
+                  setVin('SCBFR7ZA5CC072256');
+                  setShowSample(true);
+                }}
+              >
+                <Eye className="h-5 w-5 mr-2" />
+                Sample
+              </Button>
+            </div>
+          </form>
+        </div>
 
         {/* Sample Report */}
         {showSample && (
-          <div className="space-y-8">
+          <div className="space-y-12">
             {/* Report Header */}
-            <Card className="border shadow-sm">
-              <CardHeader className="bg-primary-red text-white">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <Badge className="bg-white/20 text-white mb-2">🇬🇭 DVLA VERIFIED</Badge>
-                    <CardTitle className="text-2xl mb-2">FRAUDAUTO VEHICLE HISTORY REPORT</CardTitle>
-                    <p className="text-lg opacity-90">{sampleData.vehicle.year} {sampleData.vehicle.make} {sampleData.vehicle.model}</p>
-                    <p className="font-mono text-sm opacity-80">VIN: {sampleData.vin}</p>
+            <div className="bg-gradient-to-br from-primary-red to-red-700 rounded-3xl p-8 text-white shadow-2xl">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-sm font-medium mb-4">
+                    🇬🇭 DVLA VERIFIED
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm opacity-80">Generated: {new Date().toLocaleDateString()}</p>
-                    <p className="text-xs opacity-70">Report #FR{Date.now().toString().slice(-6)}</p>
-                  </div>
+                  <h2 className="text-3xl font-light mb-3 tracking-tight">Vehicle History Report</h2>
+                  <p className="text-xl opacity-90 font-light">{sampleData.vehicle.year} {sampleData.vehicle.make} {sampleData.vehicle.model}</p>
+                  <p className="font-mono text-sm opacity-80 mt-2">VIN: {sampleData.vin}</p>
                 </div>
-              </CardHeader>
-            </Card>
+                <div className="text-right">
+                  <p className="text-sm opacity-80">Generated: {new Date().toLocaleDateString()}</p>
+                  <p className="text-xs opacity-70">Report #FR{Date.now().toString().slice(-6)}</p>
+                </div>
+              </div>
+            </div>
 
             {/* Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
@@ -174,292 +169,260 @@ const VinDecoder = () => {
                 { label: 'Owners', value: sampleData.summary.owners, color: 'text-indigo-600' },
                 { label: 'Insurance Records', value: sampleData.summary.junkSalvage, color: 'text-yellow-600' }
               ].map((item) => (
-                <Card key={item.label} className="text-center border shadow-sm">
-                  <CardContent className="pt-4">
-                    <div className={`text-2xl font-bold ${item.color}`}>{item.value}</div>
-                    <div className="text-sm text-gray-600">{item.label}</div>
-                  </CardContent>
-                </Card>
+                <div key={item.label} className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className={`text-3xl font-light ${item.color} mb-2`}>{item.value}</div>
+                  <div className="text-sm text-gray-600 font-medium">{item.label}</div>
+                </div>
               ))}
             </div>
 
             {/* Main Content */}
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid lg:grid-cols-3 gap-12">
               {/* Left Column - Vehicle Info */}
-              <div className="lg:col-span-2 space-y-8">
+              <div className="lg:col-span-2 space-y-12">
                 {/* Vehicle Specifications */}
-                <Card className="border shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Car className="h-5 w-5 text-primary-red" />
-                      Vehicle Specifications
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {Object.entries(sampleData.vehicle).map(([key, value]) => (
-                        <div key={key} className="p-3 bg-gray-50 rounded-lg">
-                          <div className="font-semibold text-gray-900">{value}</div>
-                          <div className="text-sm text-gray-600 capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <div className="bg-white rounded-3xl p-8 shadow-lg">
+                  <div className="flex items-center gap-3 mb-8">
+                    <Car className="h-6 w-6 text-primary-red" />
+                    <h3 className="text-2xl font-light text-gray-900">Vehicle Specifications</h3>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {Object.entries(sampleData.vehicle).map(([key, value]) => (
+                      <div key={key} className="p-4 bg-gray-50 rounded-2xl">
+                        <div className="font-medium text-gray-900 text-lg">{value}</div>
+                        <div className="text-sm text-gray-600 capitalize mt-1">{key.replace(/([A-Z])/g, ' $1')}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Ownership History */}
-                <Card className="border shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <User className="h-5 w-5 text-primary-red" />
-                      Ownership History
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {sampleData.ownership.map((owner) => (
-                        <div key={owner.owner} className="border rounded-lg p-4">
-                          <div className="flex items-center gap-2 mb-3">
-                            <User className="h-4 w-4 text-gray-600" />
-                            <span className="font-semibold">{owner.owner}{owner.owner === 1 ? 'st' : owner.owner === 2 ? 'nd' : owner.owner === 3 ? 'rd' : 'th'} Owner</span>
-                            <Badge variant="outline">{owner.type}</Badge>
+                <div className="bg-white rounded-3xl p-8 shadow-lg">
+                  <div className="flex items-center gap-3 mb-8">
+                    <User className="h-6 w-6 text-primary-red" />
+                    <h3 className="text-2xl font-light text-gray-900">Ownership History</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {sampleData.ownership.map((owner) => (
+                      <div key={owner.owner} className="bg-gray-50 rounded-2xl p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <User className="h-5 w-5 text-gray-600" />
+                          <span className="font-medium text-lg">{owner.owner}{owner.owner === 1 ? 'st' : owner.owner === 2 ? 'nd' : owner.owner === 3 ? 'rd' : 'th'} Owner</span>
+                          <div className="px-3 py-1 bg-white rounded-full text-sm font-medium text-gray-700">{owner.type}</div>
+                        </div>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Country:</span>
+                            <span className="font-medium">🇬🇭 {owner.country}</span>
                           </div>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span>Country:</span>
-                              <span>🇬🇭 {owner.country}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Est. mi/year:</span>
-                              <span>{owner.estMiYear.toLocaleString()} mi</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Last odometer:</span>
-                              <span>{owner.lastOdometer.toLocaleString()} mi</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Purchased:</span>
-                              <span>{owner.purchased}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Usage:</span>
-                              <span>{owner.usage}</span>
-                            </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Est. mi/year:</span>
+                            <span className="font-medium">{owner.estMiYear.toLocaleString()} mi</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Last odometer:</span>
+                            <span className="font-medium">{owner.lastOdometer.toLocaleString()} mi</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Purchased:</span>
+                            <span className="font-medium">{owner.purchased}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Usage:</span>
+                            <span className="font-medium">{owner.usage}</span>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* All History Events */}
-                <Card className="border shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText className="h-5 w-5 text-primary-red" />
-                      All History Events ({sampleData.summary.totalEvents} records)
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3 max-h-96 overflow-y-auto">
-                      {sampleData.historyEvents.map((event, index) => (
-                        <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
-                          <div className="text-xs text-gray-500 min-w-20">
-                            {event.date}
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-medium text-sm">{event.event}</div>
-                            <div className="text-xs text-gray-600 flex items-center gap-4 mt-1">
-                              <span>{event.provider}</span>
-                              <span className="flex items-center gap-1">
-                                <MapPin className="h-3 w-3" />
-                                {event.location}
-                              </span>
-                              {event.mileage && (
-                                <span>{event.mileage.toLocaleString()} mi</span>
-                              )}
-                            </div>
+                <div className="bg-white rounded-3xl p-8 shadow-lg">
+                  <div className="flex items-center gap-3 mb-8">
+                    <FileText className="h-6 w-6 text-primary-red" />
+                    <h3 className="text-2xl font-light text-gray-900">All History Events ({sampleData.summary.totalEvents} records)</h3>
+                  </div>
+                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                    {sampleData.historyEvents.map((event, index) => (
+                      <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                        <div className="text-xs text-gray-500 min-w-20 font-mono">
+                          {event.date}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium text-sm mb-1">{event.event}</div>
+                          <div className="text-xs text-gray-600 flex items-center gap-4">
+                            <span>{event.provider}</span>
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {event.location}
+                            </span>
+                            {event.mileage && (
+                              <span>{event.mileage.toLocaleString()} mi</span>
+                            )}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Sales History */}
-                <Card className="border shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <DollarSign className="h-5 w-5 text-primary-red" />
-                      Sales History ({sampleData.summary.salesHistory} sales)
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {sampleData.salesHistory.map((sale, index) => (
-                        <div key={index} className="border rounded-lg p-4">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <div className="font-semibold text-lg text-green-600">{sale.price}</div>
-                              <div className="text-sm text-gray-600">{sale.date} • {sale.location}</div>
-                            </div>
-                            <Badge variant="outline">{sale.photos} photos</Badge>
+                <div className="bg-white rounded-3xl p-8 shadow-lg">
+                  <div className="flex items-center gap-3 mb-8">
+                    <DollarSign className="h-6 w-6 text-primary-red" />
+                    <h3 className="text-2xl font-light text-gray-900">Sales History ({sampleData.summary.salesHistory} sales)</h3>
+                  </div>
+                  <div className="space-y-6">
+                    {sampleData.salesHistory.map((sale, index) => (
+                      <div key={index} className="bg-gray-50 rounded-2xl p-6">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <div className="font-medium text-2xl text-green-600">{sale.price}</div>
+                            <div className="text-sm text-gray-600">{sale.date} • {sale.location}</div>
                           </div>
-                          <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                              <span className="text-gray-600">Mileage:</span>
-                              <span className="ml-2 font-medium">{sale.mileage.toLocaleString()} mi</span>
-                            </div>
-                            <div>
-                              <span className="text-gray-600">Condition:</span>
-                              <span className="ml-2 font-medium">{sale.condition}</span>
-                            </div>
-                            <div className="col-span-2">
-                              <span className="text-gray-600">Damage:</span>
-                              <span className="ml-2 font-medium text-red-600">{sale.damage}</span>
-                            </div>
+                          <div className="px-3 py-1 bg-white rounded-full text-sm font-medium text-gray-700">{sale.photos} photos</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="text-gray-600">Mileage:</span>
+                            <span className="ml-2 font-medium">{sale.mileage.toLocaleString()} mi</span>
+                          </div>
+                          <div>
+                            <span className="text-gray-600">Condition:</span>
+                            <span className="ml-2 font-medium">{sale.condition}</span>
+                          </div>
+                          <div className="col-span-2">
+                            <span className="text-gray-600">Damage:</span>
+                            <span className="ml-2 font-medium text-red-600">{sale.damage}</span>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* Right Column - Checks & Analysis */}
-              <div className="space-y-8">
+              <div className="space-y-12">
                 {/* Safety & Security Checks */}
-                <Card className="border shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-primary-red" />
-                      Safety & Security Checks
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {Object.entries(sampleData.checks).map(([key, check]) => (
-                        <div key={key} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            {check.status === 'clean' && <CheckCircle className="h-4 w-4 text-green-600" />}
-                            {check.status === 'warning' && <AlertTriangle className="h-4 w-4 text-yellow-600" />}
-                            {check.status === 'error' && <XCircle className="h-4 w-4 text-red-600" />}
-                            <div>
-                              <div className="font-medium text-sm capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
-                              <div className="text-xs text-gray-600">{check.message}</div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-sm font-medium">{check.count}</div>
-                            <Badge className={
-                              check.status === 'clean' ? 'bg-green-100 text-green-800' :
-                              check.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }>
-                              {check.status === 'clean' ? 'CLEAR' : 
-                               check.status === 'warning' ? 'WARNING' : 'ALERT'}
-                            </Badge>
+                <div className="bg-white rounded-3xl p-8 shadow-lg">
+                  <div className="flex items-center gap-3 mb-8">
+                    <Shield className="h-6 w-6 text-primary-red" />
+                    <h3 className="text-2xl font-light text-gray-900">Safety & Security Checks</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {Object.entries(sampleData.checks).map(([key, check]) => (
+                      <div key={key} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                        <div className="flex items-center gap-4">
+                          {check.status === 'clean' && <CheckCircle className="h-5 w-5 text-green-600" />}
+                          {check.status === 'warning' && <AlertTriangle className="h-5 w-5 text-yellow-600" />}
+                          {check.status === 'error' && <XCircle className="h-5 w-5 text-red-600" />}
+                          <div>
+                            <div className="font-medium text-sm capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                            <div className="text-xs text-gray-600">{check.message}</div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                        <div className="text-right">
+                          <div className="text-sm font-medium">{check.count}</div>
+                          <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            check.status === 'clean' ? 'bg-green-100 text-green-800' :
+                            check.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {check.status === 'clean' ? 'CLEAR' : 
+                             check.status === 'warning' ? 'WARNING' : 'ALERT'}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 {/* Market Price Analysis */}
-                <Card className="border shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <BarChart3 className="h-5 w-5 text-primary-red" />
-                      Market Price Analysis
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <div className="text-2xl font-bold text-blue-600">GHS 174,528</div>
-                        <div className="text-sm text-gray-600">Classified Ads</div>
-                        <Badge className="mt-1 bg-blue-100 text-blue-800">Below Market</Badge>
-                      </div>
-                      <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">GHS 216,200</div>
-                        <div className="text-sm text-gray-600">Auction Sales</div>
-                        <Badge className="mt-1 bg-green-100 text-green-800">Average Market</Badge>
-                      </div>
-                      <div className="text-center p-4 bg-purple-50 rounded-lg">
-                        <div className="text-2xl font-bold text-purple-600">GHS 257,868</div>
-                        <div className="text-sm text-gray-600">Dealer Price</div>
-                        <Badge className="mt-1 bg-purple-100 text-purple-800">Above Market</Badge>
-                      </div>
+                <div className="bg-white rounded-3xl p-8 shadow-lg">
+                  <div className="flex items-center gap-3 mb-8">
+                    <BarChart3 className="h-6 w-6 text-primary-red" />
+                    <h3 className="text-2xl font-light text-gray-900">Market Price Analysis</h3>
+                  </div>
+                  <div className="space-y-6">
+                    <div className="text-center p-6 bg-blue-50 rounded-2xl">
+                      <div className="text-3xl font-light text-blue-600 mb-2">GHS 174,528</div>
+                      <div className="text-sm text-gray-600 mb-3">Classified Ads</div>
+                      <div className="inline-flex px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Below Market</div>
                     </div>
-                  </CardContent>
-                </Card>
+                    <div className="text-center p-6 bg-green-50 rounded-2xl">
+                      <div className="text-3xl font-light text-green-600 mb-2">GHS 216,200</div>
+                      <div className="text-sm text-gray-600 mb-3">Auction Sales</div>
+                      <div className="inline-flex px-4 py-2 bg-green-100 text-green-800 rounded-full text-xs font-medium">Average Market</div>
+                    </div>
+                    <div className="text-center p-6 bg-purple-50 rounded-2xl">
+                      <div className="text-3xl font-light text-purple-600 mb-2">GHS 257,868</div>
+                      <div className="text-sm text-gray-600 mb-3">Dealer Price</div>
+                      <div className="inline-flex px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">Above Market</div>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Ownership Cost */}
-                <Card className="border shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <TrendingDown className="h-5 w-5 text-primary-red" />
-                      5-Year Ownership Cost
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {[
-                        { category: 'Depreciation', total: sampleData.ownershipCost.depreciation.reduce((a, b) => a + b, 0) },
-                        { category: 'Insurance', total: sampleData.ownershipCost.insurance.reduce((a, b) => a + b, 0) },
-                        { category: 'Fuel', total: sampleData.ownershipCost.fuel.reduce((a, b) => a + b, 0) },
-                        { category: 'Maintenance', total: sampleData.ownershipCost.maintenance.reduce((a, b) => a + b, 0) },
-                        { category: 'Repair', total: sampleData.ownershipCost.repair.reduce((a, b) => a + b, 0) },
-                        { category: 'Taxes & Fees', total: sampleData.ownershipCost.taxesFees.reduce((a, b) => a + b, 0) }
-                      ].map((cost) => (
-                        <div key={cost.category} className="flex justify-between items-center p-2 border-b">
-                          <span className="text-sm">{cost.category}</span>
-                          <span className="font-medium">GHS {cost.total.toLocaleString()}</span>
-                        </div>
-                      ))}
-                      <div className="flex justify-between items-center p-2 bg-gray-50 rounded font-semibold">
-                        <span>Total 5-Year Cost</span>
-                        <span className="text-primary-red">GHS {sampleData.ownershipCost.total.toLocaleString()}</span>
+                <div className="bg-white rounded-3xl p-8 shadow-lg">
+                  <div className="flex items-center gap-3 mb-8">
+                    <TrendingDown className="h-6 w-6 text-primary-red" />
+                    <h3 className="text-2xl font-light text-gray-900">5-Year Ownership Cost</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {[
+                      { category: 'Depreciation', total: sampleData.ownershipCost.depreciation.reduce((a, b) => a + b, 0) },
+                      { category: 'Insurance', total: sampleData.ownershipCost.insurance.reduce((a, b) => a + b, 0) },
+                      { category: 'Fuel', total: sampleData.ownershipCost.fuel.reduce((a, b) => a + b, 0) },
+                      { category: 'Maintenance', total: sampleData.ownershipCost.maintenance.reduce((a, b) => a + b, 0) },
+                      { category: 'Repair', total: sampleData.ownershipCost.repair.reduce((a, b) => a + b, 0) },
+                      { category: 'Taxes & Fees', total: sampleData.ownershipCost.taxesFees.reduce((a, b) => a + b, 0) }
+                    ].map((cost) => (
+                      <div key={cost.category} className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+                        <span className="text-sm font-medium">{cost.category}</span>
+                        <span className="font-medium">GHS {cost.total.toLocaleString()}</span>
                       </div>
+                    ))}
+                    <div className="flex justify-between items-center p-4 bg-primary-red/10 rounded-xl font-medium">
+                      <span>Total 5-Year Cost</span>
+                      <span className="text-primary-red text-lg">GHS {sampleData.ownershipCost.total.toLocaleString()}</span>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-center gap-4">
-              <Button className="bg-primary-red hover:bg-red-700">
-                <Download className="h-4 w-4 mr-2" />
+            <div className="flex justify-center gap-6">
+              <Button className="bg-primary-red hover:bg-red-700 text-white px-8 py-4 rounded-2xl text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300">
+                <Download className="h-5 w-5 mr-3" />
                 Download Report
               </Button>
-              <Button variant="outline">
-                <Share2 className="h-4 w-4 mr-2" />
+              <Button className="bg-white text-gray-700 px-8 py-4 rounded-2xl text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300">
+                <Share2 className="h-5 w-5 mr-3" />
                 Share Report
               </Button>
-              <Button variant="outline">
-                <Search className="h-4 w-4 mr-2" />
+              <Button className="bg-white text-gray-700 px-8 py-4 rounded-2xl text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300">
+                <Search className="h-5 w-5 mr-3" />
                 New Search
               </Button>
             </div>
 
             {/* Disclaimer */}
-            <Card className="bg-gray-100 border shadow-sm">
-              <CardContent className="pt-6">
-                <div className="text-sm text-gray-600 space-y-2">
-                  <p className="font-semibold">Important Disclaimer:</p>
-                  <p>
-                    This report is compiled from Ghana DVLA records, Police Service database, insurance companies, 
-                    and verified sources. Data accuracy depends on reporting entities. Always conduct physical 
-                    inspection before purchase.
-                  </p>
-                  <p className="text-xs">
-                    🔒 FraudAuto is an approved data provider working with Ghana's official systems.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="bg-gray-50 rounded-3xl p-8 shadow-lg">
+              <div className="text-sm text-gray-600 space-y-4">
+                <p className="font-medium text-gray-900 text-lg">Important Disclaimer</p>
+                <p className="leading-relaxed">
+                  This report is compiled from Ghana DVLA records, Police Service database, insurance companies, 
+                  and verified sources. Data accuracy depends on reporting entities. Always conduct physical 
+                  inspection before purchase.
+                </p>
+                <p className="text-xs text-gray-500">
+                  🔒 FraudAuto is an approved data provider working with Ghana's official systems.
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>

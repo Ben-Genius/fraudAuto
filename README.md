@@ -4,7 +4,7 @@ FraudAuto is a comprehensive web platform designed to combat vehicle fraud in Gh
 
 ## 🚀 Live Demo
 
-Visit the live application: [FraudAuto Platform](https://fraudauto.vercel.app)
+Visit the live application: [FraudAuto Platform](https://fraud-auto-jrmpvyebs-azay-genius-projects.vercel.app)
 
 ## ✨ Features
 
@@ -24,10 +24,11 @@ Visit the live application: [FraudAuto Platform](https://fraudauto.vercel.app)
 - **Active Navigation**: Header with active page detection and smooth scrolling effects
 
 ### Design & Animation
-- **Modern UI**: Clean, professional design with FraudAuto branding
+- **Modern UI**: Clean, professional design with Apple-inspired aesthetics
+- **Borderless Design**: Removed borders, using shadows and spacing for visual hierarchy
 - **Framer Motion**: Smooth animations and micro-interactions throughout
 - **Mobile-Responsive**: Optimized for desktop, tablet, and mobile devices
-- **Dark/Light Themes**: Contextual theming for different sections
+- **Apple-Style Cards**: Rounded corners, subtle shadows, and clean typography
 - **Interactive Elements**: Hover effects, transitions, and engaging user interactions
 
 ## 🛠 Tech Stack
