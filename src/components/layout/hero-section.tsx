@@ -26,8 +26,8 @@ const transitionVariants = {
 
 export function HeroSection() {
   return (
-    <section className="bg-[url('https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/hero/gridBackground.png')] w-full bg-no-repeat bg-cover bg-center text-sm pb-44">
-      <div className="relative pt-16 md:pt-16">
+    <section className="bg-[url('https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/hero/gridBackground.png')] w-full bg-no-repeat bg-cover bg-center text-sm pb-34">
+      <div className="relative pt-8 md:pt-8">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
             <AnimatedGroup variants={transitionVariants}>
@@ -42,9 +42,9 @@ export function HeroSection() {
                 </div>
               </Link>
 
-              <h1 className="text-4xl md:text-7xl font-medium max-w-[850px] text-center mx-auto mt-8">
-                Combat Vehicle Fraud in{" "}
-                <span className="text-secondary-orange">Ghana</span>
+              <h1 className="text-4xl md:text-7xl font-semibold font-sans max-w-7xl text-center mx-auto mt-8">
+                Combat Vehicle Fraud in  
+                <span className="text-secondary-orange"> Ghana</span>
               </h1>
 
               <p className="text-sm md:text-base mx-auto max-w-2xl text-center mt-6 max-md:px-2">

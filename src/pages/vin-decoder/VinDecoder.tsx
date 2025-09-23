@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   Search,
   Shield,
@@ -8,23 +9,40 @@ import {
   Car,
   CheckCircle,
   XCircle,
-  MapPin,
   Download,
   Share2,
-  Eye,
   TrendingDown,
   DollarSign,
   User,
   FileText,
   BarChart3,
+  MoveRight,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 
 const VinDecoder = () => {
   const [vin, setVin] = useState("");
   const [showSample, setShowSample] = useState(false);
+  const [titleNumber, setTitleNumber] = useState(0);
+  const [ownershipViewMode, setOwnershipViewMode] = useState<'table' | 'grid'>('table');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  const titles = useMemo(
+    () => ["secure", "reliable", "instant", "comprehensive", "trusted"],
+    []
+  );
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (titleNumber === titles.length - 1) {
+        setTitleNumber(0);
+      } else {
+        setTitleNumber(titleNumber + 1);
+      }
+    }, 2000);
+    return () => clearTimeout(timeoutId);
+  }, [titleNumber, titles]);
 
   useEffect(() => {
     const vinParam = searchParams.get("vin");
@@ -147,7 +165,7 @@ const VinDecoder = () => {
         date: "2025-07-02",
         mileage: 18796,
         provider: "Copart Auction",
-        event: "Salvage Certificate Sale - GHS 45,200",
+        event: "Salvage Certificate Sale - USD 45,200",
         location: "Accra, Ghana",
       },
       {
@@ -161,7 +179,7 @@ const VinDecoder = () => {
         date: "2019-08-28",
         mileage: 18796,
         provider: "Auction House",
-        event: "Auction Sale - GHS 134,000",
+        event: "Auction Sale - USD 134,000",
         location: "Kumasi, Ghana",
       },
       {
@@ -182,14 +200,14 @@ const VinDecoder = () => {
         date: "2015-08-27",
         mileage: 7096,
         provider: "Dealer Sale",
-        event: "Classified Sale - GHS 423,996",
+        event: "Classified Sale - USD 423,996",
         location: "Accra, Ghana",
       },
       {
         date: "2013-05-07",
         mileage: 3084,
         provider: "Auction House",
-        event: "Auction Sale - GHS 769,980",
+        event: "Auction Sale - USD 769,980",
         location: "Tema, Ghana",
       },
       {
@@ -204,7 +222,7 @@ const VinDecoder = () => {
       {
         date: "2025-07-02",
         location: "Accra Auction",
-        price: "GHS 45,200",
+        price: "USD 45,200",
         mileage: 18796,
         condition: "Salvage Certificate",
         damage: "Front End",
@@ -213,7 +231,7 @@ const VinDecoder = () => {
       {
         date: "2019-08-28",
         location: "Kumasi Auction",
-        price: "GHS 134,000",
+        price: "USD 134,000",
         mileage: 18796,
         condition: "Run & Drive",
         damage: "Front End, Minor Scratches",
@@ -222,7 +240,7 @@ const VinDecoder = () => {
       {
         date: "2015-08-27",
         location: "Accra Classified",
-        price: "GHS 423,996",
+        price: "USD 423,996",
         mileage: 7096,
         condition: "Good",
         damage: "None Listed",
@@ -231,7 +249,7 @@ const VinDecoder = () => {
       {
         date: "2013-05-07",
         location: "Tema Auction",
-        price: "GHS 769,980",
+        price: "USD 769,980",
         mileage: 3084,
         condition: "Run & Drive Verified",
         damage: "Partial/Incomplete Repair",
@@ -240,7 +258,7 @@ const VinDecoder = () => {
       {
         date: "2013-01-31",
         location: "Accra Auction",
-        price: "GHS 197,780",
+        price: "USD 197,780",
         mileage: 0,
         condition: "Damaged",
         damage: "Front End",
@@ -259,66 +277,100 @@ const VinDecoder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-20">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-light text-gray-900 mb-6 tracking-tight">
-            Ghana VIN Decoder
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto font-light leading-relaxed">
-            Comprehensive vehicle verification powered by Ghana DVLA, Police
-            Service, and insurance databases
-          </p>
+    <div className="min-h-screen bg-white ">
+      <div className="max-w-7xl mx-auto px-6 ">
+        {/* Animated Hero Header */}
+        <div className="flex gap-8 py-20 lg:pt-32 items-center justify-center flex-col">
+          <div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-4 border-theme-orange-1/20 text-theme-red-orange hover:bg-theme-orange-1/5"
+            >
+              🇬🇭 Official Ghana DVLA Integration{" "}
+              <MoveRight className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <div className="w-full">
+            <h1 className="text-5xl  max-w-5xl  md:text-7xl mx-auto tracking-tighter  pb-4">
+              <span className="text-gray-900">
+                Vehicle verification that's{" "}
+              </span>
+              <span className="relative w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-[#FC612D]">
+                &nbsp;
+                {titles.map((title, index) => (
+                  <motion.span
+                    key={index}
+                    className="absolute font-semibold text-theme-red-orange"
+                    initial={{ opacity: 0, y: "-100" }}
+                    transition={{ type: "spring", stiffness: 50 }}
+                    animate={
+                      titleNumber === index
+                        ? {
+                            y: 0,
+                            opacity: 1,
+                          }
+                        : {
+                            y: titleNumber > index ? -150 : 150,
+                            opacity: 0,
+                          }
+                    }
+                  >
+                    {title}
+                  </motion.span>
+                ))}
+              </span>
+            </h1>
+
+            <p className="text-xl text-center md:text-2xl leading-relaxed tracking-tight text-gray-600 max-w-3xl  mx-auto font-light">
+              Comprehensive VIN decoding and vehicle history reports powered by
+              Ghana DVLA, Police Service, and insurance databases. Protect your
+              investment with real-time verification.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-center gap-8 text-sm text-gray-500 ">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-secondary-orange rounded-full"></div>
+              <span>Real-time verification</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-secondary-golden-yellow rounded-full"></div>
+              <span>Official database access</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-secondary-dark-red rounded-full"></div>
+              <span>Instant results</span>
+            </div>
+          </div>
         </div>
 
         {/* VIN Input */}
-        <div className="max-w-2xl mx-auto mb-16">
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
-            <div className="text-center mb-6">
-              <Search className="h-8 w-8 text-primary-red mx-auto mb-4" />
-              <h2 className="text-2xl font-medium text-gray-900 mb-2">
-                Enter VIN Number
-              </h2>
-              <p className="text-gray-600">
-                17-character vehicle identification number
-              </p>
-            </div>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-300">
+            <form onSubmit={handleSubmit} className="flex gap-3">
               <div className="flex-1">
                 <input
                   type="text"
+                  placeholder="Enter 17-character VIN..."
                   value={vin}
                   onChange={(e) => setVin(e.target.value.toUpperCase())}
-                  placeholder="Enter 17-character VIN..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent text-lg font-mono"
-                  maxLength={17}
+                  className="outline-0 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
-              <div className="flex gap-3">
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="flex-1 bg-primary-red hover:bg-red-700 px-6"
-                  disabled={vin.length !== 17}
-                >
-                  <Search className="w-4 h-4 mr-2" />
-                  Generate Report - GHS 25
-                </Button>
-                <Button
-                  type="button"
-                  size="lg"
-                  className="px-6 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-                  onClick={() => {
-                    setVin("SCBFR7ZA5CC072256");
-                    setShowSample(true);
-                  }}
-                >
-                  <Eye className="h-4 w-4 mr-2" />
-                  Sample
-                </Button>
-              </div>
+              <Button
+                variant={"secondary"}
+                type="submit"
+                size="lg"
+                className="px-6"
+                disabled={vin.length !== 17}
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Search
+              </Button>
             </form>
+
             <p className="text-sm text-gray-500 mt-3 text-center">
               Decode vehicle specifications and check theft status
             </p>
@@ -327,7 +379,7 @@ const VinDecoder = () => {
 
         {/* Sample Report */}
         {showSample && (
-          <div className="space-y-12">
+          <div className="space-y-12 pt-16">
             {/* Report Header */}
             <div className="bg-gradient-to-br from-primary-red to-red-700 rounded-3xl p-8 text-white shadow-2xl">
               <div className="flex justify-between items-start">
@@ -415,130 +467,143 @@ const VinDecoder = () => {
               {/* Left Column - Vehicle Info */}
               <div className="lg:col-span-2 space-y-12">
                 {/* Vehicle Specifications */}
-                <div className="bg-white rounded-3xl p-8 shadow-lg">
-                  <div className="flex items-center gap-3 mb-8">
-                    <Car className="h-6 w-6 text-primary-red" />
-                    <h3 className="text-2xl font-light text-gray-900">
+                <div className="bg-white rounded-3xl p-6 shadow-lg">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Car className="h-5 w-5 text-primary-red" />
+                    <h3 className="text-xl font-medium text-gray-900">
                       Vehicle Specifications
                     </h3>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                  <div className="flex flex-wrap gap-2">
                     {Object.entries(sampleData.vehicle).map(([key, value]) => (
-                      <div key={key} className="p-4 bg-gray-50 rounded-2xl">
-                        <div className="font-medium text-gray-900 text-lg">
-                          {value}
-                        </div>
-                        <div className="text-sm text-gray-600 capitalize mt-1">
-                          {key.replace(/([A-Z])/g, " $1")}
-                        </div>
+                      <div key={key} className="inline-flex items-center px-3 py-1 bg-gray-100 rounded-full text-sm">
+                        <span className="text-gray-600 capitalize mr-2">
+                          {key.replace(/([A-Z])/g, " $1")}:
+                        </span>
+                        <span className="font-medium text-gray-900">{value}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Ownership History */}
-                <div className="bg-white rounded-3xl p-8 shadow-lg">
-                  <div className="flex items-center gap-3 mb-8">
-                    <User className="h-6 w-6 text-primary-red" />
-                    <h3 className="text-2xl font-light text-gray-900">
-                      Ownership History
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {sampleData.ownership.map((owner) => (
-                      <div
-                        key={owner.owner}
-                        className="bg-gray-50 rounded-2xl p-6"
+                <div className="bg-white rounded-3xl p-6 shadow-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <User className="h-5 w-5 text-primary-red" />
+                      <h3 className="text-xl font-medium text-gray-900">
+                        Ownership History
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                      <button
+                        onClick={() => setOwnershipViewMode('table')}
+                        className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                          ownershipViewMode === 'table' 
+                            ? 'bg-white text-primary-red shadow-sm' 
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
                       >
-                        <div className="flex items-center gap-3 mb-4">
-                          <User className="h-5 w-5 text-gray-600" />
-                          <span className="font-medium text-lg">
-                            {owner.owner}
-                            {owner.owner === 1
-                              ? "st"
-                              : owner.owner === 2
-                              ? "nd"
-                              : owner.owner === 3
-                              ? "rd"
-                              : "th"}{" "}
-                            Owner
-                          </span>
-                          <div className="px-3 py-1 bg-white rounded-full text-sm font-medium text-gray-700">
-                            {owner.type}
-                          </div>
-                        </div>
-                        <div className="space-y-3 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Country:</span>
-                            <span className="font-medium">
-                              🇬🇭 {owner.country}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Est. mi/year:</span>
-                            <span className="font-medium">
-                              {owner.estMiYear.toLocaleString()} mi
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">
-                              Last odometer:
-                            </span>
-                            <span className="font-medium">
-                              {owner.lastOdometer.toLocaleString()} mi
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Purchased:</span>
-                            <span className="font-medium">
-                              {owner.purchased}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Usage:</span>
-                            <span className="font-medium">{owner.usage}</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                        Table
+                      </button>
+                      <button
+                        onClick={() => setOwnershipViewMode('grid')}
+                        className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                          ownershipViewMode === 'grid' 
+                            ? 'bg-white text-primary-red shadow-sm' 
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        Grid
+                      </button>
+                    </div>
                   </div>
+                  
+                  {ownershipViewMode === 'table' ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-gray-200">
+                            <th className="text-left py-3 px-2 font-medium text-gray-900">Owner</th>
+                            <th className="text-left py-3 px-2 font-medium text-gray-900">Type</th>
+                            <th className="text-left py-3 px-2 font-medium text-gray-900">Country</th>
+                            <th className="text-left py-3 px-2 font-medium text-gray-900">Est. Mi/Year</th>
+                            <th className="text-left py-3 px-2 font-medium text-gray-900">Purchased</th>
+                            <th className="text-left py-3 px-2 font-medium text-gray-900">Usage</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sampleData.ownership.map((owner) => (
+                            <tr key={owner.owner} className="border-b border-gray-100 hover:bg-gray-50">
+                              <td className="py-3 px-2 font-medium text-gray-900">
+                                {owner.owner}{owner.owner === 1 ? "st" : owner.owner === 2 ? "nd" : owner.owner === 3 ? "rd" : "th"}
+                              </td>
+                              <td className="py-3 px-2 text-gray-600">
+                                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs">{owner.type}</span>
+                              </td>
+                              <td className="py-3 px-2 text-gray-600">🇬🇭 {owner.country}</td>
+                              <td className="py-3 px-2 text-gray-600">{owner.estMiYear.toLocaleString()}</td>
+                              <td className="py-3 px-2 text-gray-600">{owner.purchased}</td>
+                              <td className="py-3 px-2 text-gray-600">{owner.usage}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {sampleData.ownership.map((owner) => (
+                        <div key={owner.owner} className="bg-gray-50 rounded-2xl p-4">
+                          <div className="flex items-center gap-3 mb-3">
+                            <User className="h-4 w-4 text-gray-600" />
+                            <span className="font-medium text-gray-900">
+                              {owner.owner}{owner.owner === 1 ? "st" : owner.owner === 2 ? "nd" : owner.owner === 3 ? "rd" : "th"} Owner
+                            </span>
+                            <span className="px-2 py-1 bg-white rounded text-xs text-gray-700">{owner.type}</span>
+                          </div>
+                          <div className="space-y-1 text-sm text-gray-600">
+                            <div>Country: 🇬🇭 {owner.country}</div>
+                            <div>Est. Mi/Year: {owner.estMiYear.toLocaleString()}</div>
+                            <div>Purchased: {owner.purchased}</div>
+                            <div>Usage: {owner.usage}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* All History Events */}
-                <div className="bg-white rounded-3xl p-8 shadow-lg">
-                  <div className="flex items-center gap-3 mb-8">
-                    <FileText className="h-6 w-6 text-primary-red" />
-                    <h3 className="text-2xl font-light text-gray-900">
-                      All History Events ({sampleData.summary.totalEvents}{" "}
-                      records)
+                <div className="bg-white rounded-3xl p-6 shadow-lg">
+                  <div className="flex items-center gap-3 mb-6">
+                    <FileText className="h-5 w-5 text-primary-red" />
+                    <h3 className="text-xl font-medium text-gray-900">
+                      All History Events ({sampleData.summary.totalEvents} records)
                     </h3>
                   </div>
-                  <div className="space-y-4 max-h-96 overflow-y-auto">
-                    {sampleData.historyEvents.map((event, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl"
-                      >
-                        <div className="text-xs text-gray-500 min-w-20 font-mono">
-                          {event.date}
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium text-sm mb-1">
-                            {event.event}
-                          </div>
-                          <div className="text-xs text-gray-600 flex items-center gap-4">
-                            <span>{event.provider}</span>
-                            <span className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              {event.location}
-                            </span>
-                            {event.mileage && (
-                              <span>{event.mileage.toLocaleString()} mi</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-gray-200">
+                          <th className="text-left py-3 px-2 font-medium text-gray-900">Date</th>
+                          <th className="text-left py-3 px-2 font-medium text-gray-900">Event</th>
+                          <th className="text-left py-3 px-2 font-medium text-gray-900">Provider</th>
+                          <th className="text-left py-3 px-2 font-medium text-gray-900">Location</th>
+                          <th className="text-left py-3 px-2 font-medium text-gray-900">Mileage</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {sampleData.historyEvents.map((event, index) => (
+                          <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
+                            <td className="py-3 px-2 text-gray-600 font-mono text-xs">{event.date}</td>
+                            <td className="py-3 px-2 font-medium text-gray-900">{event.event}</td>
+                            <td className="py-3 px-2 text-gray-600">{event.provider}</td>
+                            <td className="py-3 px-2 text-gray-600">{event.location}</td>
+                            <td className="py-3 px-2 text-gray-600">{event.mileage.toLocaleString()} mi</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
 
@@ -663,7 +728,7 @@ const VinDecoder = () => {
                   <div className="space-y-6">
                     <div className="text-center p-6 bg-blue-50 rounded-2xl">
                       <div className="text-3xl font-light text-blue-600 mb-2">
-                        GHS 174,528
+                        USD 174,528
                       </div>
                       <div className="text-sm text-gray-600 mb-3">
                         Classified Ads
@@ -674,7 +739,7 @@ const VinDecoder = () => {
                     </div>
                     <div className="text-center p-6 bg-green-50 rounded-2xl">
                       <div className="text-3xl font-light text-green-600 mb-2">
-                        GHS 216,200
+                        USD 216,200
                       </div>
                       <div className="text-sm text-gray-600 mb-3">
                         Auction Sales
@@ -685,7 +750,7 @@ const VinDecoder = () => {
                     </div>
                     <div className="text-center p-6 bg-purple-50 rounded-2xl">
                       <div className="text-3xl font-light text-purple-600 mb-2">
-                        GHS 257,868
+                        USD 257,868
                       </div>
                       <div className="text-sm text-gray-600 mb-3">
                         Dealer Price
@@ -758,14 +823,14 @@ const VinDecoder = () => {
                           {cost.category}
                         </span>
                         <span className="font-medium">
-                          GHS {cost.total.toLocaleString()}
+                          USD {cost.total.toLocaleString()}
                         </span>
                       </div>
                     ))}
                     <div className="flex justify-between items-center p-4 bg-primary-red/10 rounded-xl font-medium">
                       <span>Total 5-Year Cost</span>
                       <span className="text-primary-red text-lg">
-                        GHS {sampleData.ownershipCost.total.toLocaleString()}
+                        USD {sampleData.ownershipCost.total.toLocaleString()}
                       </span>
                     </div>
                   </div>
