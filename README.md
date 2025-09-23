@@ -4,7 +4,7 @@ FraudAuto is a comprehensive web platform designed to combat vehicle fraud in Gh
 
 ## 🚀 Live Demo
 
-Visit the live application: [FraudAuto Platform](https://fraud-auto-jrmpvyebs-azay-genius-projects.vercel.app)
+Visit the live application: [FraudAuto Platform](fraud-auto.vercel.app)
 
 ## ✨ Features
 
