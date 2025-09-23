@@ -1,10 +1,10 @@
-# FraudAuto - Ghana Vehicle Verification Platform
+# FraudWall-Aut - Ghana Vehicle Verification Platform
 
-FraudAuto is a comprehensive web platform designed to combat vehicle fraud in Ghana by providing VIN decoding, license plate lookup, and vehicle history verification services.
+FraudWall-Aut is a comprehensive web platform designed to combat vehicle fraud in Ghana by providing VIN decoding, license plate lookup, and vehicle history verification services.
 
 ## 🚀 Live Demo
 
-Visit the live application: [FraudAuto Platform](https://fraud-auto.vercel.app/)
+Visit the live application: [FraudWall-Aut Platform](https://fraud-auto-jrmpvyebs-azay-genius-projects.vercel.app)
 
 ## ✨ Features
 

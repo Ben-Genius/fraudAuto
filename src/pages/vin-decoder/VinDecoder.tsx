@@ -1,16 +1,30 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, Shield, AlertTriangle, Car, CheckCircle, XCircle, MapPin, Download, Share2, Eye, TrendingDown, DollarSign, User, FileText, BarChart3 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 
 const VinDecoder = () => {
   const [vin, setVin] = useState('');
   const [showSample, setShowSample] = useState(false);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const vinParam = searchParams.get('vin');
+    if (vinParam) {
+      setVin(vinParam);
+      if (vinParam.length === 17) {
+        setShowSample(true);
+      }
+    }
+  }, [searchParams]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (vin.length === 17) {
       setShowSample(true);
+      navigate(`/vin-decoder?vin=${vin}`, { replace: true });
     }
   };
 
@@ -94,47 +108,52 @@ const VinDecoder = () => {
         </div>
 
         {/* VIN Input */}
-        <div className="max-w-2xl mx-auto mb-16 bg-gray-50 rounded-3xl p-8 shadow-xl">
-          <div className="text-center mb-8">
-            <Search className="h-8 w-8 text-primary-red mx-auto mb-4" />
-            <h2 className="text-2xl font-medium text-gray-900 mb-2">Enter VIN Number</h2>
-            <p className="text-gray-600">17-character vehicle identification number</p>
-          </div>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="relative">
-              <input
-                type="text"
-                value={vin}
-                onChange={(e) => setVin(e.target.value.toUpperCase())}
-                placeholder="SCBFR7ZA5CC072256"
-                className="w-full px-6 py-4 bg-white rounded-2xl text-xl font-mono text-center tracking-widest shadow-sm focus:shadow-lg focus:outline-none transition-all duration-300"
-                maxLength={17}
-              />
-              <div className="absolute right-4 top-4 px-3 py-1 bg-primary-red text-white text-sm rounded-full font-medium">
-                {vin.length}/17
+        <div className="max-w-2xl mx-auto mb-16">
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <div className="text-center mb-6">
+              <Search className="h-8 w-8 text-primary-red mx-auto mb-4" />
+              <h2 className="text-2xl font-medium text-gray-900 mb-2">Enter VIN Number</h2>
+              <p className="text-gray-600">17-character vehicle identification number</p>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  value={vin}
+                  onChange={(e) => setVin(e.target.value.toUpperCase())}
+                  placeholder="Enter 17-character VIN..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent text-lg font-mono"
+                  maxLength={17}
+                />
               </div>
-            </div>
-            <div className="flex gap-4">
-              <Button 
-                type="submit" 
-                className="flex-1 bg-primary-red hover:bg-red-700 text-white py-4 rounded-2xl text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-                disabled={vin.length !== 17}
-              >
-                Generate Report - GHS 25
-              </Button>
-              <Button 
-                type="button" 
-                className="px-6 py-4 bg-white text-gray-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={() => {
-                  setVin('SCBFR7ZA5CC072256');
-                  setShowSample(true);
-                }}
-              >
-                <Eye className="h-5 w-5 mr-2" />
-                Sample
-              </Button>
-            </div>
-          </form>
+              <div className="flex gap-3">
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  className="flex-1 bg-primary-red hover:bg-red-700 px-6"
+                  disabled={vin.length !== 17}
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  Generate Report - GHS 25
+                </Button>
+                <Button 
+                  type="button" 
+                  size="lg"
+                  className="px-6 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                  onClick={() => {
+                    setVin('SCBFR7ZA5CC072256');
+                    setShowSample(true);
+                  }}
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  Sample
+                </Button>
+              </div>
+            </form>
+            <p className="text-sm text-gray-500 mt-3 text-center">
+              Decode vehicle specifications and check theft status
+            </p>
+          </div>
         </div>
 
         {/* Sample Report */}
