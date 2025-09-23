@@ -12,11 +12,11 @@ const VinDecoder = () => {
 
   useEffect(() => {
     const vinParam = searchParams.get('vin');
-    if (vinParam) {
+    if (vinParam && vinParam.length === 17) {
       setVin(vinParam);
-      if (vinParam.length === 17) {
-        setShowSample(true);
-      }
+      setShowSample(true);
+    } else if (vinParam) {
+      setVin(vinParam);
     }
   }, [searchParams]);
 

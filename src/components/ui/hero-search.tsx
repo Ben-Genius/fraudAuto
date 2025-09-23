@@ -1,10 +1,24 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, Car, FileText } from "lucide-react";
 import { Button } from "./button";
 
 export function HeroSearch() {
   const [searchType, setSearchType] = useState<"vin" | "plate">("vin");
   const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      if (searchType === "vin") {
+        const cleanVin = searchValue.trim().toUpperCase();
+        navigate(`/vin-decoder?vin=${cleanVin}`);
+      } else {
+        navigate(`/license-plate?plate=${searchValue.trim().toUpperCase()}`);
+      }
+    }
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -34,7 +48,7 @@ export function HeroSearch() {
           </button>
         </div>
 
-        <div className="flex gap-3">
+        <form onSubmit={handleSearch} className="flex gap-3">
           <div className="flex-1">
             <input
               type="text"
@@ -45,14 +59,14 @@ export function HeroSearch() {
               }
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />
           </div>
-          <Button size="lg" className="px-6">
+          <Button type="submit" size="lg" className="px-6">
             <Search className="w-4 h-4 mr-2" />
             Search
           </Button>
-        </div>
+        </form>
 
         <p className="text-sm text-gray-500 mt-3">
           {searchType === "vin"
