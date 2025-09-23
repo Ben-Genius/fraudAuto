@@ -1,6 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Shield, Menu, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Link, useLocation } from "react-router-dom";
+import { Shield, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,8 +12,8 @@ const Header = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const isActive = (path: string) => {
@@ -23,11 +23,11 @@ const Header = () => {
   const getNavLinkClass = (path: string) => {
     const baseClass = "text-sm transition-all duration-300 ease-in";
     const isCurrentPage = isActive(path);
-    
+
     if (isScrolled) {
       return `${baseClass} ${
-        isCurrentPage 
-          ? "text-primary-red font-semibold" 
+        isCurrentPage
+          ? "text-primary-red font-semibold"
           : "text-gray-600 hover:text-gray-800"
       }`;
     } else {
@@ -40,8 +40,8 @@ const Header = () => {
   };
 
   const getPricingLinkClass = () => {
-    const isCurrentPage = isActive('/pricing');
-    
+    const isCurrentPage = isActive("/pricing");
+
     if (isScrolled) {
       return `text-sm px-3 py-1 rounded-md transition-all duration-300 ease-in ${
         isCurrentPage
@@ -60,7 +60,7 @@ const Header = () => {
   const getMobileNavLinkClass = (path: string) => {
     const baseClass = "text-sm transition-colors";
     const isCurrentPage = isActive(path);
-    
+
     if (isScrolled) {
       return `${baseClass} ${
         isCurrentPage
@@ -99,7 +99,7 @@ const Header = () => {
                 isScrolled ? "text-gray-900" : "text-primary-red"
               }`}
             >
-              FraudAuto
+              FraudWall-Auto
             </span>
             <Shield className="h-6 w-6 text-secondary-orange" />
           </Link>

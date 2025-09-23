@@ -5,15 +5,15 @@ import { cn } from "../../lib/utils";
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const rows = new Array(100).fill(1);
   const cols = new Array(80).fill(1);
-  
-  // FraudAuto brand colors
+
+  // FraudWall-Auto brand colors
   const colors = [
-    "rgb(251, 140, 0)",   // secondary-orange
-    "rgb(229, 57, 53)",   // primary-red
-    "rgb(255, 183, 77)",  // lighter orange
-    "rgb(244, 67, 54)",   // lighter red
-    "rgb(255, 152, 0)",   // amber
-    "rgb(211, 47, 47)",   // darker red
+    "rgb(251, 140, 0)", // secondary-orange
+    "rgb(229, 57, 53)", // primary-red
+    "rgb(255, 183, 77)", // lighter orange
+    "rgb(244, 67, 54)", // lighter red
+    "rgb(255, 152, 0)", // amber
+    "rgb(211, 47, 47)", // darker red
   ];
 
   const getRandomColor = () => {
