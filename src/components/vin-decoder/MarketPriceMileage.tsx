@@ -44,4 +44,4 @@ const MarketPriceMileage = () => {
   );
 };
 
-export default MarketPriceMileage;
+export { MarketPriceMileage };

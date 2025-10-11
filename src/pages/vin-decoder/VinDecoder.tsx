@@ -30,8 +30,8 @@ import type { VinReportData } from "../../types/vin-decoder";
 import { SafetyRecallCheck } from "../../components/vin-decoder/SafetyRecallCheck";
 import { VehicleDamages } from "../../components/vin-decoder/VehicleDamages";
 import { PriceChanges } from "../../components/vin-decoder/PriceChanges";
-import MarketPriceYear from "../../components/vin-decoder/MarketPriceYear";
-import MarketPriceMileage from "../../components/vin-decoder/MarketPriceMileage";
+import { MarketPriceYear } from "../../components/vin-decoder/MarketPriceYear";
+import { MarketPriceMileage } from "../../components/vin-decoder/MarketPriceMileage";
 
 const VinDecoder = () => {
   const [vin, setVin] = useState("");
