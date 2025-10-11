@@ -20,7 +20,7 @@ export const BrandsGrid = React.forwardRef<HTMLDivElement, BrandsGridProps>(
       className,
       title = "Trusted and loved by fast-growing companies worldwide",
       brands,
-      imageHeight = 56,
+      // imageHeight = 56,
       ...props
     },
     ref

@@ -43,14 +43,16 @@ export function HeroSection() {
               </Link>
 
               <h1 className="text-4xl md:text-7xl font-semibold font-sans max-w-7xl text-center mx-auto mt-8">
-                Combat Vehicle Fraud in  
-                <span className="text-secondary-orange"> Ghana</span>
+                Combat Vehicle{" "}
+                <span className="text-secondary-orange"> Fraud </span>
+                Ghana
               </h1>
 
               <p className="text-sm md:text-base mx-auto max-w-2xl text-center mt-6 max-md:px-2">
-                Comprehensive VIN decoding, license plate verification, and
-                vehicle history reports. Integrated with Ghana's DVLA and Police
-                Service for real-time fraud detection.
+                Comprehensive VIN decoding, vehicle servicce or maintenance
+                history, license plate verification, and vehicle history
+                reports. Integrated with Ghana's DVLA and Police Service for
+                real-time fraud detection.
               </p>
             </AnimatedGroup>
 

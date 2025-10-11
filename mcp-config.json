@@ -1,0 +1,9 @@
+{
+  "mui-mcp-server": {
+    "command": {
+      "path": "npx",
+      "args": ["-y", "@mui/mcp@latest"],
+      "env": {}
+    }
+  }
+}

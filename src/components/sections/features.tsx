@@ -187,7 +187,7 @@ export function Features() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center ">
           <h2 className="text-3xl font-medium lg:text-4xl mb-4 text-white">
-            Comprehensive Vehicle Verification
+            Comprehensive Vehicle Verification and Service History
           </h2>
           <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             Our platform provides multiple layers of verification to ensure vehicle authenticity and prevent fraud across Ghana

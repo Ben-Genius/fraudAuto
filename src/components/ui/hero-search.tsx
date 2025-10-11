@@ -4,7 +4,9 @@ import { Search, Car, FileText } from "lucide-react";
 import { Button } from "./button";
 
 export function HeroSearch() {
-  const [searchType, setSearchType] = useState<"vin" | "plate">("vin");
+  const [searchType, setSearchType] = useState<"vin" | "plate" | "maintenance">(
+    "vin"
+  );
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
 
@@ -40,11 +42,22 @@ export function HeroSearch() {
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "plate"
                 ? "bg-primary-red text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-300"
             }`}
           >
             <FileText className="w-4 h-4" />
             License Plate
+          </button>
+          <button
+            onClick={() => setSearchType("maintenance")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              searchType === "maintenance"
+                ? "bg-primary-red text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-300"
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            Maintenance History
           </button>
         </div>
 
@@ -55,7 +68,9 @@ export function HeroSearch() {
               placeholder={
                 searchType === "vin"
                   ? "Enter 17-character VIN..."
-                  : "Enter Ghana license plate..."
+                  : searchType === "plate"
+                  ? "Enter Ghana license plate..."
+                  : "Enter service number "
               }
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
