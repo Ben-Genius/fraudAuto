@@ -1,4 +1,3 @@
-import React from "react";
 import { Download, Share2, Printer, Save, FileText, Shield, AlertTriangle } from "lucide-react";
 
 export const ReportActions = () => {

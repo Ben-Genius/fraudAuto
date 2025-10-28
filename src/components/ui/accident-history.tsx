@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AlertTriangle, Calendar, MapPin, FileText, Car } from "lucide-react";
 
 interface AccidentRecord {

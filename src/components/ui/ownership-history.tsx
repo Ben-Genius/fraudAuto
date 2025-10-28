@@ -1,4 +1,3 @@
-import React from "react";
 import { Calendar, MapPin, User, Gauge, Clock } from "lucide-react";
 
 interface OwnershipPeriod {

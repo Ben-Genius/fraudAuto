@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AlertTriangle, CheckCircle, ExternalLink, Calendar, Wrench, Shield, X } from "lucide-react";
 
 interface Recall {
