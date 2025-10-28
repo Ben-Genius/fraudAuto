@@ -17,7 +17,7 @@ import toyota from './toyota.jpg';
 import volkswagen from './volks.png';
 import flag from './gh.png';
 import dvla from './dvla.png';
-
+import civic from './civic.png'
 
 export const vehicleLogos = {
   audi,
@@ -59,5 +59,6 @@ export const vehicleBrands = [
 
 export const IMAGES = {
   flag,
-  dvla
+  dvla,
+  civic
 }

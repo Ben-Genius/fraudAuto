@@ -110,7 +110,7 @@ const Header = () => {
               Home
             </Link>
             <Link to="/vin-decoder" className={getNavLinkClass("/vin-decoder")}>
-              VIN Decoder
+              VIN Decoder & Lookup 
             </Link>
             <Link
               to="/license-plate"

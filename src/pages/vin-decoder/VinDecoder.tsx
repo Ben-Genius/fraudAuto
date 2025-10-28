@@ -47,21 +47,37 @@ const VinDecoder = () => {
 
   useEffect(() => {
     const vinParam = searchParams.get("vin");
+    const paid = searchParams.get("paid");
+    
     if (vinParam && vinParam.length === 17) {
       setVin(vinParam);
-      setShowSample(true);
-      setReportData(sampleVinData);
+      if (paid === 'true') {
+        setShowSample(true);
+        setReportData(sampleVinData);
+      } else {
+        handleVinLookup(vinParam);
+      }
     } else if (vinParam) {
       setVin(vinParam);
     }
   }, [searchParams]);
 
+  const handleVinLookup = (vinNumber: string) => {
+    const hasLimitedData = vinNumber.startsWith('1') 
+    
+    if (hasLimitedData) {
+      navigate(`/checkout?vin=${vinNumber}`);
+    } else {
+      setShowSample(true);
+      setReportData(sampleVinData);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (vin.length === 17) {
-      setShowSample(true);
-      setReportData(sampleVinData);
-      navigate(`/vin-decoder?vin=${vin}`, { replace: true });
+      handleVinLookup(vin);
+      navigate(`/vin-decoder?vin=${vin}`);
     }
   };
 

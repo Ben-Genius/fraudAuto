@@ -7,6 +7,7 @@ export const TypewriterEffectSmooth = ({
   words,
   className,
   cursorClassName,
+  hideCursor = false,
 }: {
   words: {
     text: string;
@@ -14,6 +15,7 @@ export const TypewriterEffectSmooth = ({
   }[];
   className?: string;
   cursorClassName?: string;
+  hideCursor?: boolean;
 }) => {
   const wordsArray = words.map((word) => {
     return {
@@ -69,23 +71,25 @@ export const TypewriterEffectSmooth = ({
           {renderWords()}{" "}
         </div>{" "}
       </motion.div>
-      <motion.span
-        initial={{
-          opacity: 0,
-        }}
-        animate={{
-          opacity: 1,
-        }}
-        transition={{
-          duration: 0.8,
-          repeat: Infinity,
-          repeatType: "reverse",
-        }}
-        className={cn(
-          "block rounded-sm w-[4px] h-6 sm:h-8 xl:h-12 bg-secondary-orange",
-          cursorClassName
-        )}
-      ></motion.span>
+      {!hideCursor && (
+        <motion.span
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          transition={{
+            duration: 0.8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+          className={cn(
+            "block rounded-sm w-[4px] h-6 sm:h-8 xl:h-12 bg-secondary-orange",
+            cursorClassName
+          )}
+        ></motion.span>
+      )}
     </div>
   );
 };

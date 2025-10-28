@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MoveRight, PhoneCall } from "lucide-react";
 import { Badge } from "../ui/badge";
@@ -8,6 +9,9 @@ import { BoxesCore } from "../ui/boxes-core";
 import { motion } from "framer-motion";
 
 export function CTA() {
+  const [showSecondTypewriter, setShowSecondTypewriter] = useState(false);
+  const [hideFirstCursor, setHideFirstCursor] = useState(false);
+
   const words = [
     {
       text: "Protect",
@@ -62,6 +66,16 @@ export function CTA() {
     },
   ];
 
+  useEffect(() => {
+    // Start second typewriter after first one completes (2.5s duration + 0.5s delay)
+    const timer1 = setTimeout(() => {
+      setHideFirstCursor(true);
+      setShowSecondTypewriter(true);
+    }, 3000);
+
+    return () => clearTimeout(timer1);
+  }, []);
+
   return (
     <div className="w-full py-20 lg:py-10 relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-5">
       <BoxesCore />
@@ -83,18 +97,21 @@ export function CTA() {
             <TypewriterEffectSmooth
               words={descriptionWords}
               className="text-lg leading-relaxed tracking-tight max-w-full justify-center"
+              hideCursor={hideFirstCursor}
             />
             
-            <TypewriterEffectSmooth
-              words={words}
-              className="max-w-4xl"
-              cursorClassName="bg-secondary-orange"
-            />
+            {showSecondTypewriter && (
+              <TypewriterEffectSmooth
+                words={words}
+                className="max-w-4xl"
+                cursorClassName="bg-secondary-orange"
+              />
+            )}
 
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 4.5 }}
+              transition={{ duration: 0.6, delay: 6 }}
               viewport={{ once: true }}
               className="text-gray-300 text-center max-w-xl mt-4"
             >
@@ -107,7 +124,7 @@ export function CTA() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 5 }}
+            transition={{ duration: 0.8, delay: 6.5 }}
             viewport={{ once: true }}
             className="flex flex-row gap-4 mt-8"
           >

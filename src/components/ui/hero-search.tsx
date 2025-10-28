@@ -16,8 +16,14 @@ export function HeroSearch() {
       if (searchType === "vin") {
         const cleanVin = searchValue.trim().toUpperCase();
         navigate(`/vin-decoder?vin=${cleanVin}`);
-      } else {
+      } else if (searchType === "plate") {
         navigate(`/license-plate?plate=${searchValue.trim().toUpperCase()}`);
+      } else {
+        navigate(
+          `/maintenance-history?vin=${searchValue
+            .trim()
+            .toUpperCase()}`
+        );
       }
     }
   };
@@ -35,14 +41,14 @@ export function HeroSearch() {
             }`}
           >
             <Car className="w-4 h-4" />
-            VIN Decoder
+            VIN Decoder & Lookup
           </button>
           <button
             onClick={() => setSearchType("plate")}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "plate"
                 ? "bg-primary-red text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
             }`}
           >
             <FileText className="w-4 h-4" />
@@ -53,7 +59,7 @@ export function HeroSearch() {
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               searchType === "maintenance"
                 ? "bg-primary-red text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
             }`}
           >
             <FileText className="w-4 h-4" />
@@ -70,11 +76,11 @@ export function HeroSearch() {
                   ? "Enter 17-character VIN..."
                   : searchType === "plate"
                   ? "Enter Ghana license plate..."
-                  : "Enter service number "
+                  : "1HGBH41JXMN109186"
               }
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white outline-none"
             />
           </div>
           <Button type="submit" size="lg" className="px-6">
@@ -83,10 +89,12 @@ export function HeroSearch() {
           </Button>
         </form>
 
-        <p className="text-sm text-gray-500 mt-3">
+        <p className="text-sm text-gray-500 mt-3 text-start">
           {searchType === "vin"
             ? "Decode vehicle specifications and check theft status"
-            : "Verify Ghana license plates and check for theft reports"}
+            : searchType === "plate"
+            ? "Verify Ghana license plates and check for theft reports"
+            : "Enter a VIN to access a complete, verified history of service records, repairs, and more."}
         </p>
       </div>
     </div>
