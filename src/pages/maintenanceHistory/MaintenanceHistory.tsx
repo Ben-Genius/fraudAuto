@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AlertTriangle,
   CheckCircle,
@@ -8,8 +9,11 @@ import {
   Gauge,
   Wrench,
   TrendingUp,
+  
   Shield,
   Clock,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { MaintenanceTimeline } from "../../components/ui/maintenance-timeline";
 import { OdometerAnalysis } from "../../components/ui/odometer-analysis";
@@ -19,6 +23,49 @@ import { ReportActions } from "../../components/ui/report-actions";
 import { IMAGES } from "../../assets/images";
 
 export const MaintenanceHistory = () => {
+  const [expandedSections, setExpandedSections] = useState({
+    timeline: true,
+    odometer: true,
+    accidents: true,
+    recalls: true,
+    actions: true,
+  });
+
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const CollapsibleSection = ({ 
+    title, 
+    sectionKey, 
+    children 
+  }: { 
+    title: string; 
+    sectionKey: keyof typeof expandedSections; 
+    children: React.ReactNode;
+  }) => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <button
+        onClick={() => toggleSection(sectionKey)}
+        className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+      >
+        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        {expandedSections[sectionKey] ? (
+          <ChevronUp className="h-5 w-5 text-gray-500" />
+        ) : (
+          <ChevronDown className="h-5 w-5 text-gray-500" />
+        )}
+      </button>
+      {expandedSections[sectionKey] && (
+        <div className="border-t border-gray-200">
+          {children}
+        </div>
+      )}
+    </div>
+  );
   const vehicleData = {
     vin: "1HGBH41JXMN109186",
     year: "2018",
@@ -282,17 +329,24 @@ export const MaintenanceHistory = () => {
           </div>
         </div>
 
-        {/* Maintenance Timeline */}
-        <MaintenanceTimeline />
+        {/* Collapsible Sections */}
+        <CollapsibleSection title="Maintenance Timeline" sectionKey="timeline">
+          <MaintenanceTimeline />
+        </CollapsibleSection>
 
-        {/* Critical Insights Sections */}
-        <OdometerAnalysis />
-        <AccidentHistory />
-        {/* <OwnershipHistory /> */}
-        <RecallsTSBs />
+        <CollapsibleSection title="Odometer Analysis" sectionKey="odometer">
+          <OdometerAnalysis />
+        </CollapsibleSection>
 
-        {/* Report Actions */}
-        <ReportActions />
+        <CollapsibleSection title="Accident & Damage History" sectionKey="accidents">
+          <AccidentHistory />
+        </CollapsibleSection>
+
+        <CollapsibleSection title="Recalls & Technical Service Bulletins" sectionKey="recalls">
+          <RecallsTSBs />
+        </CollapsibleSection>
+
+          <ReportActions />
       </div>
     </div>
   );

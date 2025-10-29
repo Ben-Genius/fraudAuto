@@ -2,9 +2,9 @@ import { Download, Share2, Printer, Save, FileText, Shield, AlertTriangle } from
 
 export const ReportActions = () => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-10">
       {/* Actions Bar */}
-      <div className="flex flex-wrap gap-3 mb-4">
+      <div className="flex flex-wrap gap-3 mb-4 items-center justify-center py-2">
         <button className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium">
           <Download className="h-4 w-4 mr-2" />
           Download PDF Report

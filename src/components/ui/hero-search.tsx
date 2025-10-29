@@ -63,7 +63,7 @@ export function HeroSearch() {
             }`}
           >
             <FileText className="w-4 h-4" />
-            Maintenance History
+            Maintenance History in Ghana
           </button>
         </div>
 

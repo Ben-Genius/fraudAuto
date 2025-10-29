@@ -8,6 +8,7 @@ export const TypewriterEffectSmooth = ({
   className,
   cursorClassName,
   hideCursor = false,
+  startAnimation = false,
 }: {
   words: {
     text: string;
@@ -16,6 +17,7 @@ export const TypewriterEffectSmooth = ({
   className?: string;
   cursorClassName?: string;
   hideCursor?: boolean;
+  startAnimation?: boolean;
 }) => {
   const wordsArray = words.map((word) => {
     return {
@@ -53,9 +55,9 @@ export const TypewriterEffectSmooth = ({
         initial={{
           width: "0%",
         }}
-        whileInView={{
+        animate={startAnimation ? {
           width: "fit-content",
-        }}
+        } : {}}
         transition={{
           duration: 2,
           ease: "linear",

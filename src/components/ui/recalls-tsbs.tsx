@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertTriangle, CheckCircle, ExternalLink, Calendar, Wrench, Shield, X } from "lucide-react";
+import { AlertTriangle, CheckCircle,  Wrench, Shield, X } from "lucide-react";
 
 interface Recall {
   id: string;
@@ -75,30 +75,22 @@ export const RecallsTSBs = () => {
   const [selectedRecall, setSelectedRecall] = useState<Recall | null>(null);
   const [selectedTSB, setSelectedTSB] = useState<TSB | null>(null);
 
-  const openRecallModal = (recall: Recall) => {
-    setSelectedRecall(recall);
-  };
-
-  const openTSBModal = (tsb: TSB) => {
-    setSelectedTSB(tsb);
-  };
-
   const closeModals = () => {
     setSelectedRecall(null);
     setSelectedTSB(null);
   };
 
   const handleCheckRepair = (recall: Recall) => {
-    // Simulate opening NHTSA or dealer website
     window.open(`https://www.nhtsa.gov/recalls?vin=1HGBH41JXMN109186&campaign=${recall.campaignNumber}`, '_blank');
   };
+
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case "Critical": return "bg-red-100 text-red-800 border-red-200";
-      case "High": return "bg-orange-100 text-orange-800 border-orange-200";
-      case "Medium": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "Low": return "bg-blue-100 text-blue-800 border-blue-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
+      case "Critical": return "bg-red-100 text-red-800";
+      case "High": return "bg-orange-100 text-orange-800";
+      case "Medium": return "bg-yellow-100 text-yellow-800";
+      case "Low": return "bg-blue-100 text-blue-800";
+      default: return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -112,166 +104,94 @@ export const RecallsTSBs = () => {
     }
   };
 
-  const openRecalls = mockRecalls.filter(recall => !recall.repaired);
-
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="bg-white rounded-lg  border border-gray-200 p-4">
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900 mb-1">Recalls & Technical Service Bulletins</h2>
         <p className="text-sm text-gray-600">NHTSA recalls and manufacturer service bulletins</p>
       </div>
 
-      {/* Open Recalls Alert */}
-      {openRecalls.length > 0 && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-          <div className="flex items-center space-x-2 mb-2">
-            <AlertTriangle className="h-5 w-5 text-red-600" />
-            <span className="font-bold text-red-800">
-              {openRecalls.length} Open Recall{openRecalls.length > 1 ? 's' : ''} Require Attention
-            </span>
-          </div>
-          <p className="text-sm text-red-700">
-            This vehicle has unrepaired safety recalls. Contact an authorized dealer immediately to schedule free repairs.
-          </p>
-        </div>
-      )}
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recalls Section */}
+        {/* Recalls Table */}
         <div>
-          <div className="flex items-center space-x-2 mb-3">
-            <Shield className="h-5 w-5 text-red-600" />
-            <h3 className="text-lg font-semibold text-gray-900">Safety Recalls</h3>
-          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+            <Shield className="h-5 w-5 text-red-600 mr-2" />
+            Safety Recalls
+          </h3>
           
-          <div className="space-y-3">
-            {mockRecalls.map((recall) => (
-              <div key={recall.id} className={`border rounded-lg p-3 ${recall.repaired ? 'border-gray-200' : 'border-red-200 bg-red-50'}`}>
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="text-xs font-mono text-gray-600">{recall.campaignNumber}</span>
-                      <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getRiskColor(recall.risk)}`}>
-                        {recall.risk} Risk
-                      </span>
-                    </div>
-                    <h4 className="font-semibold text-gray-900">{recall.title}</h4>
-                  </div>
-                  {recall.repaired ? (
-                    <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                  ) : (
-                    <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0" />
-                  )}
-                </div>
-                
-                <p className="text-sm text-gray-700 mb-2">{recall.description}</p>
-                
-                <div className="text-xs text-gray-600 space-y-1">
-                  <div className="flex items-center">
-                    <Calendar className="h-3 w-3 mr-1" />
-                    Issued: {new Date(recall.dateIssued).toLocaleDateString()}
-                  </div>
-                  <div className="flex items-center">
-                    <Wrench className="h-3 w-3 mr-1" />
-                    Component: {recall.component}
-                  </div>
-                  {recall.repaired && recall.repairedDate && (
-                    <div className="flex items-center text-green-600">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      Repaired: {new Date(recall.repairedDate).toLocaleDateString()}
-                    </div>
-                  )}
-                </div>
-                
-                <div className="mt-2 pt-2 border-t border-gray-200">
-                  <p className="text-xs text-gray-600 mb-2"><strong>Remedy:</strong> {recall.remedy}</p>
-                  {!recall.repaired && (
-                    <button 
-                      className="inline-flex items-center px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 mr-2"
-                      onClick={() => handleCheckRepair(recall)}
-                    >
-                      <ExternalLink className="h-3 w-3 mr-1" />
-                      Check for Repair
-                    </button>
-                  )}
-                  <button 
-                    className="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
-                    onClick={() => openRecallModal(recall)}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200 bg-gray-50">
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Campaign</th>
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Issue</th>
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Risk</th>
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockRecalls.map((recall) => (
+                  <tr 
+                    key={recall.id}
+                    className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                    onClick={() => setSelectedRecall(recall)}
                   >
-                    View Details
-                  </button>
-                </div>
-              </div>
-            ))}
+                    <td className="py-2 px-3 font-mono text-xs">{recall.campaignNumber}</td>
+                    <td className="py-2 px-3">{recall.title}</td>
+                    <td className="py-2 px-3">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${getRiskColor(recall.risk)}`}>
+                        {recall.risk}
+                      </span>
+                    </td>
+                    <td className="py-2 px-3">
+                      {recall.repaired ? (
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <AlertTriangle className="h-4 w-4 text-red-600" />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* TSBs Section */}
+        {/* TSBs Table */}
         <div>
-          <div className="flex items-center space-x-2 mb-3">
-            <Wrench className="h-5 w-5 text-blue-600" />
-            <h3 className="text-lg font-semibold text-gray-900">Technical Service Bulletins</h3>
-          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+            <Wrench className="h-5 w-5 text-blue-600 mr-2" />
+            Technical Service Bulletins
+          </h3>
           
-          <div className="space-y-3">
-            {mockTSBs.map((tsb) => (
-              <div key={tsb.id} className="border border-gray-200 rounded-lg p-3">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="text-xs font-mono text-gray-600">{tsb.bulletinNumber}</span>
-                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${getCategoryColor(tsb.category)}`}>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200 bg-gray-50">
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Bulletin</th>
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Issue</th>
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Category</th>
+                  <th className="text-left py-2 px-3 font-medium text-gray-700">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockTSBs.map((tsb) => (
+                  <tr 
+                    key={tsb.id}
+                    className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                    onClick={() => setSelectedTSB(tsb)}
+                  >
+                    <td className="py-2 px-3 font-mono text-xs">{tsb.bulletinNumber}</td>
+                    <td className="py-2 px-3">{tsb.title}</td>
+                    <td className="py-2 px-3">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(tsb.category)}`}>
                         {tsb.category}
                       </span>
-                    </div>
-                    <h4 className="font-semibold text-gray-900">{tsb.title}</h4>
-                  </div>
-                </div>
-                
-                <p className="text-sm text-gray-700 mb-2">{tsb.description}</p>
-                
-                <div className="text-xs text-gray-600 space-y-1">
-                  <div className="flex items-center">
-                    <Calendar className="h-3 w-3 mr-1" />
-                    Issued: {new Date(tsb.dateIssued).toLocaleDateString()}
-                  </div>
-                  <div className="flex items-center">
-                    <Wrench className="h-3 w-3 mr-1" />
-                    Component: {tsb.component}
-                  </div>
-                </div>
-                
-                <div className="mt-2 pt-2 border-t border-gray-200">
-                  <button 
-                    className="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
-                    onClick={() => openTSBModal(tsb)}
-                  >
-                    <ExternalLink className="h-3 w-3 mr-1" />
-                    View Details
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Summary */}
-      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-        <div className="grid grid-cols-2 gap-4 text-center">
-          <div>
-            <div className="text-2xl font-bold text-gray-900">{mockRecalls.length}</div>
-            <div className="text-xs text-gray-600">Total Recalls</div>
-            <div className="text-xs text-gray-500">
-              {mockRecalls.filter(r => r.repaired).length} completed
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-gray-900">{mockTSBs.length}</div>
-            <div className="text-xs text-gray-600">Service Bulletins</div>
-            <div className="text-xs text-gray-500">
-              {mockTSBs.filter(t => t.category === "Safety").length} safety-related
-            </div>
+                    </td>
+                    <td className="py-2 px-3">{new Date(tsb.dateIssued).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

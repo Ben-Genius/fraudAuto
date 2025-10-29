@@ -30,9 +30,8 @@ export const OdometerAnalysis = () => {
   const fraudAlert = mockOdometerData.some(record => record.hasIssue);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="bg-white rounded-lg  border-gray-200 p-4">
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900 mb-1">Odometer History Analysis</h2>
         <p className="text-sm text-gray-600">Mileage progression verified through DVLA and certified service centers</p>
       </div>
 

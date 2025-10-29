@@ -18,6 +18,12 @@ import volkswagen from './volks.png';
 import flag from './gh.png';
 import dvla from './dvla.png';
 import civic from './civic.png'
+import hondaccident1 from './hondaccident1.webp'
+import hondaccident2 from './hondaccident2.jpeg'
+import hondaccident3 from './hondacivic3.jpeg'
+import hondaccident4 from './hondacivic4.jpeg'
+
+
 
 export const vehicleLogos = {
   audi,
@@ -60,5 +66,9 @@ export const vehicleBrands = [
 export const IMAGES = {
   flag,
   dvla,
-  civic
+  civic,
+  hondaccident1,
+  hondaccident2,
+  hondaccident3,
+  hondaccident4
 }

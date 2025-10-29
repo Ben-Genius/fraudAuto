@@ -308,11 +308,9 @@ export const MaintenanceTimeline = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="bg-white rounded-lg  border-gray-200 p-4">
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
-          Service History
-        </h2>
+      
         <p className="text-sm text-gray-600">
           Complete maintenance records from certified service centers
         </p>
