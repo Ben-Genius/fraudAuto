@@ -105,7 +105,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6 ">
+          <nav className="hidden lg:flex items-center gap-4 lg:gap-6 ">
             <Link to="/" className={getNavLinkClass("/")}>
               Home
             </Link>
@@ -125,7 +125,7 @@ const Header = () => {
           </nav>
 
           {/* Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
+          <div className="hidden lg:flex items-center space-x-2 lg:space-x-3">
             <Link
               to="/login"
               className={`text-sm transition-colors px-3 lg:px-4 py-2 rounded-md ${
@@ -155,7 +155,7 @@ const Header = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`md:hidden p-2 rounded-md transition-colors ${
+            className={`lg:hidden p-2 rounded-md transition-colors ${
               isScrolled
                 ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100/50"
                 : "text-white font-bold hover:text-white hover:bg-white/2 bg-secondary-orange/85"
@@ -172,7 +172,7 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div
-            className={`md:hidden mt-4 pt-4 ${
+            className={`lg:hidden mt-4 pt-4 ${
               isScrolled
                 ? "border-t border-gray-200/60"
                 : "bg-white/80 backdrop-blur-md  border-gray-200/60 rounded-lg px-4 sm:px-6 py-3 shadow-lg"
