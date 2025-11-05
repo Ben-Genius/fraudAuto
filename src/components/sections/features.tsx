@@ -146,7 +146,8 @@ export function Features() {
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 250;
+    const radius = typeof window !== 'undefined' && window.innerWidth < 640 ? 120 : 
+                   typeof window !== 'undefined' && window.innerWidth < 768 ? 180 : 250;
     const radian = (angle * Math.PI) / 180;
 
     const x = radius * Math.cos(radian);
@@ -183,34 +184,34 @@ export function Features() {
   };
 
   return (
-    <section className="py-16 md:py-18 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="text-center ">
-          <h2 className="text-3xl font-medium lg:text-4xl mb-4 text-white">
+    <section className="py-12 sm:py-16 md:py-18 lg:py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4 text-white">
             Comprehensive Vehicle Verification and Service History
           </h2>
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-xs sm:max-w-lg md:max-w-3xl mx-auto px-4 sm:px-0">
             Our platform provides multiple layers of verification to ensure vehicle authenticity and prevent fraud across Ghana
           </p>
         </div>
 
         <div
-          className="relative w-full h-[700px] flex items-center justify-center"
+          className="relative w-full h-[500px] sm:h-[600px] md:h-[700px] flex items-center justify-center mt-8 "
           ref={containerRef}
           onClick={handleContainerClick}
         >
           <div className="relative w-full h-full flex items-center justify-center">
             {/* Center Hub */}
-            <div className="absolute w-24 h-24 rounded-full bg-gradient-to-br from-secondary-orange via-primary-red to-secondary-orange animate-pulse flex items-center justify-center z-10">
-              <div className="absolute w-28 h-28 rounded-full border border-white/20 animate-ping opacity-70"></div>
-              <div className="absolute w-32 h-32 rounded-full border border-white/10 animate-ping opacity-50" style={{ animationDelay: "0.5s" }}></div>
-              <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center">
-                <Car className="w-6 h-6 text-gray-800" />
+            <div className="absolute w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-secondary-orange via-primary-red to-secondary-orange animate-pulse flex items-center justify-center z-10">
+              <div className="absolute w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full border border-white/20 animate-ping opacity-70"></div>
+              <div className="absolute w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full border border-white/10 animate-ping opacity-50" style={{ animationDelay: "0.5s" }}></div>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center">
+                <Car className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-800" />
               </div>
             </div>
 
             {/* Orbital Ring */}
-            <div className="absolute w-[500px] h-[500px] rounded-full border border-white/10"></div>
+            <div className="absolute w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] rounded-full border border-white/10"></div>
 
             {/* Feature Nodes */}
             {features.map((feature, index) => {
@@ -220,8 +221,9 @@ export function Features() {
               const isPulsing = pulseEffect[feature.id];
               const Icon = feature.icon;
 
+              const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
               const nodeStyle = {
-                transform: `translate(${position.x}px, ${position.y}px)`,
+                transform: `translate(${position.x * (isMobile ? 0.9 : 1)}px, ${position.y * (isMobile ? 0.9 :1)}px)`,
                 zIndex: isExpanded ? 200 : position.zIndex,
                 opacity: isExpanded ? 1 : position.opacity,
               };
@@ -244,17 +246,17 @@ export function Features() {
                     className={`absolute rounded-full -inset-1 ${isPulsing ? "animate-pulse duration-1000" : ""}`}
                     style={{
                       background: `radial-gradient(circle, rgba(251,140,0,0.2) 30%, rgba(251,140,0,0) 20%)`,
-                      width: `${feature.accuracy * 0.6 + 50}px`,
-                      height: `${feature.accuracy * 0.6 + 50}px`,
-                      left: `-${(feature.accuracy * 0.6 + 50 - 50) / 2}px`,
-                      top: `-${(feature.accuracy * 0.6 + 50 - 50) / 2}px`,
+                      width: `${(feature.accuracy * 0.6 + 50) * (isMobile ? 0.7 : 1)}px`,
+                      height: `${(feature.accuracy * 0.6 + 50) * (isMobile ? 0.7 : 1)}px`,
+                      left: `-${((feature.accuracy * 0.6 + 50) * (isMobile ? 0.7 : 1) - (isMobile ? 35 : 50)) / 2}px`,
+                      top: `-${((feature.accuracy * 0.6 + 50) * (isMobile ? 0.7 : 1) - (isMobile ? 35 : 50)) / 2}px`,
                     }}
                   ></div>
 
                   {/* Node */}
                   <div
                     className={`
-                    w-12 h-12 rounded-full flex items-center justify-center
+                    w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center
                     ${isExpanded ? "bg-white text-gray-800" : isRelated ? "bg-secondary-orange text-white" : "bg-gray-800 text-white"}
                     border-2 
                     ${isExpanded ? "border-white shadow-lg shadow-white/30" : isRelated ? "border-secondary-orange animate-pulse" : "border-white/40"}
@@ -262,25 +264,26 @@ export function Features() {
                     ${isExpanded ? "scale-125" : ""}
                   `}
                   >
-                    <Icon size={20} />
+                    <Icon size={isMobile ? 14 : typeof window !== 'undefined' && window.innerWidth < 768 ? 16 : 20} />
                   </div>
 
                   {/* Node Label */}
                   <div
                     className={`
-                    absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap
-                    text-xs font-semibold tracking-wider text-center
+                    absolute top-10 sm:top-12 md:top-14 left-1/2 -translate-x-1/2 whitespace-nowrap
+                    text-xs sm:text-sm font-semibold tracking-wider text-center
                     transition-all duration-300
                     ${isExpanded ? "text-white scale-110" : "text-white/80"}
                   `}
                   >
-                    {feature.title}
+                    <span className="hidden sm:inline">{feature.title}</span>
+                    <span className="sm:hidden">{feature.title.split(' ')[0]}</span>
                   </div>
 
                   {/* Expanded Card */}
                   {isExpanded && (
-                    <Card className={`absolute left-1/2 -translate-x-1/2 w-72 bg-gray-900/95 backdrop-blur-lg border-white/30 shadow-xl shadow-black/50 text-white ${
-                      position.y > 100 ? 'bottom-24' : position.y < -100 ? 'top-24' : 'top-24'
+                    <Card className={`absolute left-1/2 -translate-x-1/2 w-64 sm:w-72 md:w-80 bg-gray-900/95 backdrop-blur-lg border-white/30 shadow-xl shadow-black/50 text-white ${
+                      position.y > 100 ? 'bottom-16 sm:bottom-20 md:bottom-24' : position.y < -100 ? 'top-16 sm:top-20 md:top-24' : 'top-16 sm:top-20 md:top-24'
                     }`}>
                       <div className={`absolute left-1/2 -translate-x-1/2 w-px h-3 bg-white/50 ${
                         position.y > 100 ? 'top-3' : 'bottom-3'
@@ -294,11 +297,11 @@ export function Features() {
                             {feature.category}
                           </span>
                         </div>
-                        <CardTitle className="text-sm text-white">
+                        <CardTitle className="text-sm sm:text-base text-white">
                           {feature.title}
                         </CardTitle>
                       </CardHeader>
-                      <CardContent className="text-xs text-white/90">
+                      <CardContent className="text-xs sm:text-sm text-white/90">
                         <p className="leading-relaxed">{feature.description}</p>
 
                         <div className="mt-4 pt-3 border-t border-white/20">
@@ -336,7 +339,8 @@ export function Features() {
                                       toggleItem(relatedId);
                                     }}
                                   >
-                                    {relatedItem?.title}
+                                    <span className="hidden sm:inline">{relatedItem?.title}</span>
+                                    <span className="sm:hidden">{relatedItem?.title.split(' ')[0]}</span>
                                     <ArrowRight size={8} className="ml-1" />
                                   </Button>
                                 );

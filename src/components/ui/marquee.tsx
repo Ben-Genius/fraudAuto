@@ -17,12 +17,12 @@ export function Marquee({ brands, className }: MarqueeProps) {
         {[...brands, ...brands].map((brand, index) => (
           <div
             key={`${brand.name}-${index}`}
-            className="flex-shrink-0 mx-8 grayscale hover:grayscale-0 transition-all duration-300"
+            className="flex-shrink-0 mx-4 sm:mx-6 md:mx-8 grayscale hover:grayscale-0 transition-all duration-300"
           >
             <img
               src={brand.logo}
               alt={`${brand.name} logo`}
-              className="h-20 w-auto object-contain bg-transparent"
+              className="h-12 sm:h-16 md:h-20 w-auto object-contain bg-transparent"
               style={{ backgroundColor: 'transparent' }}
             />
           </div>

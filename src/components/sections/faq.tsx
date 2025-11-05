@@ -40,25 +40,25 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
-      <div className="mx-auto max-w-4xl px-6">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
         >
-          <h2 className="text-3xl font-medium lg:text-4xl mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 px-4 sm:px-0">
             Everything you need to know about FraudWall-Auto vehicle
             verification
           </p>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
@@ -72,20 +72,20 @@ export function FAQ() {
                   onClick={() =>
                     setOpenIndex(openIndex === index ? null : index)
                   }
-                  className="flex flex-1 items-center justify-between gap-4 rounded-2xl p-4 text-left w-full bg-white hover:bg-gray-50/70 hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2"
+                  className="flex flex-1 items-center justify-between gap-4 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-left w-full bg-white hover:bg-gray-50/70 hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2"
                 >
-                  <div className="flex items-center gap-4">
-                    <HelpCircle className="h-5 w-5 text-secondary-orange" />
-                    <span className="text-lg font-medium text-zinc-700 tracking-wide">
+                  <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                    <HelpCircle className="h-4 w-4 sm:h-5 sm:w-5 text-secondary-orange flex-shrink-0 mt-0.5 sm:mt-0" />
+                    <span className="text-base sm:text-lg font-medium text-zinc-700 tracking-wide text-left">
                       {faq.question}
                     </span>
                   </div>
                   <div
-                    className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-200 transition-transform group-hover:scale-105 ${
+                    className={`flex h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-200 transition-transform group-hover:scale-105 ${
                       openIndex === index ? "rotate-180" : ""
                     }`}
                   >
-                    <ChevronDown className="h-4 w-4 text-gray-800" />
+                    <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 text-gray-800" />
                   </div>
                 </button>
 
@@ -98,13 +98,13 @@ export function FAQ() {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="mt-4 ml-14">
-                    <div className="flex items-start gap-4 rounded-2xl bg-white p-4 shadow-md transition-all">
-                      <span className="flex-1 text-md leading-relaxed text-gray-700">
+                  <div className="mt-3 sm:mt-4 ml-7 sm:ml-14">
+                    <div className="flex items-start gap-3 sm:gap-4 rounded-xl sm:rounded-2xl bg-white p-3 sm:p-4 shadow-md transition-all">
+                      <span className="flex-1 text-sm sm:text-base leading-relaxed text-gray-700">
                         {faq.answer}
                       </span>
-                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-secondary-orange/20 transition-transform hover:scale-105">
-                        <MessageCircle className="h-5 w-5 text-secondary-orange" />
+                      <div className="flex h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0 items-center justify-center rounded-full bg-secondary-orange/20 transition-transform hover:scale-105">
+                        <MessageCircle className="h-3 w-3 sm:h-5 sm:w-5 text-secondary-orange" />
                       </div>
                     </div>
                   </div>
@@ -119,22 +119,22 @@ export function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-center mt-12 p-6 bg-white rounded-2xl shadow-md"
+          className="text-center mt-8 sm:mt-10 md:mt-12 p-4 sm:p-6 bg-white rounded-xl sm:rounded-2xl shadow-md"
         >
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="flex text-yellow-400">
               {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-xl">
+                <span key={i} className="text-lg sm:text-xl">
                   ★
                 </span>
               ))}
             </div>
-            <span className="font-semibold text-lg">4.9 out of 5</span>
+            <span className="font-semibold text-base sm:text-lg">4.9 out of 5</span>
           </div>
-          <p className="text-sm text-gray-600 mb-3">
+          <p className="text-xs sm:text-sm text-gray-600 mb-3">
             Based on 2,346 customer reviews
           </p>
-          <div className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800">
+          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-green-100 text-green-800">
             ✓ Recommend this service
           </div>
         </motion.div>

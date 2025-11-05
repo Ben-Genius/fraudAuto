@@ -73,35 +73,35 @@ const thirdColumn = testimonials.slice(6, 9);
 
 export function Testimonials() {
   return (
-    <section className="bg-gray-50 py-10 relative">
-      <div className="">
+    <section className="bg-gray-50 py-8 sm:py-10 md:py-12 lg:py-16 relative">
+      <div className="px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true }}
-          className="flex flex-col items-center justify-center max-w-[540px] mx-auto"
+          className="flex flex-col items-center justify-center max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white shadow-sm mb-6">
-            <span className="text-sm font-medium text-gray-700">
+          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white shadow-sm mb-4 sm:mb-6">
+            <span className="text-xs sm:text-sm font-medium text-gray-700">
               Testimonials
             </span>
           </div>
 
-          <h2 className="text-3xl font-medium lg:text-4xl mb-4 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4 text-center">
             What Our Customers Say
           </h2>
-          <p className="text-center mt-5 text-gray-600 leading-relaxed">
+          <p className="text-center mt-3 sm:mt-5 text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed px-4 sm:px-0">
             See how FraudWall-Auto has helped thousands of Ghanaians make safer
             vehicle purchases.
           </p>
         </motion.div>
 
-        <div className="flex justify-center gap-6 mt-16 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px]  mx-auto overflow-hidden">
+        <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mt-8 sm:mt-12 md:mt-16 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[500px] sm:max-h-[600px] md:max-h-[740px] mx-auto overflow-hidden">
           <TestimonialsColumn testimonials={firstColumn} duration={15} />
           <TestimonialsColumn
             testimonials={secondColumn}
-            className="hidden md:block"
+            className="hidden sm:block"
             duration={19}
           />
           <TestimonialsColumn

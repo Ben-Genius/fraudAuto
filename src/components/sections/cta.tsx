@@ -91,10 +91,10 @@ export function CTA() {
   }, [isInView]);
 
   return (
-    <div className="w-full py-20 lg:py-10 relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-5">
+    <div className="w-full py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-8 sm:pb-12">
       <BoxesCore />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col text-center items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -103,15 +103,15 @@ export function CTA() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Badge className="bg-secondary-orange text-white mb-1">
+            <Badge className="bg-secondary-orange text-white mb-1 text-xs sm:text-sm">
               Get started
             </Badge>
           </motion.div>
 
-          <div className="flex flex-col  items-center">
+          <div className="flex flex-col items-center px-4 sm:px-0">
             <TypewriterEffectSmooth
               words={descriptionWords}
-              className="text-lg leading-relaxed tracking-tight max-w-full justify-center -mb-0"
+              className="text-base sm:text-lg md:text-xl leading-relaxed tracking-tight max-w-full justify-center -mb-0"
               hideCursor={hideFirstCursor}
               startAnimation={startFirstAnimation}
             />
@@ -119,7 +119,7 @@ export function CTA() {
             {showSecondTypewriter && (
               <TypewriterEffectSmooth
                 words={words}
-                className="max-w-4xl"
+                className="max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
                 cursorClassName="bg-secondary-orange"
                 startAnimation={true}
               />
@@ -130,7 +130,7 @@ export function CTA() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 3.5 }}
               viewport={{ once: true }}
-              className="text-gray-300 text-center max-w-xl mt-1"
+              className="text-sm sm:text-base md:text-lg text-gray-300 text-center max-w-xs sm:max-w-lg md:max-w-xl mt-1 px-4 sm:px-0"
             >
               Our comprehensive verification service helps you make informed
               decisions and avoid costly mistakes. Start with a free VIN check
@@ -143,18 +143,18 @@ export function CTA() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 5 }}
             viewport={{ once: true }}
-            className="flex flex-row gap-4 mt-8"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 w-full sm:w-auto px-4 sm:px-0"
           >
             <Button
               variant="outline"
-              className="gap-4 border-white/30 text-white bg-secondary-orange"
+              className="gap-2 sm:gap-4 border-white/30 text-white bg-secondary-orange w-full sm:w-auto"
             >
               <PhoneCall className="w-4 h-4" />
               Contact Support
             </Button>
             <Button
               asChild
-              className="gap-4 bg-primary-red hover:from-secondary-orange/90 hover:to-primary-red/90 text-white border-0"
+              className="gap-2 sm:gap-4 bg-primary-red hover:from-secondary-orange/90 hover:to-primary-red/90 text-white border-0 w-full sm:w-auto"
             >
               <Link to="/vin-decoder">
                 Start Verification <MoveRight className="w-4 h-4" />

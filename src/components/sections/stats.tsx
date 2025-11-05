@@ -87,24 +87,24 @@ export function Stats() {
   };
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-gray-50 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6">
+    <section ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-10 md:mb-12"
         >
-          <h2 className="text-3xl font-medium lg:text-4xl mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
             Trusted by Thousands Across Ghana
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 px-4 sm:px-0">
             Our platform has helped prevent vehicle fraud and protect investments nationwide
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {stats.map((_, index) => (
             <motion.div
               key={index}
@@ -121,10 +121,10 @@ export function Stats() {
                 scale: 1.05,
                 transition: { duration: 0.2 }
               }}
-              className="text-center group cursor-pointer"
+              className="text-center group cursor-pointer p-4 sm:p-6"
             >
               <motion.div 
-                className={`text-4xl md:text-5xl font-bold mb-2 ${stats[index].color} transition-colors duration-300`}
+                className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 ${stats[index].color} transition-colors duration-300`}
                 animate={isVisible ? { 
                   textShadow: [
                     "0 0 0px rgba(251,140,0,0)",
@@ -141,7 +141,7 @@ export function Stats() {
                 {isVisible ? formatNumber(animatedValues[index], index) : "0"}
               </motion.div>
               <motion.div 
-                className="text-gray-600 font-medium group-hover:text-gray-800 transition-colors duration-300"
+                className="text-sm sm:text-base md:text-lg text-gray-600 font-medium group-hover:text-gray-800 transition-colors duration-300 px-2"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.3 }}
@@ -170,7 +170,7 @@ export function Stats() {
               key={i}
               className="absolute w-2 h-2 bg-secondary-orange/20 rounded-full"
               initial={{ 
-                x: Math.random() * window.innerWidth,
+                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
                 y: Math.random() * 400,
                 opacity: 0
               }}

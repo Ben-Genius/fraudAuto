@@ -70,8 +70,8 @@ const Header = () => {
     } else {
       return `${baseClass} ${
         isCurrentPage
-          ? "text-primary-red font-semibold"
-          : "text-white/90 hover:text-white"
+          ? "text-primary-red font-semibold "
+          : "text-black hover:text-white"
       }`;
     }
   };
@@ -80,15 +80,15 @@ const Header = () => {
     <header
       className={`fixed top-0 z-50 w-full transition-all duration-300 border-0 ${
         isScrolled
-          ? "top-4 left-1/2 transform -translate-x-1/2 max-w-4xl px-4"
-          : "px-6 border-0 "
+          ? "top-4 left-1/2 transform -translate-x-1/2 sm:max-w-2xl lg:max-w-4xl px-4"
+          : "px-4 sm:px-6 border-0"
       }`}
     >
       <div
         className={`transition-all duration-300 ${
           isScrolled
-            ? "bg-white/80 backdrop-blur-md  border-gray-200/60 rounded-lg px-6 py-3 shadow-lg"
-            : "bg-transparent px-0 py-4 border-0 "
+            ? "bg-white/80 backdrop-blur-md  border-gray-200/60 rounded-lg px-4 sm:px-6 py-3 shadow-lg"
+            : "bg-transparent px-0 py-4 border-0"
         }`}
       >
         <div className="flex justify-between items-center border-0 ">
@@ -105,12 +105,13 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-6 ">
             <Link to="/" className={getNavLinkClass("/")}>
               Home
             </Link>
             <Link to="/vin-decoder" className={getNavLinkClass("/vin-decoder")}>
-              VIN Decoder & Lookup 
+              <span className="hidden lg:inline">VIN Decoder & Lookup</span>
+              <span className="lg:hidden">VIN Decoder</span>
             </Link>
             <Link
               to="/license-plate"
@@ -124,10 +125,10 @@ const Header = () => {
           </nav>
 
           {/* Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
             <Link
               to="/login"
-              className={`text-sm transition-colors px-4 py-2 rounded-md ${
+              className={`text-sm transition-colors px-3 lg:px-4 py-2 rounded-md ${
                 isActive("/login")
                   ? "text-primary-red font-semibold"
                   : isScrolled
@@ -139,7 +140,7 @@ const Header = () => {
             </Link>
             <Link
               to="/register"
-              className={`text-sm px-4 py-2 rounded-md transition-colors ${
+              className={`text-sm px-3 lg:px-4 py-2 rounded-md transition-colors ${
                 isActive("/register")
                   ? "bg-primary-red text-white font-semibold"
                   : isScrolled
@@ -157,7 +158,7 @@ const Header = () => {
             className={`md:hidden p-2 rounded-md transition-colors ${
               isScrolled
                 ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100/50"
-                : "text-white hover:text-white hover:bg-white/20"
+                : "text-white font-bold hover:text-white hover:bg-white/2 bg-secondary-orange/85"
             }`}
           >
             {isMenuOpen ? (
@@ -174,7 +175,7 @@ const Header = () => {
             className={`md:hidden mt-4 pt-4 ${
               isScrolled
                 ? "border-t border-gray-200/60"
-                : "border-t border-white/20"
+                : "bg-white/80 backdrop-blur-md  border-gray-200/60 rounded-lg px-4 sm:px-6 py-3 shadow-lg"
             }`}
           >
             <div className="flex flex-col space-y-3">
@@ -209,15 +210,15 @@ const Header = () => {
                     isActive("/login")
                       ? "text-primary-red font-semibold"
                       : isScrolled
-                      ? "text-gray-600 hover:text-gray-800"
-                      : "text-white/90 hover:text-white"
+                      ? "text-gray-600 hover:text-gray-800 pt-2"
+                      : "text-black hover:text-white pt-2"
                   }`}
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className={`text-sm px-4 py-2 rounded-full transition-colors ${
+                  className={`text-sm px-4 py-2 rounded-md transition-colors ${
                     isActive("/register")
                       ? "bg-primary-red text-white font-semibold"
                       : isScrolled
