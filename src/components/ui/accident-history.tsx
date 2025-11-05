@@ -68,7 +68,7 @@ export const AccidentHistory = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
+              <tr className="border-b border-gray-200 bg-gray-50 whitespace-nowrap">
                 <th className="text-left py-2 px-3 font-medium text-gray-700">Date</th>
                 <th className="text-left py-2 px-3 font-medium text-gray-700">Severity</th>
                 <th className="text-left py-2 px-3 font-medium text-gray-700">Impact Area</th>
@@ -81,7 +81,7 @@ export const AccidentHistory = () => {
               {mockAccidents.map((accident) => (
                 <tr 
                   key={accident.id}
-                  className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                  className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer whitespace-nowrap"
                   onClick={() => setSelectedAccident(accident)}
                 >
                   <td className="py-2 px-3 flex items-center">

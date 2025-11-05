@@ -132,7 +132,7 @@ export const RecallsTSBs = () => {
                 {mockRecalls.map((recall) => (
                   <tr 
                     key={recall.id}
-                    className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                    className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer whitespace-nowrap"
                     onClick={() => setSelectedRecall(recall)}
                   >
                     <td className="py-2 px-3 font-mono text-xs">{recall.campaignNumber}</td>
@@ -177,7 +177,7 @@ export const RecallsTSBs = () => {
                 {mockTSBs.map((tsb) => (
                   <tr 
                     key={tsb.id}
-                    className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                    className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer whitespace-nowrap"
                     onClick={() => setSelectedTSB(tsb)}
                   >
                     <td className="py-2 px-3 font-mono text-xs">{tsb.bulletinNumber}</td>

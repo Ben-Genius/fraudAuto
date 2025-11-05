@@ -308,15 +308,12 @@ export const MaintenanceTimeline = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg  border-gray-200 p-4">
+    <div className="bg-white rounded-lg  border-gray-200 p-4 ">
       <div className="mb-4">
-      
         <p className="text-sm text-gray-600">
           Complete maintenance records from certified service centers
         </p>
       </div>
-
-
 
       {/* Compact Filters */}
       <div className="flex gap-2 mb-4 text-sm">
@@ -378,7 +375,7 @@ export const MaintenanceTimeline = () => {
             {mockRecords.map((record) => (
               <tr
                 key={record.id}
-                className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer whitespace-nowrap"
                 onClick={() => openModal(record)}
               >
                 <td className="py-2 px-3 flex items-center">

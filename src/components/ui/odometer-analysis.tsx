@@ -49,8 +49,7 @@ export const OdometerAnalysis = () => {
 
       <div className="mb-4">
         <LineChart
-          width={800}
-          height={300}
+       
           series={[
             {
               data: chartData.map(d => d.y),

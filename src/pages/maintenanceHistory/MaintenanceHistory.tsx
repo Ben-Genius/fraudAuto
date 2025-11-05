@@ -9,7 +9,6 @@ import {
   Gauge,
   Wrench,
   TrendingUp,
-  
   Shield,
   Clock,
   ChevronDown,
@@ -32,19 +31,19 @@ export const MaintenanceHistory = () => {
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
-  const CollapsibleSection = ({ 
-    title, 
-    sectionKey, 
-    children 
-  }: { 
-    title: string; 
-    sectionKey: keyof typeof expandedSections; 
+  const CollapsibleSection = ({
+    title,
+    sectionKey,
+    children,
+  }: {
+    title: string;
+    sectionKey: keyof typeof expandedSections;
     children: React.ReactNode;
   }) => (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -60,9 +59,7 @@ export const MaintenanceHistory = () => {
         )}
       </button>
       {expandedSections[sectionKey] && (
-        <div className="border-t border-gray-200">
-          {children}
-        </div>
+        <div className="border-t border-gray-200">{children}</div>
       )}
     </div>
   );
@@ -142,10 +139,10 @@ export const MaintenanceHistory = () => {
         </div>
 
         {/* Vehicle Summary Card */}
-        <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2  gap-4">
           <div className="bg-white rounded-xl  border border-gray-200 p-6">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-center space-x-4">
+            <div className="flex items-start justify-between mb-6 flex-wrap">
+              <div className="flex items-center space-x-4 flex-col md:flex-row">
                 <div className="w-50 h-30 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex items-center justify-center">
                   <img
                     src={IMAGES.civic}
@@ -171,7 +168,7 @@ export const MaintenanceHistory = () => {
               </div>
 
               {/* FraudWall Score */}
-              <div className="text-center">
+              <div className="text-center pt-3">
                 <div
                   className={`inline-flex items-center px-4 py-2 rounded-full ${getScoreColor(
                     vehicleData.fraudScore
@@ -186,7 +183,7 @@ export const MaintenanceHistory = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-4 px-1">
             {alerts.map((alert, index) => (
               <div
                 key={index}
@@ -205,7 +202,7 @@ export const MaintenanceHistory = () => {
         {/* Alert Cards */}
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-1">
           <div className="bg-white rounded-xl  border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="p-2 bg-blue-50 rounded-lg">
@@ -260,7 +257,7 @@ export const MaintenanceHistory = () => {
         </div>
 
         {/* Vehicle Details Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 px-1">
           {/* Last Service Info */}
           <div className="bg-white rounded-xl  border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -338,15 +335,21 @@ export const MaintenanceHistory = () => {
           <OdometerAnalysis />
         </CollapsibleSection>
 
-        <CollapsibleSection title="Accident & Damage History" sectionKey="accidents">
+        <CollapsibleSection
+          title="Accident & Damage History"
+          sectionKey="accidents"
+        >
           <AccidentHistory />
         </CollapsibleSection>
 
-        <CollapsibleSection title="Recalls & Technical Service Bulletins" sectionKey="recalls">
+        <CollapsibleSection
+          title="Recalls & Technical Service Bulletins"
+          sectionKey="recalls"
+        >
           <RecallsTSBs />
         </CollapsibleSection>
 
-          <ReportActions />
+        <ReportActions />
       </div>
     </div>
   );
