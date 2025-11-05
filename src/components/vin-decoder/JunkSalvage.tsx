@@ -43,7 +43,7 @@ export function JunkSalvage({ salvageRecords }: JunkSalvageProps) {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-gray-200">
+            <tr className="border-b border-gray-200 whitespace-nowrap">
               <th className="text-left py-3 px-4 font-semibold text-gray-700">
                 Date
               </th>
@@ -65,7 +65,7 @@ export function JunkSalvage({ salvageRecords }: JunkSalvageProps) {
             {salvageRecords.map((record) => (
               <tr
                 key={record.id}
-                className="border-b border-gray-100 hover:bg-gray-50"
+                className="border-b border-gray-100 hover:bg-gray-50 whitespace-nowrap"
               >
                 <td className="py-3 px-4 text-sm text-gray-900">
                   {record.obtainedDate}

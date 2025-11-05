@@ -41,7 +41,7 @@ const VinDecoder = () => {
   const [searchParams] = useSearchParams();
 
   const titles = useMemo(
-    () => ["secure", "reliable", "instant", "comprehensive", "trusted"],
+    () => ["comprehensive", "reliable", "instant", "secure", "trusted"],
     []
   );
 
@@ -82,16 +82,16 @@ const VinDecoder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white/50">
+    <div className="min-h-screen bg-white/50 overflow-x-hidden">
       <ReportOutline />
       {showSample && reportData ? (
-        <div className="max-w-[100rem] mx-auto py-20 mt-10">
+        <div className="w-full max-w-[100rem] mx-auto py-8 sm:py-12 md:py-16 lg:py-20 mt-4 sm:mt-6 md:mt-8 lg:mt-10 px-4 sm:px-6 lg:px-8">
           <ReportHeader vin={reportData.vin} vehicle={reportData.vehicle} />
-          <br />
+          <div className="my-4 sm:my-6 md:my-8" />
           <SummaryCards summary={reportData.summary} />
-          <br />
-          <div className="grid lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2 space-y-12">
+          <div className="my-4 sm:my-6 md:my-8" />
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 xl:gap-12">
+            <div className="xl:col-span-2 space-y-6 xl:space-y-12 min-w-0">
               <div id="ownership-history">
                 <OwnershipHistory ownership={reportData.ownership} />
               </div>
@@ -137,11 +137,9 @@ const VinDecoder = () => {
               </div>
               
               <OwnershipCost />
-
-              <br />
             </div>
 
-            <div className="space-y-12">
+            <div className="space-y-6 xl:space-y-12 xl:sticky xl:top-24 xl:self-start min-w-0">
               <div id="safety-checks">
                 <SafetyChecks checks={reportData.checks} />
               </div>
@@ -173,7 +171,7 @@ const VinDecoder = () => {
           </div>
         </div>
       ) : (
-        <div className="max-w-[100rem] mx-auto px-6">
+        <div className="w-full max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
           <VinDecoderHero titles={titles} />
           <VinSearchForm vin={vin} setVin={setVin} onSubmit={handleSubmit} />
         </div>

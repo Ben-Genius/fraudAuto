@@ -68,108 +68,169 @@ export function OwnershipCost() {
   const grandTotal = 66894;
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="p-2 ">
-          <TrendingDown className="h-6 w-6 text-primary-red" />
+    <div className="bg-white rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+      <div className="flex items-center gap-3 mb-6 sm:mb-8">
+        <div className="p-2">
+          <TrendingDown className="h-5 w-5 sm:h-6 sm:w-6 text-primary-red" />
         </div>
         <div>
-          <h2 className="text-2xl font-semibold text-gray-900">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
             Ownership cost
           </h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">
             5-year total cost breakdown
           </p>
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-gray-200">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Title
-              </th>
-              <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Year 1
-              </th>
-              <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Year 2
-              </th>
-              <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Year 3
-              </th>
-              <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Year 4
-              </th>
-              <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Year 5
-              </th>
-              <th className="text-right py-4 px-6 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Total for 5 years
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {costBreakdown.map((cost, index) => (
-              <tr key={index} className="hover:bg-gray-50 transition-colors">
-                <td className="py-4 px-6">
-                  <div
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${cost.color}`}
-                  >
-                    {cost.title}
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <div className="font-semibold text-gray-900">
-                    ${cost.year1.toLocaleString()}
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <div className="font-semibold text-gray-900">
-                    ${cost.year2.toLocaleString()}
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <div className="font-semibold text-gray-900">
-                    ${cost.year3.toLocaleString()}
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <div className="font-semibold text-gray-900">
-                    ${cost.year4.toLocaleString()}
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <div className="font-semibold text-gray-900">
-                    ${cost.year5.toLocaleString()}
-                  </div>
-                </td>
-                <td className="py-4 px-6 text-right">
-                 
-                  <div className="font-bold text-lg text-gray-900">
-                    ${cost.total.toLocaleString()}
+      {/* Mobile Card Layout */}
+      <div className="block lg:hidden space-y-4">
+        {costBreakdown.map((cost, index) => (
+          <div
+            key={index}
+            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+          >
+            <div className="flex justify-between items-center mb-3">
+              <div
+                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${cost.color}`}
+              >
+                {cost.title}
+              </div>
+              <div className="font-bold text-lg text-gray-900">
+                ${cost.total.toLocaleString()}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-sm">
+              <div className="text-center">
+                <div className="text-gray-500 text-xs">Year 1</div>
+                <div className="font-semibold">
+                  ${cost.year1.toLocaleString()}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-gray-500 text-xs">Year 2</div>
+                <div className="font-semibold">
+                  ${cost.year2.toLocaleString()}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-gray-500 text-xs">Year 3</div>
+                <div className="font-semibold">
+                  ${cost.year3.toLocaleString()}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-gray-500 text-xs">Year 4</div>
+                <div className="font-semibold">
+                  ${cost.year4.toLocaleString()}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-gray-500 text-xs">Year 5</div>
+                <div className="font-semibold">
+                  ${cost.year5.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        <div className="bg-gray-100 rounded-lg p-4 border-2 border-gray-300">
+          <div className="text-center">
+            <div className="text-gray-700 font-semibold mb-1">
+              Total 5-Year Cost
+            </div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">
+              ${grandTotal.toLocaleString()}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Table Layout */}
+      <div className="hidden lg:block overflow-x-auto">
+        <div className="overflow-hidden rounded-2xl border border-gray-200">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                  Title
+                </th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                  Year 1
+                </th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                  Year 2
+                </th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                  Year 3
+                </th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                  Year 4
+                </th>
+                <th className="text-center py-4 px-4 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                  Year 5
+                </th>
+                <th className="text-right py-4 px-6 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                  Total for 5 years
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {costBreakdown.map((cost, index) => (
+                <tr key={index} className="hover:bg-gray-50 transition-colors">
+                  <td className="py-4 px-6">
+                    <div
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${cost.color}`}
+                    >
+                      {cost.title}
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 text-center">
+                    <div className="font-semibold text-gray-900">
+                      ${cost.year1.toLocaleString()}
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 text-center">
+                    <div className="font-semibold text-gray-900">
+                      ${cost.year2.toLocaleString()}
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 text-center">
+                    <div className="font-semibold text-gray-900">
+                      ${cost.year3.toLocaleString()}
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 text-center">
+                    <div className="font-semibold text-gray-900">
+                      ${cost.year4.toLocaleString()}
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 text-center">
+                    <div className="font-semibold text-gray-900">
+                      ${cost.year5.toLocaleString()}
+                    </div>
+                  </td>
+                  <td className="py-4 px-6 text-right">
+                    <div className="font-bold text-lg text-gray-900">
+                      ${cost.total.toLocaleString()}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="border-t-2 border-black/5">
+                <td colSpan={6} className="py-6 px-6 text-right"></td>
+                <td className="py-6 px-6 text-right">
+                  <div className="text-3xl font-bold">
+                    ${grandTotal.toLocaleString()}
                   </div>
                 </td>
               </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr className=" border-t-2 border-black/5">
-              <td colSpan={6} className="py-6 px-6 text-right">
-              
-              </td>
-              <td className="py-6 px-6 text-right">
-                <div className="text-3xl font-bold">
-                  ${grandTotal.toLocaleString()}
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+            </tfoot>
+          </table>
+        </div>
       </div>
-
-   
     </div>
   );
 }

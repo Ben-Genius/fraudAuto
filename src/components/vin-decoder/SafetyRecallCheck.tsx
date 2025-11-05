@@ -67,7 +67,7 @@ export function SafetyRecallCheck({ recallData }: SafetyRecallCheckProps) {
             {recallData.map((recall, index) => (
               <tr
                 key={index}
-                className="border-b border-gray-100 hover:bg-gray-50"
+                className="border-b border-gray-100 hover:bg-gray-50 whitespace-nowrap"
               >
                 <td className="py-3 px-4">
                   <div className="text-sm font-medium text-gray-900">

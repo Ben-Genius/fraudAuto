@@ -36,16 +36,16 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
       {summaryItems.map((item) => (
         <div
           key={item.label}
-          className="bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-xl transition-all duration-300"
+          className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 text-center shadow-sm hover:shadow-xl transition-all duration-300"
         >
-          <div className={`text-3xl font-light ${item.color} mb-2`}>
+          <div className={`text-xl sm:text-2xl md:text-3xl font-light ${item.color} mb-1 sm:mb-2`}>
             {item.value}
           </div>
-          <div className="text-sm text-gray-600 font-medium">{item.label}</div>
+          <div className="text-xs sm:text-sm text-gray-600 font-medium">{item.label}</div>
         </div>
       ))}
     </div>
