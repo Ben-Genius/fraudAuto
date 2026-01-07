@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   AlertTriangle,
   CheckCircle,
@@ -20,8 +21,12 @@ import { AccidentHistory } from "../../components/ui/accident-history";
 import { RecallsTSBs } from "../../components/ui/recalls-tsbs";
 import { ReportActions } from "../../components/ui/report-actions";
 import { IMAGES } from "../../assets/images";
+import { mockService } from "../../data/mock-service";
 
 export const MaintenanceHistory = () => {
+  const [searchParams] = useSearchParams();
+  const vin = searchParams.get("vin") || "1HGBH41JXMN109186"; // Fallback to default if no VIN
+
   const [expandedSections, setExpandedSections] = useState({
     timeline: true,
     odometer: true,
@@ -63,20 +68,8 @@ export const MaintenanceHistory = () => {
       )}
     </div>
   );
-  const vehicleData = {
-    vin: "1HGBH41JXMN109186",
-    year: "2018",
-    make: "Honda",
-    model: "Civic",
-    trim: "LX Sedan",
-    engine: "2.0L 4-Cylinder",
-    fraudScore: 85,
-    lastMileage: 85420,
-    lastService: "March 15, 2024",
-    totalRecords: 28,
-    avgInterval: 5200,
-    majorServices: 3,
-  };
+
+  const vehicleData = useMemo(() => mockService.getMaintenanceData(vin), [vin]);
 
   const alerts = [
     {

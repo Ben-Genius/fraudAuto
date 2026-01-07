@@ -2,7 +2,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { sampleVinData } from "../../data/sample-vin-data";
+import { fetchVinReport } from "../../services/vinApi";
+import { Loader2 } from "lucide-react";
 
 // Import components
 import { VinDecoderHero } from "../../components/vin-decoder/VinDecoderHero";
@@ -37,6 +38,9 @@ const VinDecoder = () => {
   const [vin, setVin] = useState("");
   const [showSample, setShowSample] = useState(false);
   const [reportData, setReportData] = useState<VinReportData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -47,36 +51,35 @@ const VinDecoder = () => {
 
   useEffect(() => {
     const vinParam = searchParams.get("vin");
-    const paid = searchParams.get("paid");
-    
-    if (vinParam && vinParam.length === 17) {
+
+    if (vinParam && vinParam.length >= 17) {
       setVin(vinParam);
-      if (paid === 'true') {
-        setShowSample(true);
-        setReportData(sampleVinData);
-      } else {
-        handleVinLookup(vinParam);
-      }
+      handleVinLookup(vinParam);
     } else if (vinParam) {
       setVin(vinParam);
     }
   }, [searchParams]);
 
-  const handleVinLookup = (vinNumber: string) => {
-    const hasLimitedData = vinNumber.startsWith('1') 
-    
-    if (hasLimitedData) {
-      navigate(`/checkout?vin=${vinNumber}`);
-    } else {
+  const handleVinLookup = async (vinNumber: string) => {
+    setIsLoading(true);
+    setError(null);
+    setShowSample(false);
+
+    try {
+      const data = await fetchVinReport(vinNumber);
+      setReportData(data);
       setShowSample(true);
-      setReportData(sampleVinData);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch VIN report. Please try again or check the VIN.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (vin.length === 17) {
-      handleVinLookup(vin);
       navigate(`/vin-decoder?vin=${vin}`);
     }
   };
@@ -84,7 +87,20 @@ const VinDecoder = () => {
   return (
     <div className="min-h-screen bg-white/50 overflow-x-hidden">
       <ReportOutline />
-      {showSample && reportData ? (
+
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+          <Loader2 className="w-12 h-12 animate-spin text-primary" />
+          <p className="text-gray-500 font-medium">Fetching vehicle report...</p>
+        </div>
+      ) : error ? (
+        <div className="w-full max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <VinSearchForm vin={vin} setVin={setVin} onSubmit={handleSubmit} />
+          <div className="mt-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
+            {error}
+          </div>
+        </div>
+      ) : showSample && reportData ? (
         <div className="w-full max-w-[100rem] mx-auto py-8 sm:py-12 md:py-16 lg:py-20 mt-4 sm:mt-6 md:mt-8 lg:mt-10 px-4 sm:px-6 lg:px-8">
           <ReportHeader vin={reportData.vin} vehicle={reportData.vehicle} />
           <div className="my-4 sm:my-6 md:my-8" />
@@ -99,7 +115,7 @@ const VinDecoder = () => {
               <div id="vehicle-specs">
                 <VehicleSpecs vehicle={reportData.vehicle} />
               </div>
-              
+
               <div id="history-events">
                 <HistoryEvents
                   events={reportData.historyEvents}
@@ -107,19 +123,19 @@ const VinDecoder = () => {
                   reportData={reportData.historyEvents}
                 />
               </div>
-              
+
               <div id="safety-recall-check">
                 <SafetyRecallCheck recallData={reportData.recallData} />
               </div>
-              
+
               <div id="junk-salvage">
                 <JunkSalvage salvageRecords={reportData.salvageRecords} />
               </div>
-              
+
               <div id="title-history">
                 <TitleHistory titleHistory={reportData.titleHistory} />
               </div>
-              
+
               <div id="vehicle-damages">
                 <VehicleDamages vehicleDamages={reportData.vehicleDamages} />
               </div>
@@ -130,12 +146,12 @@ const VinDecoder = () => {
                   totalSales={reportData.summary.salesHistory}
                 />
               </div>
-              
+
               <div id="market-price">
                 <MarketPriceAnalysis />
                 <PriceChanges />
               </div>
-              
+
               <OwnershipCost />
             </div>
 
@@ -143,19 +159,19 @@ const VinDecoder = () => {
               <div id="safety-checks">
                 <SafetyChecks checks={reportData.checks} />
               </div>
-              
+
               <OwnershipCostChart />
 
               <div id="odometer-check">
                 <OdometerCheck odometerChecks={reportData.odometerChecks} />
               </div>
-              
+
               <div id="major-title-brands">
                 <MajorTitleBrands
                   majorTitleBrands={reportData.majorTitleBrands}
                 />
               </div>
-              
+
               <div id="other-title-brands">
                 <OtherTitleBrands
                   otherTitleBrands={reportData.otherTitleBrands}
