@@ -4,7 +4,7 @@ FraudWall-Aut is a comprehensive web platform designed to combat vehicle fraud i
 
 ## 🚀 Live Demo
 
-Visit the live application: [FraudWall-Auto Platform](https://fraud-auto-jrmpvyebs-azay-genius-projects.vercel.app)
+Visit the live application:
 
 ## ✨ Features
 
