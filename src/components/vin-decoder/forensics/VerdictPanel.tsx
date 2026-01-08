@@ -7,11 +7,7 @@ interface VerdictPanelProps {
 
 export const VerdictPanel = ({ recalls }: VerdictPanelProps) => {
     const hasRecalls = recalls.length > 0;
-    const statusColor = hasRecalls ? "text-orange-500" : "text-emerald-400";
-    const borderColor = hasRecalls ? "border-orange-500/50" : "border-emerald-500/50";
-    const bgGradient = hasRecalls
-        ? "from-orange-500/10 via-orange-500/5 to-transparent"
-        : "from-emerald-500/10 via-emerald-500/5 to-transparent";
+
 
     return (
         <div className={`h-full relative overflow-hidden bg-white border rounded-3xl p-6 shadow-sm transition-all group hover:shadow-md ${hasRecalls ? 'border-red-100 bg-red-50/30' : 'border-emerald-100 bg-emerald-50/30'}`}>
