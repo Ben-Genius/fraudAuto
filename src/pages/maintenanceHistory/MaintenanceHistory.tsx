@@ -22,8 +22,10 @@ import { RecallsTSBs } from "../../components/ui/recalls-tsbs";
 import { ReportActions } from "../../components/ui/report-actions";
 import { IMAGES } from "../../assets/images";
 import { mockService } from "../../data/mock-service";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 export const MaintenanceHistory = () => {
+  useDocumentTitle("Maintenance History");
   const [searchParams] = useSearchParams();
   const vin = searchParams.get("vin") || "1HGBH41JXMN109186"; // Fallback to default if no VIN
 

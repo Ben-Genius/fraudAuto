@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { fetchVinReport } from "../../services/vinApi";
 import { Loader2 } from "lucide-react";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 // Import components
 import { VinDecoderHero } from "../../components/vin-decoder/VinDecoderHero";
@@ -35,6 +36,7 @@ import { MarketPriceYear } from "../../components/vin-decoder/MarketPriceYear";
 import { MarketPriceMileage } from "../../components/vin-decoder/MarketPriceMileage";
 
 const VinDecoder = () => {
+  useDocumentTitle("VIN Decoder");
   const [vin, setVin] = useState("");
   const [showSample, setShowSample] = useState(false);
   const [reportData, setReportData] = useState<VinReportData | null>(null);

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Search, AlertCircle, CheckCircle, MapPin } from 'lucide-react';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const LicensePlate = () => {
+  useDocumentTitle('License Plate Search');
   const [plateNumber, setPlateNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -14,7 +16,7 @@ const LicensePlate = () => {
     }
 
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setResult({
@@ -43,7 +45,7 @@ const LicensePlate = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'clear': return <CheckCircle className="h-5 w-5" />;
-      case 'stolen': 
+      case 'stolen':
       case 'flagged': return <AlertCircle className="h-5 w-5" />;
       default: return null;
     }
@@ -107,7 +109,7 @@ const LicensePlate = () => {
                 <span className="font-semibold capitalize">{result.status}</span>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
@@ -156,7 +158,7 @@ const LicensePlate = () => {
               <div className="mt-6 p-4 bg-green-50 rounded-lg">
                 <h3 className="font-semibold text-green-900 mb-2">✅ Vehicle Status: Clear</h3>
                 <p className="text-green-800">
-                  This vehicle has not been reported as stolen and appears to be in good standing 
+                  This vehicle has not been reported as stolen and appears to be in good standing
                   with Ghana authorities.
                 </p>
               </div>
@@ -177,7 +179,7 @@ const LicensePlate = () => {
             <div className="mt-8 p-4 bg-blue-50 rounded-lg">
               <h3 className="font-semibold text-blue-900 mb-2">Need More Information?</h3>
               <p className="text-blue-800 mb-4">
-                Get a comprehensive vehicle history report including ownership records, accident history, 
+                Get a comprehensive vehicle history report including ownership records, accident history,
                 and detailed verification data.
               </p>
               <button className="btn-primary">
