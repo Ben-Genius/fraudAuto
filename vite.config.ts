@@ -5,4 +5,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  server: {
+    proxy: {
+      '^/vin/decode': {
+        target: 'https://frauwall-auto-dev.azurewebsites.net',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

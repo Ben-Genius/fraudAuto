@@ -13,6 +13,7 @@ dist-ssr
 *.local
 
 # Environment variables
+*.env
 .env
 .env.local
 .env.development.local
@@ -30,3 +31,10 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

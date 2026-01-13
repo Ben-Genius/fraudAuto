@@ -1,6 +1,8 @@
 import { Check, Star } from 'lucide-react';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const Pricing = () => {
+  useDocumentTitle("Pricing");
   const plans = [
     {
       name: 'Basic Check',
@@ -54,7 +56,7 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-25">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -69,9 +71,8 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`bg-white rounded-lg shadow-md p-8 relative ${
-                plan.popular ? 'ring-2 ring-blue-500 transform scale-105' : ''
-              }`}
+              className={`bg-white rounded-lg shadow-md p-8 relative ${plan.popular ? 'ring-2 ring-blue-500 transform scale-105' : ''
+                }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -116,7 +117,7 @@ const Pricing = () => {
                 What payment methods do you accept?
               </h3>
               <p className="text-gray-600 mb-4">
-                We accept Mobile Money (MTN MoMo, Vodafone Cash, AirtelTigo Money), 
+                We accept Mobile Money (MTN MoMo, Vodafone Cash, AirtelTigo Money),
                 bank transfers, and major credit/debit cards.
               </p>
 
@@ -124,7 +125,7 @@ const Pricing = () => {
                 How accurate is your data?
               </h3>
               <p className="text-gray-600 mb-4">
-                Our data comes directly from official sources including DVLA and 
+                Our data comes directly from official sources including DVLA and
                 Ghana Police Service. We update our databases regularly to ensure accuracy.
               </p>
 
@@ -132,7 +133,7 @@ const Pricing = () => {
                 Can I get a refund?
               </h3>
               <p className="text-gray-600">
-                We offer a 100% money-back guarantee if we cannot provide the 
+                We offer a 100% money-back guarantee if we cannot provide the
                 requested vehicle information within 24 hours.
               </p>
             </div>
@@ -142,7 +143,7 @@ const Pricing = () => {
                 Do you cover all vehicles in Ghana?
               </h3>
               <p className="text-gray-600 mb-4">
-                We cover all vehicles registered with DVLA. For imported vehicles, 
+                We cover all vehicles registered with DVLA. For imported vehicles,
                 we provide international data plus local registration information.
               </p>
 
@@ -150,7 +151,7 @@ const Pricing = () => {
                 Is my search history private?
               </h3>
               <p className="text-gray-600 mb-4">
-                Yes, we take privacy seriously. Your search history is encrypted 
+                Yes, we take privacy seriously. Your search history is encrypted
                 and never shared with third parties.
               </p>
 
@@ -158,7 +159,7 @@ const Pricing = () => {
                 Do you offer bulk discounts?
               </h3>
               <p className="text-gray-600">
-                Yes, we offer special pricing for car dealers, insurance companies, 
+                Yes, we offer special pricing for car dealers, insurance companies,
                 and other businesses. Contact us for custom pricing.
               </p>
             </div>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Shield, CheckCircle, Clock } from 'lucide-react';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const CheckoutPage: React.FC = () => {
+  useDocumentTitle("Checkout");
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [formData, setFormData] = useState({
     email: '',
@@ -11,7 +13,7 @@ export const CheckoutPage: React.FC = () => {
     expiry: '',
     cvc: ''
   });
-  
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const vin = searchParams.get('vin') || '';
@@ -143,21 +145,19 @@ export const CheckoutPage: React.FC = () => {
               <div className="flex gap-2 mb-4">
                 <button
                   onClick={() => setPaymentMethod("card")}
-                  className={`flex-1 p-2 rounded ${
-                    paymentMethod === "card"
+                  className={`flex-1 p-2 rounded ${paymentMethod === "card"
                       ? "bg-primary-red text-white"
                       : "bg-white border"
-                  }`}
+                    }`}
                 >
                   All Cards
                 </button>
                 <button
                   onClick={() => setPaymentMethod("momo")}
-                  className={`flex-1 p-2 rounded ${
-                    paymentMethod === "momo"
+                  className={`flex-1 p-2 rounded ${paymentMethod === "momo"
                       ? "bg-primary-orange text-white"
                       : "bg-white border"
-                  }`}
+                    }`}
                 >
                   Mobile Money
                 </button>

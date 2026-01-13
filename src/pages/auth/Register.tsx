@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Shield, Eye, EyeOff } from "lucide-react";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 const Register = () => {
+  useDocumentTitle("Register");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Shield, Eye, EyeOff } from "lucide-react";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 const Login = () => {
+  useDocumentTitle("Login");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
