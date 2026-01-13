@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { fetchVinReport } from "../../services/vinApi";
@@ -51,6 +51,30 @@ const VinDecoder = () => {
     []
   );
 
+  const handleVinLookup = useCallback(async (vinNumber: string) => {
+    const cleanVin = vinNumber.trim().toUpperCase();
+    if (!cleanVin) return;
+
+    setIsLoading(true);
+    setError(null);
+    setShowSample(false);
+
+    try {
+      const data = await fetchVinReport(cleanVin);
+      setReportData(data);
+      setShowSample(true);
+    } catch (err: any) {
+      console.error("VIN Lookup Error:", err);
+      setError(
+        err.message?.includes("CORS") || err.name === "TypeError"
+          ? "Network/CORS Error: Failed to connect to the vehicle database. Please ensure the backend is accessible."
+          : "Failed to fetch VIN report. Please try again or check the VIN."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     const vinParam = searchParams.get("vin");
 
@@ -60,29 +84,18 @@ const VinDecoder = () => {
     } else if (vinParam) {
       setVin(vinParam);
     }
-  }, [searchParams]);
-
-  const handleVinLookup = async (vinNumber: string) => {
-    setIsLoading(true);
-    setError(null);
-    setShowSample(false);
-
-    try {
-      const data = await fetchVinReport(vinNumber);
-      setReportData(data);
-      setShowSample(true);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch VIN report. Please try again or check the VIN.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [searchParams, handleVinLookup]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (vin.length === 17) {
-      navigate(`/vin-decoder?vin=${vin}`);
+    const cleanVin = vin.trim().toUpperCase();
+    if (cleanVin.length === 17) {
+      // If we are already on the current VIN, trigger a lookup directly
+      if (searchParams.get("vin") === cleanVin) {
+        handleVinLookup(cleanVin);
+      } else {
+        navigate(`/vin-decoder?vin=${cleanVin}`);
+      }
     }
   };
 
@@ -90,20 +103,35 @@ const VinDecoder = () => {
     <div className="min-h-screen bg-white/50 overflow-x-hidden">
       <ReportOutline />
 
-      {isLoading ? (
+      {isLoading && !reportData ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
           <Loader2 className="w-12 h-12 animate-spin text-primary" />
           <p className="text-gray-500 font-medium">Fetching vehicle report...</p>
         </div>
       ) : error ? (
-        <div className="w-full max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <VinSearchForm vin={vin} setVin={setVin} onSubmit={handleSubmit} />
+        <div className="w-full max-w-[100rem] mx-auto px-4 sm:px-0 py-12">
+          <VinSearchForm
+            vin={vin}
+            setVin={setVin}
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
           <div className="mt-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
             {error}
           </div>
         </div>
       ) : showSample && reportData ? (
         <div className="w-full max-w-[100rem] mx-auto py-8 sm:py-12 md:py-16 lg:py-20 mt-4 sm:mt-6 md:mt-8 lg:mt-10 px-4 sm:px-6 lg:px-8">
+          {/* Add Search Form to results page for better UX */}
+          <div className="mb-8 sm:mb-12">
+            <VinSearchForm
+              vin={vin}
+              setVin={setVin}
+              onSubmit={handleSubmit}
+              isLoading={isLoading}
+            />
+          </div>
+
           <ReportHeader vin={reportData.vin} vehicle={reportData.vehicle} />
           <div className="my-4 sm:my-6 md:my-8" />
           <SummaryCards summary={reportData.summary} />
@@ -191,7 +219,12 @@ const VinDecoder = () => {
       ) : (
         <div className="w-full max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
           <VinDecoderHero titles={titles} />
-          <VinSearchForm vin={vin} setVin={setVin} onSubmit={handleSubmit} />
+          <VinSearchForm
+            vin={vin}
+            setVin={setVin}
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
         </div>
       )}
     </div>
