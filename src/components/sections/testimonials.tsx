@@ -33,10 +33,6 @@ const testimonials = [
 
 ];
 
-const firstColumn = testimonials.slice(0, 3);
-const secondColumn = testimonials.slice(3, 6);
-const thirdColumn = testimonials.slice(6, 9);
-
 export function Testimonials() {
   return (
     <section className="bg-gray-50 py-8 sm:py-10 md:py-12 lg:py-16 relative">
@@ -48,14 +44,8 @@ export function Testimonials() {
           viewport={{ once: true }}
           className="flex flex-col items-center justify-center max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white shadow-sm mb-4 sm:mb-6">
-            <span className="text-xs sm:text-sm font-medium text-gray-700">
-              Testimonials
-            </span>
-          </div>
-
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4 text-center">
-            What Our Customers Say
+            What Our <span className="text-primary-red">Customers</span> Say
           </h2>
           <p className="text-center mt-3 sm:mt-5 text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed px-4 sm:px-0">
             See how FraudWall-Auto has helped thousands of Ghanaians make safer
@@ -63,18 +53,10 @@ export function Testimonials() {
           </p>
         </motion.div>
 
-        <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mt-8 sm:mt-12 md:mt-16 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[500px] sm:max-h-[600px] md:max-h-[740px] mx-auto overflow-hidden">
-          <TestimonialsColumn testimonials={firstColumn} duration={15} />
-          <TestimonialsColumn
-            testimonials={secondColumn}
-            className="hidden sm:block"
-            duration={19}
-          />
-          <TestimonialsColumn
-            testimonials={thirdColumn}
-            className="hidden lg:block"
-            duration={17}
-          />
+        <div className="relative mt-8 sm:mt-12 md:mt-16 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="flex gap-4 sm:gap-6">
+            <TestimonialsColumn testimonials={testimonials} duration={25} />
+          </div>
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Globe, ArrowRight, Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Globe } from 'lucide-react';
 
 export function AfcftaCta() {
     return (
@@ -25,8 +24,8 @@ export function AfcftaCta() {
                 </div>
             </div>
 
-       
-          
+
+
         </section>
     );
 }

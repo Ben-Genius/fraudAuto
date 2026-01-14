@@ -1,8 +1,6 @@
-"use client";
-import React from "react";
 import { motion } from 'framer-motion';
-import { CheckCircle2, Zap } from 'lucide-react';
-import { Stats } from "./stats";
+import { BellElectric, CheckCircle2 } from 'lucide-react';
+import { Stats } from './stats';
 
 export function RiskCapabilities() {
     const riskLevels = [
@@ -76,7 +74,7 @@ export function RiskCapabilities() {
             opacity: 1,
             y: 0,
             transition: {
-                type: "spring",
+                type: "spring" as const,
                 stiffness: 100,
                 damping: 15
             }
@@ -96,7 +94,7 @@ export function RiskCapabilities() {
                         className="text-center mb-10"
                     >
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-                            Instant Vehicle Risk Scoring
+                            Instant <span className="text-primary-red">Vehicle</span> Risk Scoring
                         </h2>
                         <p className="text-gray-600 text-base sm:text-lg max-w-3xl mx-auto">
                             Multi-source data analysis generating simple risk scores to support informed decisions
@@ -169,7 +167,7 @@ export function RiskCapabilities() {
                         className="text-center mb-12"
                     >
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-                            Platform Capabilities
+                            Platform <span className="text-primary-red">Capabilities</span>
                         </h2>
                     </motion.div>
 
@@ -235,8 +233,8 @@ export function RiskCapabilities() {
 
                             <div className="relative z-10">
                                 <div className="flex items-center gap-3 mb-6">
-                                    <div className="bg-gradient-to-br from-primary-red to-primary-orange p-2.5 rounded-lg">
-                                        <Zap className="w-6 h-6 text-white" />
+                                    <div className="bg-primary-orange p-2.5 rounded-lg">
+                                        <BellElectric className="w-6 h-6 text-white" />
                                     </div>
                                     <h3 className="text-2xl font-bold text-white">
                                         Advanced Capabilities

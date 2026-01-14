@@ -97,7 +97,7 @@ export function DvlaIntegrity() {
             opacity: 1,
             y: 0,
             transition: {
-                type: "spring",
+                type: "spring" as const,
                 stiffness: 100,
                 damping: 15
             }
@@ -117,7 +117,7 @@ export function DvlaIntegrity() {
                         className="text-center mb-12"
                     >
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-                            Designed to Strengthen National Vehicle Registration Integrity
+                            Designed to Strengthen <span className="text-primary-red">National</span> Vehicle Registration Integrity
                         </h2>
                         <p className="text-gray-600 text-base sm:text-lg max-w-4xl mx-auto">
                             FraudWall-Auto is built to complement existing DVLA processes through controlled, IOV-governed data integration, enabling enhanced cross-verification and fraud detection while preserving data sovereignty and compliance with Ghana's Data Protection Act.
@@ -183,7 +183,7 @@ export function DvlaIntegrity() {
                         className="text-center mb-12"
                     >
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-                            Who It's For
+                            Who It's <span className="text-primary-red">For</span>
                         </h2>
                     </motion.div>
 

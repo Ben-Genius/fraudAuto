@@ -16,15 +16,15 @@ export const TestimonialsColumn = (props: {
     <div className={props.className}>
       <motion.div
         animate={{
-          translateX: "-100%",
+          translateX: "-50%",
         }}
         transition={{
-          duration: props.duration || 10,
-          repeat: 10,
+          duration: props.duration || 20,
+          repeat: Infinity,
           ease: "linear",
-          repeatType: "mirror",
+          repeatType: "loop",
         }}
-        className="flex items-center  gap-4 sm:gap-6 pb-4 sm:pb-6"
+        className="flex items-center gap-4 sm:gap-6 pb-4 sm:pb-6"
       >
         {[
           ...new Array(2).fill(0).map((_, index) => (

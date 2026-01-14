@@ -10,8 +10,6 @@ import { motion } from "framer-motion";
 
 export function CTA() {
   const [showSecondTypewriter, setShowSecondTypewriter] = useState(false);
-  const [hideFirstCursor, setHideFirstCursor] = useState(false);
-  const [startFirstAnimation, setStartFirstAnimation] = useState(false);
   const [isInView, setIsInView] = useState(false);
 
   const words = [
@@ -38,22 +36,12 @@ export function CTA() {
   useEffect(() => {
     if (!isInView) return;
 
-    // Start first animation when in view
-    setStartFirstAnimation(true);
-
-    // First typewriter: 2s duration + 0.5s delay = 2.5s total
-    // Wait for first to completely finish, then start second
-    const timer1 = setTimeout(() => {
-      setHideFirstCursor(true);
+    const timer = setTimeout(() => {
+      setShowSecondTypewriter(true);
     }, 100);
 
-    const timer2 = setTimeout(() => {
-      setShowSecondTypewriter(true);
-    }, 100); // Small gap after first finishes
-
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      clearTimeout(timer);
     };
   }, [isInView]);
 
@@ -76,7 +64,7 @@ export function CTA() {
           </motion.div>
 
           <div className="flex flex-col items-center px-4 sm:px-0">
-     
+
 
             {showSecondTypewriter && (
               <TypewriterEffectSmooth

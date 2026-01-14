@@ -34,11 +34,10 @@ export function HeroSearch() {
         <div className="flex flex-col sm:flex-row gap-2 mb-4 overflow-x-auto">
           <button
             onClick={() => setSearchType("vin")}
-            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
-              searchType === "vin"
+            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${searchType === "vin"
                 ? "bg-secondary-orange text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300"
-            }`}
+                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300 hover:text-white"
+              }`}
           >
             <Car className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">VIN Decoder & Lookup</span>
@@ -46,11 +45,10 @@ export function HeroSearch() {
           </button>
           <button
             onClick={() => setSearchType("plate")}
-            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
-              searchType === "plate"
+            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${searchType === "plate"
                 ? "bg-primary-red text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300"
-            }`}
+                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300 hover:text-white"
+              }`}
           >
             <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">License Plate</span>
@@ -58,11 +56,10 @@ export function HeroSearch() {
           </button>
           <button
             onClick={() => setSearchType("maintenance")}
-            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
-              searchType === "maintenance"
+            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${searchType === "maintenance"
                 ? "bg-primary-red text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300"
-            }`}
+                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300 hover:text-white"
+              }`}
           >
             <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden md:inline">Maintenance History in Ghana</span>
@@ -78,8 +75,8 @@ export function HeroSearch() {
                 searchType === "vin"
                   ? "Enter 17-character VIN..."
                   : searchType === "plate"
-                  ? "Enter Ghana license plate..."
-                  : "1HGBH41JXMN109186"
+                    ? "Enter Ghana license plate..."
+                    : "1HGBH41JXMN109186"
               }
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
@@ -96,8 +93,8 @@ export function HeroSearch() {
           {searchType === "vin"
             ? "Decode vehicle specifications and check theft status"
             : searchType === "plate"
-            ? "Verify Ghana license plates and check for theft reports"
-            : "Enter a VIN to access a complete, verified history of service records, repairs, and more."}
+              ? "Verify Ghana license plates and check for theft reports"
+              : "Enter a VIN to access a complete, verified history of service records, repairs, and more."}
         </p>
       </div>
     </div>

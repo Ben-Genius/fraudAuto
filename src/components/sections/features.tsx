@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { AlertTriangle, Gauge, Wrench, Flag, Bell } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -54,7 +53,7 @@ export function Features() {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
         duration: 0.6
@@ -71,11 +70,11 @@ export function Features() {
       transition: {
         rotate: {
           duration: 0.5,
-          ease: "easeInOut"
+          ease: "easeInOut" as const
         },
         scale: {
           duration: 0.3,
-          ease: "easeOut"
+          ease: "easeOut" as const
         }
       }
     }

@@ -50,7 +50,7 @@ export function FAQ() {
           className="text-center mb-8 sm:mb-10 md:mb-12"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-            Frequently Asked Questions
+            Frequently <span className="text-primary-red">Asked</span> Questions
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 px-4 sm:px-0">
             Everything you need to know about FraudWall-Auto vehicle
@@ -81,9 +81,8 @@ export function FAQ() {
                     </span>
                   </div>
                   <div
-                    className={`flex h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-200 transition-transform group-hover:scale-105 ${
-                      openIndex === index ? "rotate-180" : ""
-                    }`}
+                    className={`flex h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-200 transition-transform group-hover:scale-105 ${openIndex === index ? "rotate-180" : ""
+                      }`}
                   >
                     <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 text-gray-800" />
                   </div>
