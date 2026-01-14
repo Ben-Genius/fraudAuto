@@ -10,88 +10,43 @@ import { motion } from "framer-motion";
 
 export function CTA() {
   const [showSecondTypewriter, setShowSecondTypewriter] = useState(false);
-  const [hideFirstCursor, setHideFirstCursor] = useState(false);
-  const [startFirstAnimation, setStartFirstAnimation] = useState(false);
   const [isInView, setIsInView] = useState(false);
 
   const words = [
     {
-      text: "Protect",
+      text: "Start",
       className: "text-white",
     },
     {
-      text: "Your",
-      className: "text-white",
-    },
-    {
-      text: "Vehicle",
+      text: "Verifying",
       className: "text-secondary-orange",
     },
     {
-      text: "Investment",
-      className: "text-primary-red",
+      text: "with",
+      className: "text-white",
     },
     {
-      text: "Today",
-      className: "text-white",
+      text: "Confidence",
+      className: "text-primary-red",
     },
   ];
 
-  const descriptionWords = [
-    {
-      text: "Don't",
-      className: "text-gray-300",
-    },
-    {
-      text: "risk",
-      className: "text-gray-300",
-    },
-    {
-      text: "buying",
-      className: "text-gray-300",
-    },
-    {
-      text: "stolen",
-      className: "text-primary-red",
-    },
-    {
-      text: "or",
-      className: "text-gray-300",
-    },
-    {
-      text: "damaged",
-      className: "text-secondary-orange",
-    },
-    {
-      text: "vehicles",
-      className: "text-gray-300",
-    },
-  ];
+
 
   useEffect(() => {
     if (!isInView) return;
-    
-    // Start first animation when in view
-    setStartFirstAnimation(true);
-    
-    // First typewriter: 2s duration + 0.5s delay = 2.5s total
-    // Wait for first to completely finish, then start second
-    const timer1 = setTimeout(() => {
-      setHideFirstCursor(true);
-    }, 2500);
 
-    const timer2 = setTimeout(() => {
+    const timer = setTimeout(() => {
       setShowSecondTypewriter(true);
-    }, 2600); // Small gap after first finishes
+    }, 100);
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      clearTimeout(timer);
     };
   }, [isInView]);
 
   return (
-    <div className="w-full py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-8 sm:pb-12">
+    <div className="w-full py-12 sm:py-16  relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black pb-8 sm:pb-12">
       <BoxesCore />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -109,12 +64,7 @@ export function CTA() {
           </motion.div>
 
           <div className="flex flex-col items-center px-4 sm:px-0">
-            <TypewriterEffectSmooth
-              words={descriptionWords}
-              className="text-base sm:text-lg md:text-xl leading-relaxed tracking-tight max-w-full justify-center -mb-0"
-              hideCursor={hideFirstCursor}
-              startAnimation={startFirstAnimation}
-            />
+
 
             {showSecondTypewriter && (
               <TypewriterEffectSmooth
@@ -130,11 +80,9 @@ export function CTA() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 3.5 }}
               viewport={{ once: true }}
-              className="text-sm sm:text-base md:text-lg text-gray-300 text-center max-w-xs sm:max-w-lg md:max-w-xl mt-1 px-4 sm:px-0"
+              className="text-sm sm:text-base md:text-lg text-gray-300 text-center max-w-xs sm:max-w-lg md:max-w-xl mt-4 px-4 sm:px-0"
             >
-              Our comprehensive verification service helps you make informed
-              decisions and avoid costly mistakes. Start with a free VIN check
-              today.
+              Join the national movement toward transparent, fraud-free vehicle transactions
             </motion.p>
           </div>
 
@@ -150,14 +98,14 @@ export function CTA() {
               className="gap-2 sm:gap-4 border-white/30 text-white bg-secondary-orange w-full sm:w-auto"
             >
               <PhoneCall className="w-4 h-4" />
-              Contact Support
+              Contact for Institutional Access
             </Button>
             <Button
               asChild
               className="gap-2 sm:gap-4 bg-primary-red hover:from-secondary-orange/90 hover:to-primary-red/90 text-white border-0 w-full sm:w-auto"
             >
               <Link to="/vin-decoder">
-                Start Verification <MoveRight className="w-4 h-4" />
+                Verify a Vehicle Now <MoveRight className="w-4 h-4" />
               </Link>
             </Button>
           </motion.div>

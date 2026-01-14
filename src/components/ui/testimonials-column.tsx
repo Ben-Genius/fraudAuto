@@ -16,21 +16,21 @@ export const TestimonialsColumn = (props: {
     <div className={props.className}>
       <motion.div
         animate={{
-          translateY: "-50%",
+          translateX: "-50%",
         }}
         transition={{
-          duration: props.duration || 10,
+          duration: props.duration || 20,
           repeat: Infinity,
           ease: "linear",
           repeatType: "loop",
         }}
-        className="flex flex-col gap-4 sm:gap-6 pb-4 sm:pb-6"
+        className="flex items-center gap-4 sm:gap-6 pb-4 sm:pb-6"
       >
         {[
           ...new Array(2).fill(0).map((_, index) => (
             <React.Fragment key={index}>
               {props.testimonials.map(({ text, image, name, role }, i) => (
-                <div className="p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-white shadow-lg max-w-xs w-full" key={i}>
+                <div className="p-4 sm:p-6 rounded-lg bg-white   w-100 h-50 max-w-full" key={i}>
                   <div className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 leading-relaxed">{text}</div>
                   <div className="flex items-center gap-2 sm:gap-3">
                     <img

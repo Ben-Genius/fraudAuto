@@ -61,14 +61,14 @@ export function Stats() {
       let start = 0;
       const duration = 2000;
       const increment = stat.target / (duration / 16);
-      
+
       const timer = setInterval(() => {
         start += increment;
         if (start >= stat.target) {
           start = stat.target;
           clearInterval(timer);
         }
-        
+
         setAnimatedValues(prev => {
           const newValues = [...prev];
           newValues[index] = start;
@@ -87,7 +87,7 @@ export function Stats() {
   };
 
   return (
-    <section ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50 overflow-hidden">
+    <section ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -97,7 +97,7 @@ export function Stats() {
           className="text-center mb-8 sm:mb-10 md:mb-12"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-            Trusted by Thousands Across Ghana
+            Trusted by <span className="text-primary-red">Thousands</span> Across Ghana
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 px-4 sm:px-0">
             Our platform has helped prevent vehicle fraud and protect investments nationwide
@@ -110,29 +110,29 @@ export function Stats() {
               key={index}
               initial={{ opacity: 0, scale: 0.5, y: 50 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ 
-                duration: 0.6, 
+              transition={{
+                duration: 0.6,
                 delay: index * 0.1,
                 type: "spring",
                 bounce: 0.4
               }}
               viewport={{ once: true }}
-              whileHover={{ 
+              whileHover={{
                 scale: 1.05,
                 transition: { duration: 0.2 }
               }}
               className="text-center group cursor-pointer p-4 sm:p-6"
             >
-              <motion.div 
+              <motion.div
                 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 ${stats[index].color} transition-colors duration-300`}
-                animate={isVisible ? { 
+                animate={isVisible ? {
                   textShadow: [
                     "0 0 0px rgba(251,140,0,0)",
                     "0 0 10px rgba(251,140,0,0.3)",
                     "0 0 0px rgba(251,140,0,0)"
                   ]
                 } : {}}
-                transition={{ 
+                transition={{
                   duration: 2,
                   repeat: Infinity,
                   repeatDelay: 3
@@ -140,7 +140,7 @@ export function Stats() {
               >
                 {isVisible ? formatNumber(animatedValues[index], index) : "0"}
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="text-sm sm:text-base md:text-lg text-gray-600 font-medium group-hover:text-gray-800 transition-colors duration-300 px-2"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -149,7 +149,7 @@ export function Stats() {
               >
                 {stats[index].label}
               </motion.div>
-              
+
               {/* Animated underline */}
               <motion.div
                 className="h-1 bg-gradient-to-r from-secondary-orange to-primary-red mx-auto mt-2 rounded-full"
@@ -169,7 +169,7 @@ export function Stats() {
             <motion.div
               key={i}
               className="absolute w-2 h-2 bg-secondary-orange/20 rounded-full"
-              initial={{ 
+              initial={{
                 x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
                 y: Math.random() * 400,
                 opacity: 0
