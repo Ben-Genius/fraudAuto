@@ -13,26 +13,25 @@ const Footer = () => {
               <span className="text-xl font-bold">FraudWall-Auto</span>
             </div>
             <p className="text-gray-400 mb-4">
-              Ghana's trusted platform for vehicle verification and fraud
-              prevention. Check VIN numbers, license plates, and vehicle history
-              to make informed decisions.
+              National Vehicle Verification & Intelligence Platform. Protecting Ghana's automotive ecosystem through comprehensive fraud prevention and verification services.
+
+
             </p>
             <p className="text-sm text-gray-500">
-              Integrated with DVLA and Ghana Police Service for accurate,
-              real-time data.
+              A FraudWall Platform
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Services</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold mb-4">Services</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   to="/vin-decoder"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  VIN Decoder
+                  Vehicle Verification
                 </Link>
               </li>
               <li>
@@ -40,7 +39,7 @@ const Footer = () => {
                   to="/license-plate"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  License Plate Lookup
+                  Pricing
                 </Link>
               </li>
               <li>
@@ -48,7 +47,23 @@ const Footer = () => {
                   to="/pricing"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Pricing
+                  For Dealers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/pricing"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  For Agencies
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/pricing"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  API Access
                 </Link>
               </li>
             </ul>
@@ -56,14 +71,22 @@ const Footer = () => {
 
           {/* Support */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Support</h3>
-            <ul className="space-y-2">
+            <h3 className="text-lg font-semibold mb-4">Contact</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Help Center
+                  ✉️  info@fraudwall.com
+                </a>
+              </li>☎️
+              <li>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  📞  030 255 8653
                 </a>
               </li>
               <li>
@@ -71,7 +94,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Contact Us
+                  Accra, Ghana
                 </a>
               </li>
               <li>
@@ -82,22 +105,22 @@ const Footer = () => {
                   Privacy Policy
                 </a>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Terms of Service
-                </a>
-              </li>
             </ul>
           </div>
         </div>
+        <br/>
+<hr className="text-gray-700"/>
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center flex items-center justify-between w-full text-sm">
+          <div className="gap-2 text-gray-400" >  <span className="cursor-pointer hover:text-white">
+            Data Protection & Privacy
+          </span>
+            <span className="pl-8 cursor-pointer hover:text-white">Terms of Use
+            </span>
+            <span className="pl-8 cursor-pointer hover:text-white">Compliance</span>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+          </div>
           <p className="text-gray-400">
-            © 2025 FraudWall-Auto. All rights reserved. Made in Ghana 🇬🇭 By
-            Afrilogic Solutions
+            © 2026 Afrilogic Solutions. All rights reserved.
           </p>
         </div>
       </div>

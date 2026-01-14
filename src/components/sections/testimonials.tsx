@@ -30,41 +30,7 @@ const testimonials = [
     name: "Kwame Asante",
     role: "DVLA Regional Director",
   },
-  {
-    text: "The comprehensive vehicle history reports helped me make an informed decision. Found out about previous accidents that weren't disclosed by the seller.",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-    name: "Akosua Frimpong",
-    role: "Teacher, Cape Coast",
-  },
-  {
-    text: "Quick, reliable, and affordable. FraudWall-Auto's VIN decoder gave me all the technical specifications I needed before purchasing my truck.",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
-    name: "Yaw Boateng",
-    role: "Business Owner, Takoradi",
-  },
-  {
-    text: "The real-time integration with official databases gives me confidence in the accuracy of the reports. Highly recommend for all vehicle purchases.",
-    image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face",
-    name: "Efua Asante",
-    role: "Insurance Agent, Tema",
-  },
-  {
-    text: "FraudWall-Auto's customer support is exceptional. They guided me through the entire process and answered all my questions promptly.",
-    image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face",
-    name: "Kwaku Owusu",
-    role: "Mechanic, Sunyani",
-  },
-  {
-    text: "The mobile app makes it easy to check vehicles on the go. Perfect for my work as a vehicle inspector. Clean interface and fast results.",
-    image:
-      "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face",
-    name: "Abena Sarpong",
-    role: "Vehicle Inspector, Ashanti",
-  },
+
 ];
 
 const firstColumn = testimonials.slice(0, 3);

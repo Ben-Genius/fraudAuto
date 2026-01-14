@@ -37,7 +37,7 @@ export function HeroSearch() {
             className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
               searchType === "vin"
                 ? "bg-secondary-orange text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
+                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300"
             }`}
           >
             <Car className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -49,7 +49,7 @@ export function HeroSearch() {
             className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
               searchType === "plate"
                 ? "bg-primary-red text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
+                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300"
             }`}
           >
             <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -61,7 +61,7 @@ export function HeroSearch() {
             className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
               searchType === "maintenance"
                 ? "bg-primary-red text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
+                : "bg-gray-100 text-gray-600 hover:bg-primary-orange dark:bg-gray-700 dark:text-gray-300"
             }`}
           >
             <FileText className="w-3 h-3 sm:w-4 sm:h-4" />

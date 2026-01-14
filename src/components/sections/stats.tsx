@@ -87,7 +87,7 @@ export function Stats() {
   };
 
   return (
-    <section ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50 overflow-hidden">
+    <section ref={sectionRef} className="py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
