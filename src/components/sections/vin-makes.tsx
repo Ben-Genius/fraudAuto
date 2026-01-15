@@ -3,7 +3,7 @@ import { vehicleBrands } from '../../assets/images';
 
 export function VinMakes() {
   return (
-    <section className="py-8 bg-white ">
+    <section className="py-8 bg-white overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">

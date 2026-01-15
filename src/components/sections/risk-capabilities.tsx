@@ -106,14 +106,14 @@ export function RiskCapabilities() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto"
                     >
                         {riskLevels.map((risk, index) => (
                             <motion.div
                                 key={index}
                                 variants={itemVariants}
-                            
-                                className={`${risk.borderColor} border-2 rounded-md transition-all duration-300 group cursor-pointer bg-white p-2 w-80`}
+
+                                className={`${risk.borderColor} border-2 rounded-md transition-all duration-300 group cursor-pointer bg-white p-4 sm:p-3 w-full max-w-xs mx-auto md:mx-0`}
                             >
                                 <div className="flex items-center gap-4 mb-4">
                                     <motion.div
@@ -145,7 +145,7 @@ export function RiskCapabilities() {
                                         </p>
                                     </div>
                                 </div>
-                           
+
                             </motion.div>
                         ))}
                     </motion.div>

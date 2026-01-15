@@ -117,7 +117,7 @@ export function Features() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-7xl mx-auto"
         >
           {features.map((feature, index) => {
             const Icon = feature.icon;
@@ -125,8 +125,8 @@ export function Features() {
               <motion.div
                 key={index}
                 variants={cardVariants}
-            
-                className="group relative bg-gradient-to-br from-gray-50 to-white p-6 rounded-md border border-gray-200/80 flex gap-5 items-start transition-all duration-300 hover:border-primary-red/30 cursor-pointer overflow-hidden"
+
+                className="group relative bg-gradient-to-br from-gray-50 to-white p-4 sm:p-6 rounded-md border border-gray-200/80 flex gap-3 sm:gap-5 items-start transition-all duration-300 hover:border-primary-red/30 cursor-pointer overflow-hidden"
               >
                 {/* Animated background gradient on hover */}
                 <motion.div

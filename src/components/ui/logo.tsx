@@ -9,7 +9,7 @@ interface LogoProps {
   textClassName?: string;
 }
 
-export function Logo({ className, variant = 'default', iconClassName, textClassName }: LogoProps) {
+export function Logo({ iconClassName }: LogoProps) {
   return (
       <img
         src={IMAGES.autoLogo}
