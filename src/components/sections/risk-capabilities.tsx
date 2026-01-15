@@ -130,7 +130,7 @@ export function RiskCapabilities() {
                                         {/* Risk Bar */}
                                         <div className="w-full pb-3 pt-1">
 
-                                            <div className="w-40 h-1.5  bg-gray-200/50 rounded-full overflow-hidden">
+                                            <div className="w-full sm:w-3/4 md:w-full h-1.5 bg-gray-200/50 rounded-full overflow-hidden">
                                                 <motion.div
                                                     initial={{ width: 0 }}
                                                     whileInView={{ width: `${risk.percentage}%` }}
