@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Shield, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { Logo } from "../../components/ui/logo";
 
 const Register = () => {
   useDocumentTitle("Register");
@@ -52,7 +53,7 @@ const Register = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <Shield className="h-12 w-12 text-primary-600" />
+          <Logo variant="icon" iconClassName="h-16 w-16" />
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
           Create your FraudWall-Auto account

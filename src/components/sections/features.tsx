@@ -125,14 +125,7 @@ export function Features() {
               <motion.div
                 key={index}
                 variants={cardVariants}
-                whileHover={{
-                  y: -12,
-                  transition: {
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 20
-                  }
-                }}
+            
                 className="group relative bg-gradient-to-br from-gray-50 to-white p-6 rounded-md border border-gray-200/80 flex gap-5 items-start transition-all duration-300 hover:border-primary-red/30 cursor-pointer overflow-hidden"
               >
                 {/* Animated background gradient on hover */}

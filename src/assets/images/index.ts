@@ -22,6 +22,8 @@ import hondaccident1 from './hondaccident1.webp'
 import hondaccident2 from './hondaccident2.jpeg'
 import hondaccident3 from './hondacivic3.jpeg'
 import hondaccident4 from './hondacivic4.jpeg'
+import autoLogo from './auto_logo.png';
+import autoSymbolLogo from './auto_symbol_logo.png';
 
 
 
@@ -64,6 +66,8 @@ export const vehicleBrands = [
 ];
 
 export const IMAGES = {
+  autoLogo,
+  autoSymbolLogo,
   flag,
   dvla,
   civic,

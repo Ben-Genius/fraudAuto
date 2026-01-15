@@ -33,7 +33,7 @@ export function DvlaIntegrity() {
         {
             icon: ShoppingCart,
             title: "For Buyers",
-            tag: "Reduce Risk",
+            tag: "Buy with Confidence",
             tagColor: "bg-primary-red",
             description: "Make informed vehicle purchase decisions backed by comprehensive verification data from trusted sources.",
             benefits: [
@@ -45,7 +45,7 @@ export function DvlaIntegrity() {
         {
             icon: Store,
             title: "For Dealers",
-            tag: "Reduce Disputes, Reduce Risk",
+            tag: "Protect Reputation, Reduce Risk",
             tagColor: "bg-primary-orange",
             description: "Build customer trust and minimize liability by offering verified vehicle histories with every sale.",
             benefits: [
@@ -57,7 +57,7 @@ export function DvlaIntegrity() {
         {
             icon: Building2,
             title: "For Insurers & Financiers",
-            tag: "Reduce Risk, Accelerate",
+            tag: "Improve Risk Assessment",
             tagColor: "bg-primary-orange",
             description: "Access comprehensive vehicle data to make accurate risk assessments and lending decisions.",
             benefits: [
@@ -69,7 +69,7 @@ export function DvlaIntegrity() {
         {
             icon: Eye,
             title: "For Regulators & Security Agencies",
-            tag: "Gain Visibility",
+            tag: "Detect Fraud Early",
             tagColor: "bg-slate-900",
             description: "Leverage actionable institution-level insights for effective vehicle registration, fraud, and cross-border irregularities.",
             benefits: [
@@ -105,7 +105,7 @@ export function DvlaIntegrity() {
     };
 
     return (
-        <section className="py-16 sm:py-24 bg-white">
+        <section className="py-16 sm:py-24 bg-gray-800/5">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* DVLA Governance Section */}
                 <div className="mb-20">
@@ -124,53 +124,54 @@ export function DvlaIntegrity() {
                         </p>
                     </motion.div>
 
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-8"
-                    >
-                        {governanceFeatures.map((feature, index) => {
-                            const Icon = feature.icon;
-                            return (
-                                <motion.div
-                                    key={index}
-                                    variants={itemVariants}
-                                    whileHover={{ y: -4 }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                    className="bg-white border border-gray-200 rounded-md p-6 transition-all duration-300 group"
-                                >
-                                    <div className="flex items-start gap-4">
-                                        <div className={`${feature.iconBg} p-3 rounded-lg shrink-0`}>
-                                            <Icon className="w-6 h-6 text-white" />
+                    {/* Main Content Card */}
+                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-12 max-w-6xl mx-auto">
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 mb-10"
+                        >
+                            {governanceFeatures.map((feature, index) => {
+                                const Icon = feature.icon;
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        variants={itemVariants}
+                                        className="group"
+                                    >
+                                        <div className="flex items-start gap-5">
+                                            <div className="bg-slate-900 p-3 rounded-lg shrink-0">
+                                                <Icon className="w-6 h-6 text-white" />
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                                                    {feature.title}
+                                                </h3>
+                                                <p className="text-gray-500 text-sm  font-normal">
+                                                    {feature.description}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h3 className="font-semibold text-lg text-gray-900 mb-2">
-                                                {feature.title}
-                                            </h3>
-                                            <p className="text-gray-600 text-sm leading-relaxed">
-                                                {feature.description}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
-                    </motion.div>
+                                    </motion.div>
+                                );
+                            })}
+                        </motion.div>
 
-                    {/* Info Box */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                        viewport={{ once: true }}
-                        className="bg-blue-50/50 border-l-4 border-blue-500 p-6  max-w-5xl mx-auto"
-                    >
-                        <p className="text-sm text-gray-700 leading-relaxed">
-                            <span className="font-semibold">Key Principle:</span> FraudWall-Auto operates as a complementary verification layer to DVLA data governance to support in-depth DVLA oversight, governance actions, and continuous regulatory oversight.
-                        </p>
-                    </motion.div>
+                        {/* Info Box */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            viewport={{ once: true }}
+                            className="bg-blue-50/50 border-l-4 border-blue-500 rounded-r-lg p-6"
+                        >
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                                <span className="font-bold text-blue-900">Key Principle:</span> <span className="text-blue-800">FraudWall-Auto operates as a complementary verification layer. All DVLA data integration is subject to explicit DVLA approval, governance protocols, and continuous regulatory oversight.</span>
+                            </p>
+                        </motion.div>
+                    </div>
                 </div>
 
                 {/* Who It's For Section */}
@@ -200,30 +201,29 @@ export function DvlaIntegrity() {
                                 <motion.div
                                     key={index}
                                     variants={itemVariants}
-                                    whileHover={{ y: -4 }}
                                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                    className="bg-gray-50/50 border border-gray-200 rounded-md p-6 transition-all duration-300"
+                                    className="bg-white border border-gray-100 shadow-sm rounded-xl p-8 transition-all duration-300"
                                 >
-                                    <div className="flex items-start gap-4 mb-4">
-                                        <div className={`${audience.tagColor} p-3 rounded-md shrink-0`}>
+                                    <div className="flex items-start gap-4 mb-6">
+                                        <div className="bg-slate-900 p-3 rounded-lg shrink-0">
                                             <Icon className="w-6 h-6 text-white" />
                                         </div>
                                         <div className="flex-1">
-                                            <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                                            <h3 className="font-semibold text-lg text-gray-900">
                                                 {audience.title}
                                             </h3>
-                                            <span className={`${audience.tagColor} text-white text-xs px-3 py-1 rounded-lg inline-block`}>
+                                            <span className="text-primary-red text-xs font-bold uppercase tracking-wide mt-0.5 block">
                                                 {audience.tag}
                                             </span>
                                         </div>
                                     </div>
-                                    <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                                    <p className="text-gray-600 text-sm leading-relaxed mb-6">
                                         {audience.description}
                                     </p>
-                                    <ul className="space-y-2">
+                                    <ul className="space-y-3">
                                         {audience.benefits.map((benefit, idx) => (
                                             <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
-                                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary-orange shrink-0" />
+                                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary-red shrink-0" />
                                                 <span>{benefit}</span>
                                             </li>
                                         ))}
