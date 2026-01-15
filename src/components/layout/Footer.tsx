@@ -1,5 +1,5 @@
-import { Shield } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Logo } from "../ui/logo";
 
 const Footer = () => {
   return (
@@ -8,10 +8,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 sm:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
-              <span className="text-lg sm:text-xl font-bold">FraudWall-Auto</span>
-            </div>
+            <Logo
+              className="mb-4"
+              textClassName="text-lg sm:text-xl font-bold text-white dark:text-white"
+            />
             <p className="text-sm sm:text-base text-gray-400 mb-4">
               National Vehicle Verification & Intelligence Platform. Protecting Ghana's automotive ecosystem through comprehensive fraud prevention and verification services.
             </p>

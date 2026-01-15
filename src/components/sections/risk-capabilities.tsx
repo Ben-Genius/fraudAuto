@@ -11,7 +11,7 @@ export function RiskCapabilities() {
             percentage: 15,
             color: "green",
             bgColor: "bg-green-50/20",
-            borderColor: "border-green-200",
+            borderColor: "border-green-500",
             iconBg: "bg-green-500",
             textColor: "text-green-700",
             barColor: "bg-green-500"
@@ -35,10 +35,10 @@ export function RiskCapabilities() {
             percentage: 85,
             color: "red",
             bgColor: "bg-red-50/20",
-            borderColor: "border-primary-red/40",
-            iconBg: "bg-primary-red",
+            borderColor: "border-red-500",
+            iconBg: "bg-red-600",
             textColor: "text-red-700",
-            barColor: "bg-primary-red"
+            barColor: "bg-red-600"
         }
     ];
 
@@ -106,17 +106,14 @@ export function RiskCapabilities() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-8xl mx-auto"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto"
                     >
                         {riskLevels.map((risk, index) => (
                             <motion.div
                                 key={index}
                                 variants={itemVariants}
-                                whileHover={{
-                                    y: -8,
-                                    transition: { type: "spring", stiffness: 300, damping: 20 }
-                                }}
-                                className={`${risk.borderColor} border rounded-md p-6 transition-all duration-300 group cursor-pointer bg-white`}
+
+                                className={`${risk.borderColor} border-2 rounded-md transition-all duration-300 group cursor-pointer bg-white p-4 sm:p-3 w-full max-w-xs mx-auto md:mx-0`}
                             >
                                 <div className="flex items-center gap-4 mb-4">
                                     <motion.div
@@ -127,30 +124,28 @@ export function RiskCapabilities() {
                                         <span className="text-white text-lg font-semibold">{risk.level}</span>
                                     </motion.div>
                                     <div className="flex-1">
-                                        <h3 className={`${risk.textColor} font-semibold text-lg mb-1`}>
+                                        <h3 className="text-black font-semibold text-md mb-1">
                                             {risk.title}
                                         </h3>
-                                        <p className="text-gray-600 text-sm">
+                                        {/* Risk Bar */}
+                                        <div className="w-full pb-3 pt-1">
+
+                                            <div className="w-full sm:w-3/4 md:w-full h-1.5 bg-gray-200/50 rounded-full overflow-hidden">
+                                                <motion.div
+                                                    initial={{ width: 0 }}
+                                                    whileInView={{ width: `${risk.percentage}%` }}
+                                                    transition={{ duration: 1, delay: index * 0.2, ease: "easeOut" }}
+                                                    viewport={{ once: true }}
+                                                    className={`h-full ${risk.barColor} rounded-full`}
+                                                />
+                                            </div>
+                                        </div>
+                                        <p className="text-gray-600 text-xs">
                                             {risk.description}
                                         </p>
                                     </div>
                                 </div>
-                                {/* Risk Bar */}
-                                <div className="w-full">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <span className="text-xs text-gray-500">Risk Level</span>
-                                        <span className={`text-xs font-semibold ${risk.textColor}`}>{risk.percentage}%</span>
-                                    </div>
-                                    <div className="w-full h-2 bg-gray-200/50 rounded-full overflow-hidden">
-                                        <motion.div
-                                            initial={{ width: 0 }}
-                                            whileInView={{ width: `${risk.percentage}%` }}
-                                            transition={{ duration: 1, delay: index * 0.2, ease: "easeOut" }}
-                                            viewport={{ once: true }}
-                                            className={`h-full ${risk.barColor} rounded-full`}
-                                        />
-                                    </div>
-                                </div>
+
                             </motion.div>
                         ))}
                     </motion.div>
