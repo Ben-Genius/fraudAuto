@@ -97,7 +97,7 @@ export function Stats() {
           className="text-center mb-8 sm:mb-10 md:mb-12"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-            Trusted by <span className="text-primary-red">Thousands</span> Across Ghana
+            Trusted by <span className="text-primary-red">Thousands</span> Across Africa
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 px-4 sm:px-0">
             Our platform has helped prevent vehicle fraud and protect investments nationwide

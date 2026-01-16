@@ -112,7 +112,7 @@ export function FAQ() {
             </motion.div>
           ))}
         </div>
-
+{/* 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -136,7 +136,7 @@ export function FAQ() {
           <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-green-100 text-green-800">
             ✓ Recommend this service
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
