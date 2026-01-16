@@ -187,7 +187,7 @@ export function RiskCapabilities() {
                                     Core Capabilities
                                 </h3>
                             </div>
-                            <ul className="space-y-4">
+                            <ul className="space-y-2">
                                 {coreCapabilities.map((capability, index) => (
                                     <motion.li
                                         key={index}
@@ -195,7 +195,7 @@ export function RiskCapabilities() {
                                         whileInView={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.1 }}
                                         viewport={{ once: true }}
-                                        className="flex items-start gap-3 group"
+                                        className="flex items-center gap-3 group"
                                     >
                                         <div className="mt-1 w-1.5 h-1.5 rounded-full bg-slate-900 shrink-0 group-hover:bg-primary-orange transition-colors duration-300" />
                                         <span className="text-gray-700 text-base leading-relaxed group-hover:text-slate-900 transition-colors duration-300">
@@ -226,7 +226,7 @@ export function RiskCapabilities() {
                                 }}
                             />
 
-                            <div className="relative z-10">
+                            <div className="relative z-10 ">
                                 <div className="flex items-center gap-3 mb-6">
                                     <div className="bg-primary-orange p-2.5 rounded-lg">
                                         <BellElectric className="w-6 h-6 text-white" />
@@ -235,7 +235,7 @@ export function RiskCapabilities() {
                                         Advanced Capabilities
                                     </h3>
                                 </div>
-                                <ul className="space-y-4">
+                                <ul className="space-y-2">
                                     {advancedCapabilities.map((capability, index) => (
                                         <motion.li
                                             key={index}
@@ -243,7 +243,7 @@ export function RiskCapabilities() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             transition={{ delay: index * 0.1 }}
                                             viewport={{ once: true }}
-                                            className="flex items-start gap-3 group"
+                                            className="flex items-center -py-0 gap-3 group"
                                         >
                                             <div className="mt-1 w-1.5 h-1.5 rounded-full bg-primary-orange shrink-0 group-hover:bg-white transition-colors duration-300" />
                                             <span className="text-gray-300 text-base leading-relaxed group-hover:text-white transition-colors duration-300">

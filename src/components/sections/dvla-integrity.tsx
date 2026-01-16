@@ -146,7 +146,7 @@ export function DvlaIntegrity() {
                                                 <Icon className="w-6 h-6 text-white" />
                                             </div>
                                             <div>
-                                                <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                                                <h3 className="font-semibold text-lg text-gray-900 ">
                                                     {feature.title}
                                                 </h3>
                                                 <p className="text-gray-500 text-sm  font-normal">
