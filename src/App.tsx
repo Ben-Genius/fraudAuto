@@ -11,6 +11,7 @@ const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const CheckoutPage = lazy(() => import("./pages/checkout/CheckoutPage").then(module => ({ default: module.CheckoutPage })));
 const MaintenanceHistory = lazy(() => import("./pages/maintenanceHistory/MaintenanceHistory").then(module => ({ default: module.MaintenanceHistory })));
+const VehicleHistory = lazy(() => import("./pages/vin-decoder/VehicleHistory"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/vehicle-history" element={<VehicleHistory />} />
           </Routes>
         </Suspense>
       </Layout>

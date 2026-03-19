@@ -94,7 +94,7 @@ const VinDecoder = () => {
       if (searchParams.get("vin") === cleanVin) {
         handleVinLookup(cleanVin);
       } else {
-        navigate(`/vin-decoder?vin=${cleanVin}`);
+        navigate(`/vehicle-history?vin=${cleanVin}`);
       }
     }
   };

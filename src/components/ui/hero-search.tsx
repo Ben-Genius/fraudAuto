@@ -15,7 +15,7 @@ export function HeroSearch() {
     if (searchValue.trim()) {
       if (searchType === "vin") {
         const cleanVin = searchValue.trim().toUpperCase();
-        navigate(`/vin-decoder?vin=${cleanVin}`);
+        navigate(`/vehicle-history?vin=${cleanVin}`);
       } else if (searchType === "plate") {
         navigate(`/license-plate?plate=${searchValue.trim().toUpperCase()}`);
       } else {

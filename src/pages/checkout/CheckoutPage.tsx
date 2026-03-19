@@ -29,7 +29,7 @@ export const CheckoutPage: React.FC = () => {
 
   const handleSecureCheckout = () => {
     setTimeout(() => {
-      navigate(`/vin-decoder?vin=${vin}&paid=true`);
+      navigate(`/vehicle-history?vin=${vin}&paid=true`);
     }, 1000);
   };
 
