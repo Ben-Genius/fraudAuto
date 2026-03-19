@@ -1,13 +1,14 @@
-import { Search } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface VinSearchFormProps {
   vin: string;
   setVin: (vin: string) => void;
   onSubmit: (e: React.FormEvent) => void;
+  isLoading?: boolean;
 }
 
-export function VinSearchForm({ vin, setVin, onSubmit }: VinSearchFormProps) {
+export function VinSearchForm({ vin, setVin, onSubmit, isLoading }: VinSearchFormProps) {
   return (
     <div className="max-w-xs sm:max-w-lg md:max-w-2xl mx-auto px-4 sm:px-0">
       <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-300">
@@ -18,7 +19,8 @@ export function VinSearchForm({ vin, setVin, onSubmit }: VinSearchFormProps) {
               placeholder="Enter 17-character VIN..."
               value={vin}
               onChange={(e) => setVin(e.target.value.toUpperCase())}
-              className="outline-0 w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+              disabled={isLoading}
+              className="outline-0 w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary-orange focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base disabled:opacity-50"
             />
           </div>
           <Button
@@ -26,10 +28,14 @@ export function VinSearchForm({ vin, setVin, onSubmit }: VinSearchFormProps) {
             type="submit"
             size="lg"
             className="px-4 sm:px-6 w-full sm:w-auto"
-            disabled={vin.length !== 17}
+            disabled={vin.length !== 17 || isLoading}
           >
-            <Search className="w-4 h-4 mr-2" />
-            Search
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Search className="w-4 h-4 mr-2" />
+            )}
+            {isLoading ? "Searching..." : "Search"}
           </Button>
         </form>
 

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { AnimatedGroup } from "../ui/animated-group";
 import { HeroSearch } from "../ui/hero-search";
@@ -33,27 +32,20 @@ export function HeroSection() {
             <AnimatedGroup variants={transitionVariants}>
               <Link
                 to="/pricing"
-                className="inline-flex items-center gap-2 border border-slate-300 hover:border-slate-400/70 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 mt-20 sm:mt-24 md:mt-32 lg:mt-40 text-xs sm:text-sm"
+                className="inline-flex items-center gap-2 sm:px-4 sm:py-2 mt-10 "
               >
-                <span className="hidden sm:inline">Protect Your Vehicle Investment</span>
-                <span className="sm:hidden">Vehicle Protection</span>
-                <div className="flex items-center gap-1 font-medium">
-                  <span>Read more</span>
-                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-                </div>
+
               </Link>
 
               <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold font-sans max-w-7xl text-center mx-auto mt-4 sm:mt-6 md:mt-8 px-2 sm:px-0">
-                Combat Vehicle{" "}
-                <span className="text-secondary-orange"> Fraud </span>
-                In Ghana
+                <span className="text-primary-red">Verify </span>  Any Vehicle. <span className="text-primary-red">Prevent</span> Fraud.
+                <span>Protect Your <span className="text-primary-red">Investment</span>.</span>
               </h1>
 
               <p className="text-sm sm:text-base md:text-lg mx-auto max-w-xs sm:max-w-lg md:max-w-2xl text-center mt-4 sm:mt-6 px-4 sm:px-2 leading-relaxed">
-                Comprehensive VIN decoding, vehicle service or maintenance
-                history, license plate verification, and vehicle history
-                reports. Integrated with Ghana's DVLA and Police Service for
-                real-time fraud detection.
+                Comprehensive vehicle verification using VIN, license plate, and maintenance records. Powered by certified international vehicle databases and designed to integrate securely with DVLA systems to detect fraud, stolen vehicles, and registration inconsistencies in real time.
+
+
               </p>
             </AnimatedGroup>
 
@@ -93,7 +85,7 @@ export function HeroSection() {
                 className="bg-slate-800 hover:bg-black text-white px-6 py-3 rounded-full font-medium transition w-full sm:w-auto"
               >
                 <Link to="/vin-decoder">
-                  <span>Start Verification</span>
+                  <span>View Sample Report</span>
                 </Link>
               </Button>
               <Button

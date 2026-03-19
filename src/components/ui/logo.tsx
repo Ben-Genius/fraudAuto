@@ -1,18 +1,21 @@
 import { cn } from "../../lib/utils";
 
+import { IMAGES } from "../../assets/images";
+
 interface LogoProps {
   className?: string;
+  variant?: 'default' | 'icon';
+  iconClassName?: string;
+  textClassName?: string;
 }
 
-export function Logo({ className }: LogoProps) {
+export function Logo({ iconClassName }: LogoProps) {
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
-      <div className="w-8 h-8 bg-gradient-to-br from-secondary-orange to-primary-red rounded-lg flex items-center justify-center">
-        <span className="text-white font-bold text-lg">F</span>
-      </div>
-      <span className="text-xl font-bold text-gray-900 dark:text-white">
-        FraudWall-Auto
-      </span>
-    </div>
+      <img
+        src={IMAGES.autoLogo}
+        alt="FraudWall Logo"
+        className={cn("w-40 object-contain", iconClassName)}
+      />
+     
   );
 }

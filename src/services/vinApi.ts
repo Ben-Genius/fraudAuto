@@ -1,8 +1,8 @@
-import type { VinReportData, RecallData, Vehicle } from "../types/vin-decoder";
+import type { VinReportData, RecallData, Vehicle, VehicleHistoryData } from "../types/vin-decoder";
 
 // Use relative path to leverage Vite proxy in development
-const API_URL = "";
-// const API_URL = import.meta.env.VITE_API_URL || "https://frauwall-auto-dev.azurewebsites.net";
+// const API_URL = "";
+const API_URL = import.meta.env.VITE_API_URL ?? "https://frauwall-auto-dev.azurewebsites.net";
 
 interface ApiResponse {
     vin: string;
@@ -96,6 +96,21 @@ export const fetchVinReport = async (vin: string): Promise<VinReportData> => {
         };
     } catch (error) {
         console.error("Failed to fetch VIN report:", error);
+        if (error instanceof TypeError && error.message === "Failed to fetch") {
+            throw new Error("Network error or CORS block. Please check if the backend is running and allows requests from this origin.");
+        }
+        throw error;
+    }
+};
+
+export const fetchVehicleHistory = async (vin: string): Promise<VehicleHistoryData> => {
+    try {
+        const response = await fetch(`${API_URL}/vehicle-history/${vin}`);
+        if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+        const result = await response.json();
+        return result.data;
+    } catch (error) {
+        console.error("Failed to fetch vehicle history:", error);
         throw error;
     }
 };

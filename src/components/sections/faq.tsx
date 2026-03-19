@@ -37,11 +37,11 @@ const faqs = [
 ];
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ export function FAQ() {
           className="text-center mb-8 sm:mb-10 md:mb-12"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 sm:mb-4">
-            Frequently Asked Questions
+            Frequently <span className="text-primary-red">Asked</span> Questions
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 px-4 sm:px-0">
             Everything you need to know about FraudWall-Auto vehicle
@@ -58,7 +58,7 @@ export function FAQ() {
           </p>
         </motion.div>
 
-        <div className="space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
@@ -81,9 +81,8 @@ export function FAQ() {
                     </span>
                   </div>
                   <div
-                    className={`flex h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-200 transition-transform group-hover:scale-105 ${
-                      openIndex === index ? "rotate-180" : ""
-                    }`}
+                    className={`flex h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-full bg-gray-200 transition-transform group-hover:scale-105 ${openIndex === index ? "rotate-180" : ""
+                      }`}
                   >
                     <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 text-gray-800" />
                   </div>
@@ -113,7 +112,7 @@ export function FAQ() {
             </motion.div>
           ))}
         </div>
-
+{/* 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -137,7 +136,7 @@ export function FAQ() {
           <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-green-100 text-green-800">
             ✓ Recommend this service
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

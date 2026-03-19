@@ -251,3 +251,36 @@ export interface CostBreakdown {
   total: number;
   color: string;
 }
+
+export interface VehicleHistoryData {
+  summary: string;
+  vehicleName: string;
+  vin: string;
+  retrievedAt: string;
+  service: string;
+  price: VehicleHistoryPrice;
+  vehicleDetails: { body_type: string };
+  accidents: VehicleHistoryAccident[];
+  events: VehicleHistoryEvent[];
+  owners: VehicleHistoryOwner[];
+  mileageRecords: VehicleHistoryMileageRecord[];
+  recalls: VehicleHistoryRecall[];
+  salesHistory: VehicleHistorySale[];
+  transmission: VehicleHistoryTransmission;
+  titleBrands: Record<string, string>;
+  usage: Record<string, string>;
+  specifications: Record<string, any>[];
+}
+export interface VehicleHistoryPrice { base_msrp: string; }
+export interface VehicleHistoryAccident { _id: string; accidentNumber: number; date: string; location: string; }
+export interface VehicleHistoryEvent { _id: string; date: string; source: string[]; location: string; odometer: string | null; details: string[]; }
+export interface VehicleHistoryOwner { _id: string; type: string; purchasedYear: number; state: string; ownedDuration: string; }
+export interface VehicleHistoryMileageRecord { date: string; mileage: string; }
+export interface VehicleHistoryRecall { _id: string; date: string; recallNumber: string; component: string; }
+export interface VehicleHistorySale { _id: string; date?: string; sellerCity: string; sellerState: string; dealerName?: string; price: number; odometer?: string; }
+export interface VehicleHistoryTransmission {
+  type: string; description: string; number_of_speeds: string;
+  first_gear_ratio: string; second_gear_ratio: string; third_gear_ratio: string;
+  fourth_gear_ratio: string; fifth_gear_ratio: string; reverse_gear_ratio: string;
+  final_drive_axle_ratio: string;
+}
