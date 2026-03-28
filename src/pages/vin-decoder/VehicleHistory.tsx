@@ -5,7 +5,7 @@ import {
   Loader2, AlertTriangle, CheckCircle2, XCircle, Car, MapPin,
   Calendar, Gauge, ShieldAlert, Users, History, Tag, Wrench,
   ChevronDown, ChevronUp, AlertCircle, TrendingUp, Activity,
-  Search, FileText, BarChart3, Lock, ArrowRight, Sparkles,
+  Search, FileText, BarChart3, Lock, ArrowRight,
   Info,
 } from "lucide-react";
 import {
