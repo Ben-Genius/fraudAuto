@@ -343,7 +343,7 @@ function GatedPreview() {
 // ─── Limited View ─────────────────────────────────────────────────────────────
 
 function LimitedView({
-  reportData, onSelect,
+  onSelect,
 }: { reportData: VehicleHistoryData; onSelect: (p: "standard" | "deluxe") => void }) {
   const features = [
     "Complete Timeline of Events", "Accident & Damage Records", "Odometer Rollback Check",
