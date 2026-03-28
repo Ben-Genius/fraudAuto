@@ -253,23 +253,27 @@ export interface CostBreakdown {
 }
 
 export interface VehicleHistoryData {
-  summary: string;
+  subscriptionRequired?: boolean;
+  year?: string;
+  make?: string;
+  vehicleModel?: string;
+  summary?: string;
   vehicleName: string;
   vin: string;
-  retrievedAt: string;
-  service: string;
-  price: VehicleHistoryPrice;
-  vehicleDetails: { body_type: string };
-  accidents: VehicleHistoryAccident[];
-  events: VehicleHistoryEvent[];
-  owners: VehicleHistoryOwner[];
-  mileageRecords: VehicleHistoryMileageRecord[];
-  recalls: VehicleHistoryRecall[];
-  salesHistory: VehicleHistorySale[];
-  transmission: VehicleHistoryTransmission;
-  titleBrands: Record<string, string>;
-  usage: Record<string, string>;
-  specifications: Record<string, any>[];
+  retrievedAt?: string;
+  service?: string;
+  price?: VehicleHistoryPrice;
+  vehicleDetails?: { body_type: string };
+  accidents?: VehicleHistoryAccident[];
+  events?: VehicleHistoryEvent[];
+  owners?: VehicleHistoryOwner[];
+  mileageRecords?: VehicleHistoryMileageRecord[];
+  recalls?: VehicleHistoryRecall[];
+  salesHistory?: VehicleHistorySale[];
+  transmission?: VehicleHistoryTransmission;
+  titleBrands?: Record<string, string>;
+  usage?: Record<string, string>;
+  specifications?: Record<string, any>[];
 }
 export interface VehicleHistoryPrice { base_msrp: string; }
 export interface VehicleHistoryAccident { _id: string; accidentNumber: number; date: string; location: string; }
