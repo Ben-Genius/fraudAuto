@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "./components/layout/Layout";
 
@@ -15,7 +15,11 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const CheckoutPage = lazy(() => import("./pages/checkout/CheckoutPage").then(module => ({ default: module.CheckoutPage })));
 const MaintenanceHistory = lazy(() => import("./pages/maintenanceHistory/MaintenanceHistory").then(module => ({ default: module.MaintenanceHistory })));
 const VehicleHistory = lazy(() => import("./pages/vin-decoder/VehicleHistory"));
-const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+
+// Dashboard — nested layout + sub-pages
+const DashboardLayout = lazy(() => import("./pages/dashboard/DashboardLayout"));
+const DashboardHome = lazy(() => import("./pages/dashboard/DashboardHome"));
+const VinLookup = lazy(() => import("./pages/dashboard/VinLookup"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -29,8 +33,13 @@ function App() {
     <Router>
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
-          {/* Authenticated app — own layout, no public header/footer */}
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Authenticated app — nested dashboard routes */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="vin-lookup" element={<VinLookup />} />
+            {/* Catch-all inside dashboard → redirect to overview */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Route>
 
           {/* Public routes — wrapped in public Layout */}
           <Route path="/*" element={

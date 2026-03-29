@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Search, Car, Loader2, LogOut, Zap, Crown,
@@ -6,10 +6,15 @@ import {
   Users, History, Gauge, Tag, MapPin, Calendar,
   ChevronDown, ChevronUp, AlertCircle, TrendingUp,
   BarChart3, XCircle, Wrench, Menu, X, ArrowRight, Shield,
+  Plus, Clock, Lock, CheckCheck,
+  NotebookText,
+  LucideNotepadTextDashed,
+  ChartBarIncreasingIcon,
 } from "lucide-react";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import {
   getStoredUser, logout, fetchVehicleHistory, initiateSubscription,
+  refreshUserCredits,
   type UserData,
 } from "../../services/vinApi";
 import type {
@@ -17,6 +22,11 @@ import type {
   VehicleHistoryOwner, VehicleHistoryMileageRecord,
 } from "../../types/vin-decoder";
 import { Logo } from "../../components/ui/logo";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const VIN_HISTORY_KEY = "fw_vin_history";
+const MAX_VIN_HISTORY = 5;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -44,6 +54,20 @@ function srcIcon(s: string[]) {
   if (v.includes("damage")) return <AlertTriangle size={10} />;
   if (v.includes("dealer")) return <Wrench size={10} />;
   return <FileText size={10} />;
+}
+
+function getVinHistory(): { vin: string; vehicleName: string }[] {
+  try {
+    return JSON.parse(localStorage.getItem(VIN_HISTORY_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveVinHistory(vin: string, vehicleName: string) {
+  const prev = getVinHistory().filter((h) => h.vin !== vin);
+  const next = [{ vin, vehicleName }, ...prev].slice(0, MAX_VIN_HISTORY);
+  localStorage.setItem(VIN_HISTORY_KEY, JSON.stringify(next));
 }
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
@@ -75,6 +99,246 @@ function SectionBlock({ title, icon, right, children }: {
       <Divider />
       <div className="p-5">{children}</div>
     </Card>
+  );
+}
+
+// ─── Success Banner ────────────────────────────────────────────────────────────
+
+function SuccessBanner({ credits, onDismiss }: { credits: number; onDismiss: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onDismiss, 6000);
+    return () => clearTimeout(t);
+  }, [onDismiss]);
+
+  return (
+    <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-2xl px-5 py-4 animate-in fade-in slide-in-from-top-2 duration-300">
+      <div className="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center shrink-0">
+        <CheckCheck size={16} className="text-white" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-emerald-800">Payment confirmed!</p>
+        <p className="text-xs text-emerald-600 mt-0.5">
+          Your credits have been added. You now have <span className="font-bold">{credits} credit{credits !== 1 ? "s" : ""}</span> available.
+        </p>
+      </div>
+      <button
+        onClick={onDismiss}
+        className="shrink-0 p-1 rounded-lg text-emerald-500 hover:text-emerald-700 hover:bg-emerald-100 transition-colors"
+      >
+        <X size={14} />
+      </button>
+    </div>
+  );
+}
+
+// ─── Buy Credits Modal ─────────────────────────────────────────────────────────
+
+const PLAN_FEATURES = [
+  "Full Accident History",
+  "Ownership History",
+  "Title Brand Checks",
+  "Safety Recall Alerts",
+  "Odometer Fraud Detection",
+  "Market Value Analysis",
+  "Full Service History",
+  "Auction Records & Photos",
+];
+
+function PlanCards({ onBuy, isLoading }: { onBuy: (p: "standard" | "deluxe") => void; isLoading: boolean }) {
+  const [selected, setSelected] = useState<"standard" | "deluxe" | null>(null);
+
+  const handleSelect = (plan: "standard" | "deluxe") => {
+    if (isLoading) return;
+    setSelected(plan);
+    onBuy(plan);
+  };
+
+  if (isLoading && selected) {
+    return (
+      <div className="flex flex-col items-center py-10 gap-3">
+        <div className="w-12 h-12 rounded-2xl bg-[#FC612D]/8 flex items-center justify-center">
+          <Loader2 size={20} className="text-[#FC612D] animate-spin" />
+        </div>
+        <p className="text-sm font-semibold text-gray-900">Redirecting to Paystack…</p>
+        <p className="text-xs text-gray-400">Opening secure checkout for <span className="font-semibold capitalize">{selected}</span> plan</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      {/* Features */}
+      <div className="bg-gray-50 rounded-xl p-4">
+        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Everything included in both plans</p>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+          {PLAN_FEATURES.map((f) => (
+            <div key={f} className="flex items-center gap-2 text-xs text-gray-600">
+              <CheckCircle2 size={11} className="text-[#FC612D] shrink-0" /> {f}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Plans */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Standard */}
+        <div
+          onClick={() => handleSelect("standard")}
+          className="group relative border border-gray-200 rounded-2xl p-5 flex flex-col gap-4 hover:border-[#FC612D]/50 transition-all cursor-pointer bg-white"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center group-hover:bg-[#FC612D] transition-colors">
+                <ChartBarIncreasingIcon size={16} className="text-gray-500 group-hover:text-white transition-colors" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Standard</p>
+                <p className="text-sm font-bold text-gray-900">1 credit</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-xl font-black text-gray-900">GHC 50</p>
+              <p className="text-[10px] text-gray-400">one-time</p>
+            </div>
+          </div>
+          <button
+            disabled={isLoading}
+            className="w-full py-2.5 border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl flex items-center justify-center gap-2 group-hover:bg-gray-900 group-hover:text-white group-hover:border-gray-900 transition-all disabled:opacity-50"
+          >
+            Choose Standard <ArrowRight size={13} />
+          </button>
+        </div>
+
+        {/* Deluxe */}
+        <div
+          onClick={() => handleSelect("deluxe")}
+          className="group relative border-2 border-[#FC612D] rounded-2xl p-5 flex flex-col gap-4 cursor-pointer bg-white hover:bg-[#FC612D]/[0.02] transition-colors"
+        >
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+            <span className="bg-[#FC612D] text-white text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest">
+              Best Value
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#FC612D] flex items-center justify-center">
+                <Crown size={16} className="text-white" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-[#FC612D] uppercase tracking-widest">Deluxe</p>
+                <p className="text-sm font-bold text-gray-900">2 credits</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-xl font-black text-gray-900">GHC 120</p>
+              <p className="text-[10px] text-gray-400">one-time</p>
+            </div>
+          </div>
+          <button
+            disabled={isLoading}
+            className="w-full py-2.5 bg-[#FC612D] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            Choose Deluxe <ArrowRight size={13} />
+          </button>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center gap-1.5 text-[11px] text-gray-400">
+        <Shield size={11} className="text-emerald-500" /> 100% secure · Powered by Paystack
+      </div>
+    </div>
+  );
+}
+
+function BuyCreditsModal({ onClose, onBuy, isLoading }: {
+  onClose: () => void;
+  onBuy: (p: "standard" | "deluxe") => void;
+  isLoading: boolean;
+}) {
+  // Close on Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      {/* Sheet */}
+      <div className="relative z-10 w-full sm:max-w-xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100">
+          <div>
+            <h2 className="text-base font-bold text-gray-900">Get Report Credits</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Pay as you go — no subscription required</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
+          >
+            <X size={14} />
+          </button>
+        </div>
+        {/* Body */}
+        <div className="px-6 pt-5 pb-6 max-h-[85vh] overflow-y-auto">
+          <PlanCards onBuy={onBuy} isLoading={isLoading} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Credit Paywall Overlay ────────────────────────────────────────────────────
+
+function CreditPaywall({ vin, onBuy, isLoading }: {
+  vin: string;
+  onBuy: (p: "standard" | "deluxe") => void;
+  isLoading: boolean;
+}) {
+  return (
+    <div className="space-y-5">
+      {/* Teaser header */}
+      <Card>
+        <div className="h-0.5 bg-gradient-to-r from-[#FC612D] to-orange-300" />
+        <div className="px-6 py-5">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-xl bg-[#FC612D]/10 flex items-center justify-center">
+              <Lock size={14} className="text-[#FC612D]" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-gray-900">Report Locked</p>
+              <p className="text-xs text-gray-400 font-mono tracking-wider">{vin}</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            We found data for this vehicle. Purchase a credit to unlock the full report including accident history, owner records, title checks, and more.
+          </p>
+          {/* Blurred stat preview */}
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            {["Accidents", "Owners", "Events"].map((label) => (
+              <div key={label} className="rounded-xl border border-gray-100 p-3 bg-gray-50">
+                <div className="h-5 bg-gray-200 rounded-md mb-1.5 blur-[3px] w-8" />
+                <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Card>
+
+      {/* Inline plan picker */}
+      <div>
+        <div className="flex items-center gap-2 mb-4">
+          <NotebookText size={13} className="text-[#FC612D]" />
+          <p className="text-sm font-bold text-gray-900">Choose a plan to unlock</p>
+        </div>
+        <PlanCards onBuy={onBuy} isLoading={isLoading} />
+      </div>
+    </div>
   );
 }
 
@@ -329,9 +593,37 @@ function SpecsBlock({ specs = [] }: { specs?: Record<string, any>[] }) {
   );
 }
 
+// ─── Buy More Strip ────────────────────────────────────────────────────────────
+
+function BuyMoreStrip({ credits, onTopUp }: { credits: number; onTopUp: () => void }) {
+  return (
+    <Card className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl bg-[#FC612D]/8 flex items-center justify-center shrink-0">
+          <Zap size={16} className="text-[#FC612D]" />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-gray-900">
+            {credits > 0 ? `${credits} credit${credits !== 1 ? "s" : ""} remaining` : "No credits left"}
+          </p>
+          <p className="text-xs text-gray-400 mt-0.5">
+            {credits > 0 ? "Run another VIN check instantly" : "Purchase credits to run your next report"}
+          </p>
+        </div>
+      </div>
+      <button
+        onClick={onTopUp}
+        className="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-[#FC612D] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+      >
+        <Plus size={13} /> Top Up Credits
+      </button>
+    </Card>
+  );
+}
+
 // ─── Full report ───────────────────────────────────────────────────────────────
 
-function FullReport({ data }: { data: VehicleHistoryData }) {
+function FullReport({ data, credits, onTopUp }: { data: VehicleHistoryData; credits: number; onTopUp: () => void }) {
   const flags = Object.values(data.titleBrands || {}).filter(
     (v) => v.toLowerCase().includes("records found") && !v.toLowerCase().startsWith("no")
   ).length;
@@ -383,145 +675,17 @@ function FullReport({ data }: { data: VehicleHistoryData }) {
           {(data.mileageRecords?.length || 0) > 0 && <MileageBlock records={data.mileageRecords} />}
         </div>
       </div>
-    </div>
-  );
-}
 
-// ─── No credits ────────────────────────────────────────────────────────────────
-
-const PLAN_FEATURES = [
-  "Full Accident History",
-  "Ownership History",
-  "Title Brand Checks",
-  "Safety Recall Alerts",
-  "Odometer Fraud Detection",
-  "Market Value Analysis",
-  "Full Service History",
-  "Auction Records & Photos",
-];
-
-function PurchaseCredits({ onBuy, isLoading }: {
-  onBuy: (p: "standard" | "deluxe") => void;
-  isLoading: boolean;
-}) {
-  const [selected, setSelected] = useState<"standard" | "deluxe" | null>(null);
-
-  const handleSelect = (plan: "standard" | "deluxe") => {
-    if (isLoading) return;
-    setSelected(plan);
-    onBuy(plan);
-  };
-
-  if (isLoading && selected) {
-    return (
-      <Card className="p-12 flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-2xl bg-[#FC612D]/8 flex items-center justify-center mb-4">
-          <Loader2 size={20} className="text-[#FC612D] animate-spin" />
-        </div>
-        <p className="text-sm font-semibold text-gray-900 mb-1">Redirecting to Paystack</p>
-        <p className="text-xs text-gray-400">
-          Opening secure checkout for <span className="font-semibold capitalize">{selected}</span> plan…
-        </p>
-      </Card>
-    );
-  }
-
-  return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-base font-bold text-gray-900">Get Report Credits</h2>
-          <p className="text-sm text-gray-400 mt-0.5">Pay as you go — both plans include every feature.</p>
-        </div>
-        <div className="flex items-center gap-1.5 text-[11px] text-gray-400">
-          <Shield size={11} className="text-emerald-500" /> Secure via Paystack
-        </div>
-      </div>
-
-      {/* Feature list — shared */}
-      <Card className="p-5">
-        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Everything included in both plans</p>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-          {PLAN_FEATURES.map((f) => (
-            <div key={f} className="flex items-center gap-2 text-xs text-gray-600">
-              <CheckCircle2 size={12} className="text-[#FC612D] shrink-0" /> {f}
-            </div>
-          ))}
-        </div>
-      </Card>
-
-      {/* Plan cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Standard */}
-        <div
-          onClick={() => handleSelect("standard")}
-          className="group relative border border-gray-200 rounded-2xl p-5 flex flex-col gap-4 hover:border-[#FC612D]/50 transition-all cursor-pointer bg-white"
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center group-hover:bg-[#FC612D] transition-colors">
-                <Zap size={16} className="text-gray-500 group-hover:text-white transition-colors" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Standard</p>
-                <p className="text-sm font-bold text-gray-900">1 credit</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-xl font-black text-gray-900">GHC 50</p>
-              <p className="text-[10px] text-gray-400">one-time</p>
-            </div>
-          </div>
-          <button
-            disabled={isLoading}
-            className="w-full py-2.5 border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl flex items-center justify-center gap-2 group-hover:bg-gray-900 group-hover:text-white group-hover:border-gray-900 transition-all disabled:opacity-50"
-          >
-            Choose Standard <ArrowRight size={13} />
-          </button>
-        </div>
-
-        {/* Deluxe */}
-        <div
-          onClick={() => handleSelect("deluxe")}
-          className="group relative border-2 border-[#FC612D] rounded-2xl p-5 flex flex-col gap-4 cursor-pointer bg-white hover:bg-[#FC612D]/[0.02] transition-colors"
-        >
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-            <span className="bg-[#FC612D] text-white text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest">
-              Best Value
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#FC612D] flex items-center justify-center">
-                <Crown size={16} className="text-white" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-[#FC612D] uppercase tracking-widest">Deluxe</p>
-                <p className="text-sm font-bold text-gray-900">2 credits</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-xl font-black text-gray-900">GHC 120</p>
-              <p className="text-[10px] text-gray-400">one-time</p>
-            </div>
-          </div>
-          <button
-            disabled={isLoading}
-            className="w-full py-2.5 bg-[#FC612D] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
-          >
-            Choose Deluxe <ArrowRight size={13} />
-          </button>
-        </div>
-      </div>
+      {/* Buy More strip */}
+      <BuyMoreStrip credits={credits} onTopUp={onTopUp} />
     </div>
   );
 }
 
 // ─── Sidebar ───────────────────────────────────────────────────────────────────
 
-function Sidebar({ user, credits, onLogout, open, onClose }: {
-  user: UserData; credits: number; onLogout: () => void; open: boolean; onClose: () => void;
+function Sidebar({ user, credits, onLogout, onTopUp, open, onClose }: {
+  user: UserData; credits: number; onLogout: () => void; onTopUp: () => void; open: boolean; onClose: () => void;
 }) {
   return (
     <>
@@ -551,16 +715,27 @@ function Sidebar({ user, credits, onLogout, open, onClose }: {
           </div>
         </nav>
 
-        {/* Credits */}
-        <div className="px-4 py-3 mx-3 mb-3 rounded-xl border border-gray-100 bg-gray-50">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-[11px] text-gray-400 font-medium uppercase tracking-wide">Report Credits</p>
-            <span className={`text-xs font-bold ${credits > 0 ? "text-emerald-600" : "text-gray-400"}`}>{credits}</span>
+        {/* Credits widget */}
+        <div className="px-3 mb-3">
+          <div className="px-4 py-3 rounded-xl border border-gray-100 bg-gray-50">
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-[11px] text-gray-400 font-medium uppercase tracking-wide">Report Credits</p>
+              <span className={`text-xs font-bold ${credits > 0 ? "text-emerald-600" : "text-red-400"}`}>{credits}</span>
+            </div>
+            <div className="h-1 bg-gray-200 rounded-full overflow-hidden mb-2">
+              <div className="h-full bg-[#FC612D] rounded-full transition-all" style={{ width: credits > 0 ? "100%" : "0%" }} />
+            </div>
+            <p className="text-[10px] text-gray-400 mb-2.5">
+              {credits > 0 ? `${credits} report${credits !== 1 ? "s" : ""} available` : "No credits — purchase to run reports"}
+            </p>
+            {/* Topup button — always visible */}
+            <button
+              onClick={() => { onClose(); onTopUp(); }}
+              className="w-full flex items-center justify-center gap-1.5 py-2 bg-[#FC612D] text-white text-xs font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              <Plus size={11} /> Top Up Credits
+            </button>
           </div>
-          <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[#FC612D] rounded-full transition-all" style={{ width: credits > 0 ? "100%" : "0%" }} />
-          </div>
-          <p className="text-[10px] text-gray-400 mt-1">{credits > 0 ? `${credits} report${credits !== 1 ? "s" : ""} available` : "No credits — purchase to run reports"}</p>
         </div>
 
         {/* User + logout */}
@@ -591,7 +766,7 @@ function Sidebar({ user, credits, onLogout, open, onClose }: {
 const Dashboard = () => {
   useDocumentTitle("Dashboard");
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [user, setUser] = useState<UserData | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -599,35 +774,88 @@ const Dashboard = () => {
   const [report, setReport] = useState<VehicleHistoryData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [credits, setCredits] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [successBanner, setSuccessBanner] = useState(false);
+  const [paywallVin, setPaywallVin] = useState<string | null>(null);
+  const [vinHistory, setVinHistory] = useState<{ vin: string; vehicleName: string }[]>([]);
+  const didRefreshRef = useRef(false);
 
+  // ── On mount: auth check, payment return handler, VIN param ──────────────────
   useEffect(() => {
     const stored = getStoredUser();
     if (!stored) { navigate("/login"); return; }
     setUser(stored);
+    setCredits(stored.availableReportCredits ?? 0);
+    setVinHistory(getVinHistory());
 
+    // Handle Paystack return
+    const paymentStatus = searchParams.get("payment");
+    const reference = searchParams.get("reference");
+    if (paymentStatus === "success" && reference && !didRefreshRef.current) {
+      didRefreshRef.current = true;
+      refreshUserCredits().then((newCredits) => {
+        setCredits(newCredits);
+        // Update stored user object in memory too
+        setUser((prev) => prev ? { ...prev, availableReportCredits: newCredits } : prev);
+        setSuccessBanner(true);
+        // Clean URL params without navigation
+        setSearchParams({}, { replace: true });
+      });
+    }
+
+    // Auto-run search from URL param
     const vinParam = searchParams.get("vin");
-    if (vinParam) { setVin(vinParam); runSearch(vinParam); }
-  }, []);
+    if (vinParam && !paymentStatus) {
+      setVin(vinParam);
+      runSearch(vinParam);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const runSearch = async (v: string) => {
     const clean = v.trim().toUpperCase();
     if (clean.length !== 17) return;
     setIsLoading(true);
     setError(null);
-    setReport(null);
+    setPaywallVin(null);
+    // ⬛ Don't clear the previous report yet — we preserve it on failure
     try {
-      setReport(await fetchVehicleHistory(clean));
+      const result = await fetchVehicleHistory(clean);
+
+      // API returned subscriptionRequired flag inside the body
+      if (result.subscriptionRequired) {
+        setPaywallVin(clean);
+        setReport(null);
+        setIsLoading(false);
+        return;
+      }
+
+      // Success — save to history and show
+      setReport(result);
+      setPaywallVin(null);
+      saveVinHistory(clean, result.vehicleName || clean);
+      setVinHistory(getVinHistory());
+      // Deduct 1 credit from local count optimistically
+      setCredits((c) => Math.max(0, c - 1));
     } catch (err: any) {
-      setError(err?.message || "Failed to fetch report. Please try again.");
+      // 402 / 403 → credit wall
+      if (err.status === 402 || err.status === 403) {
+        setPaywallVin(clean);
+        setReport(null);
+      } else {
+        // Generic error — keep the old report visible if there is one
+        setError(err?.message || "Failed to fetch report. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const [paymentLoading, setPaymentLoading] = useState(false);
-
   const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); runSearch(vin); };
   const handleLogout = () => { logout(); navigate("/login"); };
+  const handleTopUp = () => setShowModal(true);
+
   const handleBuyCredits = async (plan: "standard" | "deluxe") => {
     setPaymentLoading(true);
     try {
@@ -641,11 +869,27 @@ const Dashboard = () => {
 
   if (!user) return null;
 
-  const credits = user.availableReportCredits ?? 0;
+  const isEmpty = !report && !isLoading && !error && !paywallVin;
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      <Sidebar user={user} credits={credits} onLogout={handleLogout} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar
+        user={user}
+        credits={credits}
+        onLogout={handleLogout}
+        onTopUp={handleTopUp}
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      {/* Buy Credits Modal */}
+      {showModal && (
+        <BuyCreditsModal
+          onClose={() => setShowModal(false)}
+          onBuy={handleBuyCredits}
+          isLoading={paymentLoading}
+        />
+      )}
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -687,8 +931,13 @@ const Dashboard = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-6xl mx-auto px-5 py-6 space-y-5">
 
+            {/* Success banner */}
+            {successBanner && (
+              <SuccessBanner credits={credits} onDismiss={() => setSuccessBanner(false)} />
+            )}
+
             {/* Empty / welcome state */}
-            {!report && !isLoading && !error && (
+            {isEmpty && (
               <>
                 <div className="pt-2 pb-1">
                   <h1 className="text-xl font-bold text-gray-900">Hello, {user.firstName}</h1>
@@ -714,7 +963,44 @@ const Dashboard = () => {
                   ))}
                 </div>
 
-                {credits === 0 && <PurchaseCredits onBuy={handleBuyCredits} isLoading={paymentLoading} />}
+                {/* VIN search history chips */}
+                {vinHistory.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-2.5">
+                      <Clock size={12} className="text-gray-400" />
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Recent Searches</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {vinHistory.map((h) => (
+                        <button
+                          key={h.vin}
+                          onClick={() => { setVin(h.vin); runSearch(h.vin); }}
+                          className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:border-[#FC612D]/40 hover:bg-[#FC612D]/[0.02] transition-all text-sm group"
+                        >
+                          <Car size={12} className="text-gray-400 group-hover:text-[#FC612D] transition-colors shrink-0" />
+                          <span className="font-medium text-gray-700 group-hover:text-gray-900">{h.vehicleName || h.vin}</span>
+                          <span className="font-mono text-[10px] text-gray-400">{h.vin}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Purchase credits when empty and no report */}
+                {credits === 0 && (
+                  <Card className="p-6">
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-10 h-10 rounded-xl bg-[#FC612D]/10 flex items-center justify-center">
+                        <LucideNotepadTextDashed size={16} className="text-[#FC612D]" />
+                      </div>
+                      <div>
+                        <h2 className="text-sm font-bold text-gray-900">Get Started with Report Credits</h2>
+                        <p className="text-xs text-gray-400 mt-0.5">Pay as you go — no subscription required</p>
+                      </div>
+                    </div>
+                    <PlanCards onBuy={handleBuyCredits} isLoading={paymentLoading} />
+                  </Card>
+                )}
               </>
             )}
 
@@ -726,23 +1012,37 @@ const Dashboard = () => {
               </div>
             )}
 
-            {/* Error */}
-            {error && (
+            {/* Credit paywall (subscriptionRequired or 402/403) */}
+            {paywallVin && !isLoading && (
+              <CreditPaywall vin={paywallVin} onBuy={handleBuyCredits} isLoading={paymentLoading} />
+            )}
+
+            {/* Generic error — report stays if there was one */}
+            {error && !paywallVin && (
               <Card className="p-6 text-center">
                 <div className="w-11 h-11 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center mx-auto mb-3">
                   <AlertTriangle size={16} className="text-red-400" />
                 </div>
                 <p className="font-semibold text-gray-900 mb-1">Something went wrong</p>
                 <p className="text-sm text-gray-500 mb-4">{error}</p>
-                <button onClick={() => { setError(null); runSearch(vin); }}
-                  className="px-4 py-2 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-[#FC612D] transition-colors">
-                  Try again
-                </button>
+                <div className="flex items-center justify-center gap-3">
+                  <button onClick={() => { setError(null); runSearch(vin); }}
+                    className="px-4 py-2 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-[#FC612D] transition-colors">
+                    Try again
+                  </button>
+                  <button onClick={() => setError(null)}
+                    className="px-4 py-2 border border-gray-200 text-gray-600 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                    Dismiss
+                  </button>
+                </div>
               </Card>
             )}
 
             {/* Report */}
-            {report && <FullReport data={report} />}
+            {report && !isLoading && (
+              <FullReport data={report} credits={credits} onTopUp={handleTopUp} />
+            )}
+
           </div>
         </main>
       </div>
