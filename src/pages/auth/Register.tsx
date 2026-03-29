@@ -103,7 +103,7 @@ const Register = () => {
         </h2>
         {plan && (
           <p className="mt-1 text-center text-sm text-[#FC612D] font-medium">
-            {plan === "deluxe" ? "2 report credits" : "1 report credit"} · ₦{plan === "deluxe" ? "10,000" : "5,000"}
+            {plan === "deluxe" ? "2 report credits" : "1 report credit"} · GHC {plan === "deluxe" ? "120" : "50"}
           </p>
         )}
         <p className="mt-2 text-center text-sm text-gray-500">

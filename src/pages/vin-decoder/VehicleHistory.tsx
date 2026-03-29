@@ -2,51 +2,143 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  Loader2, AlertTriangle, CheckCircle2, XCircle, Car, MapPin,
-  Calendar, Gauge, ShieldAlert, Users, History, Tag, Wrench,
-  ChevronDown, ChevronUp, AlertCircle, TrendingUp, Activity,
-  Search, FileText, BarChart3, Lock, ArrowRight,
-  Info,
+  Loader2, AlertTriangle, CheckCircle2, Car,
+  Gauge, ShieldAlert, Users, History, Tag,
+  Search, Lock, ArrowRight,
+  Info, TrendingUp, FlaskConical,
 } from "lucide-react";
 import {
   fetchVehicleHistory, getSubscriptionStatus,
   type SubscriptionStatus,
 } from "../../services/vinApi";
-import type {
-  VehicleHistoryData, VehicleHistoryEvent, VehicleHistoryOwner,
-  VehicleHistoryMileageRecord,
-} from "../../types/vin-decoder";
+import type { VehicleHistoryData } from "../../types/vin-decoder";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import { PlanSelection } from "../../components/vin-decoder/PlanSelection";
+import { FullReportView } from "../../components/vin-decoder/FullReportView";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Demo Fixture Data ────────────────────────────────────────────────────────
 
-function fmt(key: string) {
-  return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-function srcIcon(s: string[]) {
-  const v = (s[0] || "").toLowerCase();
-  if (v.includes("insurance")) return <ShieldAlert size={11} />;
-  if (v.includes("damage")) return <AlertTriangle size={11} />;
-  if (v.includes("dealer")) return <Wrench size={11} />;
-  return <FileText size={11} />;
-}
-
-function srcBadge(s: string[]) {
-  const v = (s[0] || "").toLowerCase();
-  if (v.includes("damage") || v.includes("accident")) return "bg-red-50 text-red-600 border-red-100";
-  if (v.includes("insurance")) return "bg-orange-50 text-orange-600 border-orange-100";
-  if (v.includes("dealer")) return "bg-gray-50 text-gray-500 border-gray-100";
-  return "bg-gray-50 text-gray-400 border-gray-100";
-}
-
-function dotColor(s: string[]) {
-  const v = (s[0] || "").toLowerCase();
-  if (v.includes("damage") || v.includes("accident")) return "bg-red-500";
-  if (v.includes("insurance")) return "bg-orange-400";
-  return "bg-gray-300";
-}
+const DEMO_DATA: VehicleHistoryData = {
+  vehicleName: "2003 Pontiac Vibe",
+  vin: "5Y2SL62813Z471208",
+  year: "2003",
+  make: "Pontiac",
+  vehicleModel: "Vibe",
+  service: "vin-full-report",
+  retrievedAt: "2026-03-29T16:14:28.156Z",
+  summary:
+    "The 2003 Pontiac Vibe Base is a compact car that comes with a 1.8L I-4 123HP engine and a 4-speed automatic transmission. It has AWD, 4-wheel ABS, air conditioning, power mirrors and 16\" steel wheels.",
+  vehicleDetails: { body_type: "Hatchback", rear_door_type: "", doors: "4" } as any,
+  price: { base_msrp: "19,785" },
+  accidents: [
+    { _id: "acc1", accidentNumber: 1, date: "04/20/2012", location: "OH" },
+  ],
+  owners: [
+    { _id: "own1", type: "Owner 1", purchasedYear: 2003, state: "TX", ownedDuration: "4 year(s) 5 month(s)" },
+    { _id: "own2", type: "Owner 2", purchasedYear: 2007, state: "OH", ownedDuration: "18 year(s) 3 month(s)" },
+  ],
+  recalls: [
+    { _id: "rec1", date: "01/27/2015", recallNumber: "15V043 / N140877", component: "Safety" },
+    { _id: "rec2", date: "02/21/2024", recallNumber: "15V286 / N242437060", component: "Safety" },
+  ],
+  mileageRecords: [
+    { date: "07/09/2003", mileage: "1,670", status: "records found", other: "success" } as any,
+    { date: "10/02/2004", mileage: "35,140", status: "records found", other: "success" } as any,
+    { date: "09/09/2006", mileage: "68,431", status: "records found", other: "success" } as any,
+    { date: "09/29/2007", mileage: "86,375", status: "records found", other: "success" } as any,
+    { date: "12/01/2007", mileage: "90,057", status: "records found", other: "success" } as any,
+    { date: "04/11/2012", mileage: "119,587", status: "records found", other: "success" } as any,
+    { date: "04/13/2012", mileage: "119,587", status: "records found", other: "danger" } as any,
+  ],
+  events: [
+    { _id: "e1", date: "07/09/2003", location: "AMES, IA", source: ["Federal Motor Vehicle Records"], odometer: "1,670", details: ["Title"] },
+    { _id: "e2", date: "10/02/2004", location: "LEAGUE CITY, TX", source: ["Independent Emission Source"], odometer: "35,140", details: ["Passed Emission Inspection"] },
+    { _id: "e3", date: "11/03/2004", location: "LEAGUE CITY, TX", source: ["Federal Motor Vehicle Records"], odometer: "35,140", details: ["Title(Lien Reported)"] },
+    { _id: "e4", date: "09/09/2006", location: "LEAGUE CITY, TX", source: ["Independent Emission Source"], odometer: "68,431", details: ["Passed Emission Inspection"] },
+    { _id: "e5", date: "09/29/2007", location: "LEAGUE CITY, TX", source: ["State Agency"], odometer: "86,375", details: ["Passed Emission Inspection", "Passed Safety Inspection"] },
+    { _id: "e6", date: "12/01/2007", location: "HILLIARD, OH", source: ["Federal Motor Vehicle Records"], odometer: "90,057", details: ["Title"] },
+    { _id: "e7", date: "04/02/2012", location: "NORWICH, OH", source: ["State Agency"], odometer: null, details: ["Front Impact with Another Vehicle(Case #:20128038939)", "Severe Damage Reported", "Vehicle Damage Reported as Disabling", "Vehicle Was Towed", "Accident Reported(Report #:102425)"] },
+    { _id: "e8", date: "04/11/2012", location: "OH", source: ["Auto Auction"], odometer: "119,587", details: ["Reported at Auto Auction"] },
+    { _id: "e9", date: "04/13/2012", location: "COLUMBUS, OH", source: ["Federal Motor Vehicle Records"], odometer: "119,587", details: ["Title", "Salvage", "Damaged"] },
+    { _id: "e10", date: "04/20/2012", location: "OH", source: ["Auto Auction"], odometer: null, details: ["Auction Announced as Salvage, Extent of Damage Unknown"] },
+    { _id: "e11", date: "06/13/2012", location: "", source: ["Independent Source"], odometer: null, details: ["Vehicle Exported TO GHANA"] },
+    { _id: "e12", date: "01/27/2015", location: "", source: ["Manufacturer"], odometer: null, details: ["Manufacturer Recall — NHTSA Recall 15V043 / Mfr. Recall N140877", "Safety: SUPPLEMENTAL RESTRAINT SYSTEM AIR BAG CONTROL MODULE", "Status: Remedy Available"] },
+    { _id: "e13", date: "02/21/2024", location: "", source: ["Manufacturer"], odometer: null, details: ["Manufacturer Recall — NHTSA Recall 15V286 / Mfr. Recall N242437060", "Safety: DO NOT DRIVE – FRONT PASSENGER AIR BAG INFLATOR MODULE", "Status: Remedy Available"] },
+  ],
+  salesHistory: [],
+  titleBrands: {
+    "No fire brand": "no records found",
+    "No hail brand": "no records found",
+    "No flood brand": "no records found",
+    "No junk or scrapped brand": "no records found",
+    "No manufacturer buyback": "no records found",
+    "No lemon brand": "no records found",
+    "Salvage brand": "records found",
+    "No rebuilt or rebuildable brand": "no records found",
+    "No odometer brand (EML or NAM)": "no records found",
+    "No insurance loss record": "no records found",
+    "No titled to an insurance company record": "no records found",
+    "No auction lemon/manufacturer buyback record": "no records found",
+    "No abandoned title record": "no records found",
+    "No grey market title record": "no records found",
+    "Loan/lien record": "records found",
+    "No repossessed record": "no records found",
+    "No corrected title record": "no records found",
+    "No duplicate title record": "no records found",
+    "No theft record": "no records found",
+    "Auction brand": "no record found",
+    "No non-title fire damaged record": "no records found",
+    "No non-title hail damaged record": "no records found",
+    "No non-title flood damaged record": "no records found",
+    "No auction junk or scrapped record": "no records found",
+    "No auction rebuilt or rebuildable record": "no records found",
+    "Salvage auction record": "records found",
+    "Damaged or major damage incident record": "records found",
+    "No structural damage or structural alteration record": "no records found",
+    "No recycling facility record": "no records found",
+    "No crash test record": "no records found",
+  },
+  usage: {
+    "Used Personally": "records found",
+    "Fleet vehicle": "no records found",
+    "Used as a Rental": "no records found",
+    "Lease records": "no records found",
+    "Taxi": "no records found",
+    "Livery": "no records found",
+    "Police Use": "no records found",
+    "Government Use": "no records found",
+    "Drivers Ed": "no records found",
+    "Used Commercially": "no records found",
+  },
+  transmission: {
+    type: "Automatic",
+    code: "MX0",
+    number_of_speeds: "4",
+    description: "4 speed automatic",
+    power_takeoff: "",
+    first_gear_ratio: "2.92",
+    second_gear_ratio: "1.56",
+    third_gear_ratio: "1",
+    fourth_gear_ratio: "0.7",
+    fifth_gear_ratio: "",
+    reverse_gear_ratio: "2.38",
+    final_drive_axle_ratio: "4.16",
+    transfer_case_gear_ratio_high: "",
+    transfer_case_gear_ratio_low: "",
+    transfer_case_model: "",
+    transfer_case_power_takeoff: "",
+  } as any,
+  specifications: [
+    { steering: { type: "Pwr Rack & Pinion", overall_ratio: "19.5", turns_to_turns_ratio: "3.4" } },
+    { braking: { type: "Pwr", primary_abs_system: "4-Wheel", front_disc: "Yes", rear_drum: "Yes" } },
+    { suspensions: { front_type: "Independent", rear_type: "Double Wishbone" } },
+    { seating: { number_of_seats: "5", max_seating_capacity: "5" } },
+    { tires: { front_tire_size: "205/55R16", rear_tire_size: "205/55R16", type: "All-season", front_tire_pressure_psi: "35", rear_tire_pressure_psi: "32" } },
+    { engine: { type: "Gas L4", code: "LV6", cylinders_configuration: "I-4", displacement: 1800, drivetype: "AWD", valves: "16", engine_location: "Front" } },
+    { fuel: { type: "Gasoline", grade: "Regular Unleaded" } },
+    { mpg: { epa_city_economy: "26", epa_hwy_economy: "31", epa_combined_economy: "28" } },
+  ],
+} as any;
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
@@ -62,19 +154,6 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
   );
 }
 
-function CardHeader({ title, icon, right }: {
-  title: string; icon?: React.ReactNode; right?: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center justify-between px-5 py-3.5">
-      <div className="flex items-center gap-2">
-        {icon && <span className="text-gray-400">{icon}</span>}
-        <span className="text-sm font-semibold text-gray-700">{title}</span>
-      </div>
-      {right}
-    </div>
-  );
-}
 
 function Badge({ children, variant = "gray" }: {
   children: React.ReactNode;
@@ -146,7 +225,7 @@ function ReportHeader({
                 <Lock size={9} /> Limited Preview
               </Badge>
             )}
-            {!isLimited && subscription?.hasActivePlan && subscription.plan && (
+            {!isLimited && subscription?.status === "ACTIVE" && subscription.plan && (
               <Badge variant="green">
                 <CheckCircle2 size={9} />
                 {subscription.plan === "deluxe" ? "Deluxe" : "Standard"} Access
@@ -186,45 +265,6 @@ function ReportHeader({
   );
 }
 
-// ─── Stat Tile ────────────────────────────────────────────────────────────────
-
-function StatTile({
-  icon, value, label, accent = "text-gray-400", locked = false,
-}: {
-  icon: React.ReactNode; value: string | number; label: string;
-  accent?: string; locked?: boolean;
-}) {
-  return (
-    <Card className="p-4 grid flex-col gap-2.5">
-      <div className={`${accent}`}>{icon}</div>
-      <div className="flex items-center gap-1.5">
-        {locked ? (
-          <div className="relative flex items-center">
-            <span className="text-2xl font-bold text-gray-900 select-none blur-sm">{value}</span>
-            <Lock size={12} className="absolute inset-0 m-auto text-gray-500" />
-          </div>
-        ) : (
-          <span className="text-2xl font-bold text-gray-900">{value}</span>
-        )}
-      </div>
-      <p className="text-[11px] text-gray-400 font-medium uppercase tracking-wide leading-none">{label}</p>
-    </Card>
-  );
-}
-
-// ─── Section primitives ───────────────────────────────────────────────────────
-
-function Section({ title, icon, right, children }: {
-  title: string; icon?: React.ReactNode; right?: React.ReactNode; children: React.ReactNode;
-}) {
-  return (
-    <Card>
-      <CardHeader title={title} icon={icon} right={right} />
-      <Divider />
-      <div className="p-5">{children}</div>
-    </Card>
-  );
-}
 
 // ─── Blurred Gated Preview ────────────────────────────────────────────────────
 
@@ -251,9 +291,7 @@ function GatedPreview() {
 
   return (
     <div className="relative rounded-2xl overflow-hidden border border-gray-100 bg-white select-none pointer-events-none">
-      {/* Blurred content */}
       <div className="blur-[3px] opacity-60">
-        {/* Owners */}
         <div className="px-5 pt-4 pb-4">
           <div className="flex items-center gap-2 mb-3">
             <Users size={13} className="text-gray-400" />
@@ -273,10 +311,7 @@ function GatedPreview() {
             ))}
           </div>
         </div>
-
         <Divider />
-
-        {/* Events */}
         <div className="px-5 pt-4 pb-4">
           <div className="flex items-center gap-2 mb-3">
             <History size={13} className="text-gray-400" />
@@ -300,10 +335,7 @@ function GatedPreview() {
             </div>
           </div>
         </div>
-
         <Divider />
-
-        {/* Mileage */}
         <div className="px-5 pt-4 pb-5">
           <div className="flex items-center gap-2 mb-3">
             <Gauge size={13} className="text-gray-400" />
@@ -324,11 +356,7 @@ function GatedPreview() {
           </div>
         </div>
       </div>
-
-      {/* Fade overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white" />
-
-      {/* Lock CTA */}
       <div className="absolute bottom-0 inset-x-0 flex flex-col items-center pb-8 px-4 text-center">
         <div className="w-10 h-10 rounded-2xl bg-gray-900 flex items-center justify-center mb-3 shadow-md">
           <Lock size={16} className="text-white" />
@@ -354,11 +382,7 @@ function LimitedView({
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-2 gap-3">
-
-        {/* Blurred preview */}
         <GatedPreview />
-
-        {/* What's included */}
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
             <Info size={14} className="text-[#FC612D]" />
@@ -372,385 +396,14 @@ function LimitedView({
               </div>
             ))}
           </div>
-          {/* Plan selection */}
           <PlanSelection onSelect={onSelect} />
         </Card>
-
       </div>
-
-
-
-
-      {/* Disclaimer */}
       <p className="text-[11px] text-gray-400 text-center max-w-lg mx-auto leading-relaxed pb-4">
         FraudWall Auto reports are compiled from various data sources. While we aim for precision, we cannot
         guarantee absolute accuracy. Use this report as a guide in your vehicle purchase decision.
       </p>
     </div>
-  );
-}
-
-// ─── Full Report Sections ─────────────────────────────────────────────────────
-
-function TitleBrandsSection({ brands }: { brands: Record<string, string> }) {
-  const positive = Object.entries(brands).filter(
-    ([, v]) => v.toLowerCase().includes("records found") && !v.toLowerCase().startsWith("no")
-  );
-  const negative = Object.entries(brands).filter(
-    ([, v]) => v.toLowerCase().startsWith("no") || v.toLowerCase() === "no record found"
-  );
-  return (
-    <Section title="Title Brands" icon={<Tag size={14} />}>
-      {positive.length > 0 && (
-        <div className="mb-4">
-          <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-2">Flags Detected</p>
-          <div className="space-y-1.5">
-            {positive.map(([key]) => (
-              <div key={key} className="flex items-center gap-2 p-2.5 bg-red-50 rounded-xl border border-red-100">
-                <XCircle size={13} className="text-red-500 shrink-0" />
-                <span className="text-xs font-medium text-red-700">{fmt(key)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      <div>
-        <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-2">Clean Records</p>
-        <div className="space-y-1.5">
-          {negative.map(([key]) => (
-            <div key={key} className="flex items-center gap-1.5 text-xs text-gray-500">
-              <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />
-              {fmt(key)}
-            </div>
-          ))}
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-function OwnersSection({ owners = [] }: { owners?: VehicleHistoryOwner[] }) {
-  const accents = [
-    "bg-[#FC612D]/8 border-[#FC612D]/15 text-[#FC612D]",
-    "bg-orange-50 border-orange-100 text-orange-600",
-    "bg-amber-50 border-amber-100 text-amber-600",
-    "bg-yellow-50 border-yellow-100 text-yellow-600",
-  ];
-  return (
-    <Section
-      title="Ownership History" icon={<Users size={14} />}
-      right={<span className="text-[11px] font-semibold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-md">{owners.length} owner{owners.length !== 1 ? "s" : ""}</span>}
-    >
-      <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-        {owners.map((o, i) => (
-          <div key={o._id} className={`rounded-xl border p-3.5 ${accents[i % accents.length]}`}>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-5 h-5 rounded-full bg-current/20 text-[10px] font-bold flex items-center justify-center">{i + 1}</div>
-              <p className="font-semibold text-xs">{o.type}</p>
-            </div>
-            <p className="text-[10px] opacity-70">Purchased: {o.purchasedYear}</p>
-            <p className="text-[10px] opacity-70">State: {o.state}</p>
-            <p className="text-[10px] opacity-60 mt-0.5">{o.ownedDuration.trim()}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function EventsTimeline({ events = [] }: { events?: VehicleHistoryEvent[] }) {
-  const [expanded, setExpanded] = useState(false);
-  const shown = expanded ? events : events.slice(0, 8);
-  return (
-    <Section
-      title="History Events" icon={<History size={14} />}
-      right={<span className="text-[11px] font-semibold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-md">{events.length}</span>}
-    >
-      <div className="relative pl-5">
-        <div className="absolute left-1.5 top-0 bottom-0 w-px bg-gray-100" />
-        <div className="space-y-5">
-          {shown.map((evt) => (
-            <div key={evt._id} className="relative">
-              <div className={`absolute -left-5 top-1.5 w-2.5 h-2.5 rounded-full border-2 border-white shadow-sm ${dotColor(evt.source)}`} />
-              <div className="flex flex-wrap items-center gap-1.5 mb-1">
-                <span className="text-[11px] font-mono text-gray-400">{evt.date}</span>
-                <span className={`inline-flex items-center gap-1 px-1.5 py-px rounded-md text-[10px] border font-medium ${srcBadge(evt.source)}`}>
-                  {srcIcon(evt.source)} {evt.source[0] || "—"}
-                </span>
-                {evt.odometer && (
-                  <span className="text-[11px] text-gray-400 flex items-center gap-0.5">
-                    <Gauge size={9} /> {evt.odometer} mi
-                  </span>
-                )}
-              </div>
-              <p className="text-[11px] text-gray-400 flex items-center gap-1 mb-1">
-                <MapPin size={9} className="shrink-0" /> {evt.location}
-              </p>
-              <ul className="space-y-0.5">
-                {evt.details.map((d, di) => (
-                  <li key={di} className="text-sm text-gray-700 leading-snug">{d}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-      {events.length > 8 && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-5 w-full flex items-center justify-center gap-1.5 text-xs font-medium text-gray-400 hover:text-gray-700 py-2 rounded-xl hover:bg-gray-50 transition-colors"
-        >
-          {expanded
-            ? <><ChevronUp size={13} /> Show less</>
-            : <><ChevronDown size={13} /> Show all {events.length} events</>}
-        </button>
-      )}
-    </Section>
-  );
-}
-
-function AccidentsSection({ accidents = [] }: { accidents?: VehicleHistoryData["accidents"] }) {
-  if (!accidents.length) {
-    return (
-      <Section title="Accident Records" icon={<AlertTriangle size={14} />}>
-        <div className="flex items-center gap-2.5 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
-          <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
-          <span className="text-sm font-medium text-emerald-700">No accidents reported</span>
-        </div>
-      </Section>
-    );
-  }
-  return (
-    <Section
-      title="Accident Records" icon={<AlertTriangle size={14} />}
-      right={<span className="text-[11px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-100">{accidents.length} found</span>}
-    >
-      <div className="space-y-2.5">
-        {accidents.map((acc) => (
-          <div key={acc._id} className="flex items-start gap-3 p-3.5 bg-red-50 rounded-xl border border-red-100">
-            <div className="w-7 h-7 bg-red-500 rounded-lg flex items-center justify-center shrink-0">
-              <AlertCircle size={13} className="text-white" />
-            </div>
-            <div>
-              <p className="font-semibold text-red-800 text-sm">Accident #{acc.accidentNumber}</p>
-              <p className="text-[11px] text-red-500 flex items-center gap-1 mt-0.5"><Calendar size={9} /> {acc.date}</p>
-              <p className="text-[11px] text-red-500 flex items-center gap-1"><MapPin size={9} /> {acc.location}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function MileageSection({ records = [] }: { records?: VehicleHistoryMileageRecord[] }) {
-  const valid = records.filter((r) => r.mileage);
-  const max = Math.max(...valid.map((r) => parseInt(r.mileage.replace(/,/g, "")) || 0), 1);
-  return (
-    <Section title="Mileage Records" icon={<Gauge size={14} />}>
-      <div className="space-y-3">
-        {valid.map((rec, i) => {
-          const val = parseInt(rec.mileage.replace(/,/g, "")) || 0;
-          const pct = Math.max(6, Math.round((val / max) * 100));
-          return (
-            <div key={i}>
-              <div className="flex justify-between text-[11px] mb-1">
-                <span className="font-mono text-gray-400">{rec.date}</span>
-                <span className="font-semibold text-gray-700">{rec.mileage} mi</span>
-              </div>
-              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                <div className="h-full rounded-full bg-gradient-to-r from-[#FC612D] to-[#FFCA42] transition-all duration-700" style={{ width: `${pct}%` }} />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </Section>
-  );
-}
-
-function RecallsSection({ recalls = [] }: { recalls?: VehicleHistoryData["recalls"] }) {
-  return (
-    <Section
-      title="Safety Recalls" icon={<ShieldAlert size={14} />}
-      right={recalls.length > 0
-        ? <span className="text-[11px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md border border-orange-100">{recalls.length}</span>
-        : undefined}
-    >
-      {recalls.length === 0 ? (
-        <div className="flex items-center gap-2 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
-          <CheckCircle2 size={13} className="text-emerald-500" />
-          <span className="text-sm font-medium text-emerald-700">No open recalls</span>
-        </div>
-      ) : (
-        <div className="divide-y divide-gray-100">
-          {recalls.map((r) => (
-            <div key={r._id} className="py-3 first:pt-0 last:pb-0">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">{r.component}</p>
-                  <p className="text-[10px] text-gray-400 mt-0.5 font-mono">{r.recallNumber}</p>
-                </div>
-                <span className="text-[11px] text-gray-400 whitespace-nowrap mt-0.5">{r.date}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </Section>
-  );
-}
-
-function SalesSection({ sales = [] }: { sales?: VehicleHistoryData["salesHistory"] }) {
-  if (!sales.length) return null;
-  return (
-    <Section title="Sales History" icon={<TrendingUp size={14} />}>
-      <div className="space-y-2.5">
-        {sales.map((s) => (
-          <div key={s._id} className="p-3.5 rounded-xl border border-gray-100 flex flex-col sm:flex-row gap-3 justify-between sm:items-center hover:bg-gray-50/50 transition-colors">
-            <div>
-              <p className="font-semibold text-gray-900 text-sm">{s.sellerCity}, {s.sellerState}</p>
-              {s.dealerName && <p className="text-xs text-gray-400 mt-0.5">{s.dealerName}</p>}
-              {s.date && <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5"><Calendar size={9} /> {s.date}</p>}
-            </div>
-            <div className="text-right">
-              <p className="text-base font-bold text-gray-900">${s.price.toLocaleString()}</p>
-              {s.odometer && <p className="text-[11px] text-gray-400 flex items-center gap-0.5 justify-end"><Gauge size={9} /> {s.odometer} mi</p>}
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function UsageSection({ usage }: { usage: Record<string, string> }) {
-  const found = Object.entries(usage).filter(
-    ([, v]) => v.toLowerCase().includes("records found") && !v.toLowerCase().startsWith("no")
-  );
-  const clean = Object.entries(usage).filter(
-    ([, v]) => v.toLowerCase().startsWith("no") || v === "no records found"
-  );
-  return (
-    <Section title="Vehicle Usage" icon={<Activity size={14} />}>
-      {found.length > 0 && (
-        <div className="mb-3 space-y-1.5">
-          {found.map(([key]) => (
-            <div key={key} className="flex items-center gap-2 text-xs text-orange-700 bg-orange-50 rounded-lg px-3 py-2 border border-orange-100">
-              <AlertCircle size={12} className="shrink-0" /> {fmt(key)}
-            </div>
-          ))}
-        </div>
-      )}
-      <div className="space-y-1.5">
-        {clean.map(([key]) => (
-          <div key={key} className="flex items-center gap-1.5 text-xs text-gray-500">
-            <CheckCircle2 size={11} className="text-emerald-400 shrink-0" /> {fmt(key)}
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function SpecsSection({ specifications }: { specifications: Record<string, any>[] }) {
-  const [open, setOpen] = useState<string | null>(null);
-  return (
-    <Section title="Specifications" icon={<BarChart3 size={14} />}>
-      <div className="space-y-1.5">
-        {specifications.map((group, gi) => {
-          const [category, vals] = Object.entries(group)[0];
-          const hasData = vals && Object.values(vals).some((v) => v !== "" && v !== null);
-          if (!hasData) return null;
-          return (
-            <div key={gi} className="border border-gray-100 rounded-xl overflow-hidden">
-              <button
-                onClick={() => setOpen(open === category ? null : category)}
-                className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50/50 transition-colors"
-              >
-                {fmt(category)}
-                {open === category ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-              </button>
-              {open === category && (
-                <div className="px-4 pb-4 pt-1 grid grid-cols-2 gap-x-5 gap-y-2 border-t border-gray-100">
-                  {Object.entries(vals).map(([k, v]) =>
-                    v !== "" ? (
-                      <div key={k}>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-wide mt-2">{fmt(k)}</p>
-                        <p className="text-sm text-gray-800 font-medium">{String(v)}</p>
-                      </div>
-                    ) : null
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </Section>
-  );
-}
-
-function TransmissionSection({ tx }: { tx?: VehicleHistoryData["transmission"] }) {
-  const fields = [
-    ["Type", tx?.type], ["Description", tx?.description], ["Speeds", tx?.number_of_speeds],
-    ["1st", tx?.first_gear_ratio], ["2nd", tx?.second_gear_ratio], ["3rd", tx?.third_gear_ratio],
-    ["4th", tx?.fourth_gear_ratio], ["5th", tx?.fifth_gear_ratio], ["Reverse", tx?.reverse_gear_ratio],
-    ["Final Drive", tx?.final_drive_axle_ratio],
-  ].filter(([, v]) => v);
-  if (!fields.length) return null;
-  return (
-    <Section title="Transmission" icon={<Car size={14} />}>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-        {fields.map(([label, val]) => (
-          <div key={label} className="bg-gray-50 rounded-xl p-3 border border-gray-100">
-            <p className="text-[10px] text-gray-400 uppercase tracking-wide">{label}</p>
-            <p className="text-sm font-semibold text-gray-800 mt-0.5">{val}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-// ─── Full Report View ─────────────────────────────────────────────────────────
-
-function FullReportView({ reportData }: { reportData: VehicleHistoryData }) {
-  const flags = Object.values(reportData.titleBrands || {}).filter(
-    (v) => v.toLowerCase().includes("records found") && !v.toLowerCase().startsWith("no")
-  ).length;
-
-  const statTiles = [
-    { icon: <AlertTriangle size={15} />, value: reportData.accidents?.length || 0, label: "Accidents", accent: reportData.accidents?.length ? "text-red-500" : "text-gray-400" },
-    { icon: <Users size={15} />, value: reportData.owners?.length || 0, label: "Owners", accent: "text-gray-400" },
-    { icon: <ShieldAlert size={15} />, value: reportData.recalls?.length || 0, label: "Recalls", accent: reportData.recalls?.length ? "text-orange-400" : "text-gray-400" },
-    { icon: <History size={15} />, value: reportData.events?.length || 0, label: "Events", accent: "text-[#FC612D]" },
-    { icon: <Gauge size={15} />, value: reportData.mileageRecords?.length || 0, label: "Mileage Pts", accent: "text-gray-400" },
-    { icon: <Tag size={15} />, value: flags, label: "Title Flags", accent: flags > 0 ? "text-red-500" : "text-emerald-500" },
-  ];
-
-  return (
-    <>
-      <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {statTiles.map((s, i) => <StatTile key={i} {...s} />)}
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2 space-y-5">
-          {(reportData.accidents?.length || 0) > 0 && <AccidentsSection accidents={reportData.accidents} />}
-          <OwnersSection owners={reportData.owners || []} />
-          <EventsTimeline events={reportData.events || []} />
-          {(reportData.salesHistory?.length || 0) > 0 && <SalesSection sales={reportData.salesHistory} />}
-          <SpecsSection specifications={reportData.specifications || []} />
-          <TransmissionSection tx={reportData.transmission} />
-        </div>
-        <div className="space-y-5">
-          <TitleBrandsSection brands={reportData.titleBrands || {}} />
-          <RecallsSection recalls={reportData.recalls || []} />
-          {(reportData.mileageRecords?.length || 0) > 0 && <MileageSection records={reportData.mileageRecords} />}
-          <UsageSection usage={reportData.usage || {}} />
-        </div>
-      </div>
-    </>
   );
 }
 
@@ -853,7 +506,6 @@ const VehicleHistory = () => {
   const [vin, setVin] = useState("");
   const [reportData, setReportData] = useState<VehicleHistoryData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const [error, setError] = useState<string | null>(null);
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
   const navigate = useNavigate();
@@ -899,8 +551,14 @@ const VehicleHistory = () => {
     }
   };
 
+  const loadDemoData = () => {
+    setVin(DEMO_DATA.vin);
+    setError(null);
+    setReportData(DEMO_DATA);
+  };
+
   return (
-    <div className="min-h-screen  w-full mx-auto pt-16">
+    <div className="min-h-screen w-full mx-auto pt-16">
       {/* Sticky search bar */}
       <div className="sticky top-16 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-5 py-3 flex items-center gap-4">
@@ -911,6 +569,16 @@ const VehicleHistory = () => {
           <div className="flex-1">
             <SearchBar vin={vin} setVin={setVin} onSubmit={handleSubmit} isLoading={isLoading} />
           </div>
+          {/* DEV: Load demo button */}
+          <button
+            id="load-demo-btn"
+            onClick={loadDemoData}
+            title="Load hardcoded demo data"
+            className="shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl border border-dashed border-amber-300 bg-amber-50 text-amber-700 text-xs font-semibold hover:bg-amber-100 transition-all"
+          >
+            <FlaskConical size={13} />
+            <span className="hidden sm:inline">Demo</span>
+          </button>
         </div>
       </div>
 

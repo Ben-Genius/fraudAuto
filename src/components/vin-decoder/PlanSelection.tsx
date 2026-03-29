@@ -39,7 +39,7 @@ export const PlanSelection: React.FC<PlanSelectionProps> = ({ onSelect, isLoadin
             </div>
             <div className="text-right">
               <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Standard</p>
-              <p className="text-xl font-black text-gray-900">₦5,000</p>
+              <p className="text-xl font-black text-gray-900">  GHC 50</p>
             </div>
           </div>
 
@@ -77,7 +77,7 @@ export const PlanSelection: React.FC<PlanSelectionProps> = ({ onSelect, isLoadin
             </div>
             <div className="text-right">
               <p className="text-[10px] text-[#FC612D] uppercase tracking-widest font-semibold">Deluxe</p>
-              <p className="text-xl font-black text-gray-900">₦10,000</p>
+              <p className="text-xl font-black text-gray-900">GHC 120</p>
             </div>
           </div>
 

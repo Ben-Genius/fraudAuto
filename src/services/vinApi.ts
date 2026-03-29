@@ -112,9 +112,10 @@ export async function resetPassword(payload: { token: string; newPassword: strin
 // ─── Subscription ─────────────────────────────────────────────────────────────
 
 export interface SubscriptionStatus {
-  hasActivePlan: boolean;
+  status: string; // e.g. "ACTIVE", "PENDING", "INACTIVE"
   plan: "standard" | "deluxe" | null;
-  expiresAt: string | null;
+  expiresAt?: string | null;
+  availableCredits: number;
 }
 
 /**
@@ -212,8 +213,31 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
     return result.data;
   } catch (err: any) {
     if (err.status === 401) {
-      return { hasActivePlan: false, plan: null, expiresAt: null };
+      return { status: "INACTIVE", plan: null, expiresAt: null, availableCredits: 0 };
     }
     throw err;
+  }
+}
+
+/**
+ * Fetches the latest user profile from the server and syncs localStorage.
+ * Call this after a Paystack payment redirect to get the fresh credit count.
+ * Returns the updated availableReportCredits value.
+ */
+export async function refreshUserCredits(): Promise<number> {
+  try {
+    const result = await apiFetch("/auth/me");
+    const freshUser: UserData = result.data ?? result;
+    // Merge into the stored user object so tokens etc. are preserved
+    const stored = getStoredUser();
+    if (stored && freshUser) {
+      const merged = { ...stored, ...freshUser };
+      localStorage.setItem("user", JSON.stringify(merged));
+      return merged.availableReportCredits ?? 0;
+    }
+    return freshUser?.availableReportCredits ?? 0;
+  } catch {
+    // Silently fall back — credits will just be stale until next login
+    return getStoredUser()?.availableReportCredits ?? 0;
   }
 }
