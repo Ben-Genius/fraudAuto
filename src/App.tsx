@@ -6,7 +6,7 @@ import Layout from "./components/layout/Layout";
 const Home = lazy(() => import("./pages/home/Home"));
 const VinDecoder = lazy(() => import("./pages/vin-decoder/VinDecoder"));
 const LicensePlate = lazy(() => import("./pages/license-plate/LicensePlate"));
-const Pricing = lazy(() => import("./pages/pricing/Pricing"));
+// const Pricing = lazy(() => import("./pages/pricing/Pricing"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
@@ -49,7 +49,7 @@ function App() {
                 <Route path="/vin-decoder" element={<VinDecoder />} />
                 <Route path="/license-plate" element={<LicensePlate />} />
                 <Route path="/maintenance-history" element={<MaintenanceHistory />} />
-                <Route path="/pricing" element={<Pricing />} />
+                {/* <Route path="/pricing" element={<Pricing />} /> */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />

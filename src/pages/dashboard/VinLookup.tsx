@@ -115,7 +115,7 @@ function CreditPaywall({ vin, onBuy, isLoading }: {
             </div>
             <div>
               <p className="text-base font-bold text-gray-900">Report Locked</p>
-              <p className="text-xs text-gray-400 font-mono tracking-wider">{vin}</p>
+              <p className="text-sm text-gray-400 font-mono tracking-wider">{vin}</p>
             </div>
           </div>
           <p className="text-sm text-gray-500 leading-relaxed mb-5">
@@ -159,7 +159,7 @@ function BuyMoreStrip({ credits, onTopUp }: { credits: number; onTopUp: () => vo
           <p className="text-sm font-bold text-gray-900">
             {credits > 0 ? `${credits} credit${credits !== 1 ? "s" : ""} remaining` : "No credits left"}
           </p>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-sm text-gray-400 mt-0.5">
             {credits > 0 ? "Search another VIN any time" : "Purchase credits to run your next report"}
           </p>
         </div>
@@ -211,7 +211,7 @@ function OwnersBlock({ owners = [] }: { owners?: VehicleHistoryOwner[] }) {
           <div key={o._id} className={`rounded-xl border p-3 ${accents[i % accents.length]}`}>
             <div className="flex items-center gap-1.5 mb-1.5">
               <div className="w-4 h-4 rounded-full bg-[#FC612D]/20 text-[9px] font-bold flex items-center justify-center text-[#FC612D]">{i + 1}</div>
-              <p className="text-xs font-semibold text-gray-700">{o.type}</p>
+              <p className="text-sm font-semibold text-gray-700">{o.type}</p>
             </div>
             <p className="text-[10px] text-gray-400">Since {o.purchasedYear} · {o.state}</p>
             <p className="text-[10px] text-gray-400">{o.ownedDuration}</p>
@@ -251,7 +251,7 @@ function EventsBlock({ events = [] }: { events?: VehicleHistoryEvent[] }) {
       </div>
       {events.length > 8 && (
         <button onClick={() => setExpanded(!expanded)}
-          className="mt-5 w-full flex items-center justify-center gap-1.5 text-xs font-medium text-gray-400 hover:text-gray-700 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+          className="mt-5 w-full flex items-center justify-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-700 py-2 rounded-xl hover:bg-gray-50 transition-colors">
           {expanded ? <><ChevronUp size={12} /> Show less</> : <><ChevronDown size={12} /> Show all {events.length} events</>}
         </button>
       )}
@@ -325,14 +325,14 @@ function TitleBrandsBlock({ brands }: { brands: Record<string, string> }) {
           {flags.map(([key]) => (
             <div key={key} className="flex items-center gap-2 p-2.5 bg-red-50 rounded-xl border border-red-100">
               <XCircle size={12} className="text-red-500 shrink-0" />
-              <span className="text-xs font-medium text-red-700">{fmt(key)}</span>
+              <span className="text-sm font-medium text-red-700">{fmt(key)}</span>
             </div>
           ))}
         </div>
       )}
       <div className="space-y-1.5">
         {clean.map(([key]) => (
-          <div key={key} className="flex items-center gap-1.5 text-xs text-gray-500">
+          <div key={key} className="flex items-center gap-1.5 text-sm text-gray-500">
             <CheckCircle2 size={11} className="text-emerald-400 shrink-0" /> {fmt(key)}
           </div>
         ))}
@@ -378,8 +378,8 @@ function SalesBlock({ sales = [] }: { sales?: VehicleHistoryData["salesHistory"]
           <div key={s._id} className="flex justify-between items-center p-3 rounded-xl border border-gray-100 hover:bg-gray-50/50 transition-colors">
             <div>
               <p className="font-semibold text-gray-900 text-sm">{s.sellerCity}, {s.sellerState}</p>
-              {s.dealerName && <p className="text-xs text-gray-400">{s.dealerName}</p>}
-              {s.date && <p className="text-xs text-gray-400 flex items-center gap-1"><Calendar size={8} /> {s.date}</p>}
+              {s.dealerName && <p className="text-sm text-gray-400">{s.dealerName}</p>}
+              {s.date && <p className="text-sm text-gray-400 flex items-center gap-1"><Calendar size={8} /> {s.date}</p>}
             </div>
             <div className="text-right">
               <p className="font-bold text-gray-900">${s.price.toLocaleString()}</p>
@@ -509,7 +509,7 @@ function FullReport({ data, credits, onTopUp }: { data: VehicleHistoryData; cred
               )}
             </div>
             <h2 className="text-xl font-bold text-gray-900">{data.vehicleName}</h2>
-            <p className="text-xs font-mono text-gray-400 tracking-widest mt-0.5">{data.vin}</p>
+            <p className="text-sm font-mono text-gray-400 tracking-widest mt-0.5">{data.vin}</p>
             {data.summary && <p className="text-sm text-gray-500 mt-2 max-w-6xl leading-relaxed">{data.summary}</p>}
           </div>
           {data.price?.base_msrp && (
@@ -642,10 +642,10 @@ const VinLookup = () => {
 
         {/* Credits badge */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-          <p className="text-xs text-gray-400">
+          <p className="text-sm text-gray-400">
             Each search uses <span className="font-semibold text-gray-700">1 credit</span>
           </p>
-          <div className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg ${credits > 0 ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
+          <div className={`flex items-center gap-1.5 text-sm font-semibold px-2.5 py-1 rounded-lg ${credits > 0 ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
             <Zap size={10} />
             {credits > 0
               ? `${credits} credit${credits !== 1 ? "s" : ""} available ${subscription?.status === "PENDING" ? "(Pending)" : ""}`
@@ -659,7 +659,7 @@ const VinLookup = () => {
         <div className="flex flex-col items-center justify-center py-24 gap-3">
           <Loader2 size={28} className="animate-spin text-[#FC612D]" />
           <p className="text-sm font-semibold text-gray-700">Fetching vehicle history…</p>
-          <p className="text-xs text-gray-400">This may take a few seconds</p>
+          <p className="text-sm text-gray-400">This may take a few seconds</p>
         </div>
       )}
 
@@ -698,7 +698,7 @@ const VinLookup = () => {
             </div>
             <div>
               <p className="text-sm font-bold text-gray-900">You need credits to run a search</p>
-              <p className="text-xs text-gray-400 mt-0.5">Pick a plan below to get started</p>
+              <p className="text-sm text-gray-400 mt-0.5">Pick a plan below to get started</p>
             </div>
           </div>
           <PlanCards onBuy={handleBuyCredits} isLoading={paymentLoading} />
@@ -713,7 +713,7 @@ const VinLookup = () => {
           </div>
           <p className="text-base font-bold text-gray-700 mb-1">Ready to search</p>
           <p className="text-sm text-gray-400">Enter a VIN above to unlock the full vehicle history report.</p>
-          <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-gray-400">
+          <div className="flex items-center justify-center gap-1.5 mt-3 text-sm text-gray-400">
             <Zap size={11} className="text-[#FC612D]" />
             You have <span className="font-bold text-gray-700 mx-0.5">{credits}</span> credit{credits !== 1 ? "s" : ""} ready
           </div>

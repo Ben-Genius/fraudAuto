@@ -108,9 +108,9 @@ const Header = () => {
             >
               License Plate
             </Link>
-            <Link to="/pricing" className={getPricingLinkClass()}>
+            {/* <Link to="/pricing" className={getPricingLinkClass()}>
               Pricing
-            </Link>
+            </Link> */}
           </nav>
 
           {/* Auth Buttons */}
