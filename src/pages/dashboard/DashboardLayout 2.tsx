@@ -213,7 +213,7 @@ function Sidebar({ user, credits, subscription, onLogout, onTopUp, open, onClose
       {open && <div className="fixed inset-0 bg-black/20 z-30 lg:hidden" onClick={onClose} />}
 
       <aside className={`
-        fixed top-0 left-0 h-full w-xs bg-white border-r border-gray-100 z-40 flex flex-col
+        fixed top-0 left-0 h-full w-60 bg-white border-r border-gray-100 z-40 flex flex-col
         transition-transform duration-200
         ${open ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0 lg:static lg:z-auto
@@ -250,8 +250,8 @@ function Sidebar({ user, credits, subscription, onLogout, onTopUp, open, onClose
         <div className="px-3 mb-2">
           <div className="px-4 py-2.5 rounded-xl border border-gray-100 bg-white shadow-sm flex items-center gap-3">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${subscription?.plan === "deluxe" ? "bg-amber-100 text-amber-600" :
-              subscription?.plan === "standard" ? "bg-emerald-100 text-emerald-600" :
-                "bg-gray-100 text-gray-400"
+                subscription?.plan === "standard" ? "bg-emerald-100 text-emerald-600" :
+                  "bg-gray-100 text-gray-400"
               }`}>
               {subscription?.plan === "deluxe" ? <Crown size={14} /> :
                 subscription?.plan === "standard" ? <Zap size={14} /> :
@@ -365,16 +365,6 @@ const DashboardLayout = () => {
   const handleLogout = () => { logout(); navigate("/login"); };
   const handleTopUp = () => setShowModal(true);
 
-  const refreshSubscription = async () => {
-    try {
-      const s = await getSubscriptionStatus();
-      setSubscription(s);
-      if (s.availableCredits !== undefined) setCredits(s.availableCredits);
-    } catch {
-      // silently ignore — sidebar just keeps stale value
-    }
-  };
-
   const handleBuyCredits = async (plan: "standard" | "deluxe") => {
     setPaymentLoading(true);
     setPaymentError(null);
@@ -410,7 +400,7 @@ const DashboardLayout = () => {
       )}
 
       {/* Main content area */}
-      <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top bar */}
         <header className="bg-white border-b border-gray-100 shrink-0 px-5 py-3 flex items-center gap-3">
           <button onClick={() => setSidebarOpen(true)}
@@ -432,7 +422,7 @@ const DashboardLayout = () => {
 
         {/* Page content via Outlet */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-5 py-6 space-y-5">
+          <div className="max-w-6xl mx-auto px-5 py-6 space-y-5">
             {successBanner && (
               <SuccessBanner credits={credits} onDismiss={() => setSuccessBanner(false)} />
             )}
@@ -445,7 +435,7 @@ const DashboardLayout = () => {
               </div>
             )}
             {/* Sub-page rendered here */}
-            <Outlet context={{ user, credits, setCredits, handleTopUp, handleBuyCredits, paymentLoading, subscription, refreshSubscription }} />
+            <Outlet context={{ user, credits, setCredits, handleTopUp, handleBuyCredits, paymentLoading, subscription }} />
           </div>
         </main>
       </div>
