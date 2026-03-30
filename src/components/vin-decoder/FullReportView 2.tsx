@@ -547,7 +547,7 @@ function OemOptionsSection({ oemOptions }: { oemOptions?: any[] }) {
 
 // ─── PDF Download ─────────────────────────────────────────────────────────────
 
-export async function downloadPDF(reportData: VehicleHistoryData, logoDataUrl: string, logoAspect = 5) {
+async function downloadPDF(reportData: VehicleHistoryData, logoDataUrl: string, logoAspect = 5) {
   const { default: jsPDF } = await import("jspdf");
 
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });

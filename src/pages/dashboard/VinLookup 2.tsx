@@ -1,11 +1,11 @@
 // /dashboard/vin-lookup — Dedicated VIN search & report page
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import {
   Search, Car, Loader2, FileText, AlertTriangle, CheckCircle2, ShieldAlert,
   Users, History, Gauge, Tag, MapPin, Calendar, ChevronDown, ChevronUp,
   AlertCircle, TrendingUp, BarChart3, XCircle, Wrench,
-  Lock, Plus, Zap, ArrowRight, Download,
+  Lock, Plus, Zap, ArrowRight,
 } from "lucide-react";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import { fetchVehicleHistory } from "../../services/vinApi";
@@ -14,8 +14,6 @@ import type {
   VehicleHistoryOwner, VehicleHistoryMileageRecord,
 } from "../../types/vin-decoder";
 import { saveVinHistory, PlanCards, type UserData, type SubscriptionStatus } from "./DashboardLayout";
-import { downloadPDF } from "../../components/vin-decoder/FullReportView";
-import autoLogo from "../../assets/images/auto_logo.png";
 
 // ─── Outlet context ────────────────────────────────────────────────────────────
 
@@ -27,7 +25,6 @@ type OutletCtx = {
   handleBuyCredits: (p: "standard" | "deluxe") => void;
   paymentLoading: boolean;
   subscription: SubscriptionStatus | null;
-  refreshSubscription: () => Promise<void>;
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -65,34 +62,20 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
   );
 }
 
-function SectionBlock({ title, icon, right, children, defaultOpen = true }: {
-  title: string; icon?: React.ReactNode; right?: React.ReactNode; children: React.ReactNode; defaultOpen?: boolean;
+function SectionBlock({ title, icon, right, children }: {
+  title: string; icon?: React.ReactNode; right?: React.ReactNode; children: React.ReactNode;
 }) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
   return (
     <Card>
-      <div
-        className="flex items-center justify-between px-5 py-3.5 cursor-pointer hover:bg-gray-50/50 transition-colors"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <div className="flex items-center justify-between px-5 py-3.5">
         <div className="flex items-center gap-2">
           {icon && <span className="text-gray-400">{icon}</span>}
           <span className="text-sm font-semibold text-gray-700">{title}</span>
         </div>
-        <div className="flex items-center gap-3">
-          {right}
-          <button className="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center">
-            {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-          </button>
-        </div>
+        {right}
       </div>
-      {isOpen && (
-        <>
-          <div className="h-px bg-gray-100 w-full" />
-          <div className="p-5">{children}</div>
-        </>
-      )}
+      <div className="h-px bg-gray-100 w-full" />
+      <div className="p-5">{children}</div>
     </Card>
   );
 }
@@ -115,7 +98,7 @@ function CreditPaywall({ vin, onBuy, isLoading }: {
             </div>
             <div>
               <p className="text-base font-bold text-gray-900">Report Locked</p>
-              <p className="text-sm text-gray-400 font-mono tracking-wider">{vin}</p>
+              <p className="text-xs text-gray-400 font-mono tracking-wider">{vin}</p>
             </div>
           </div>
           <p className="text-sm text-gray-500 leading-relaxed mb-5">
@@ -159,7 +142,7 @@ function BuyMoreStrip({ credits, onTopUp }: { credits: number; onTopUp: () => vo
           <p className="text-sm font-bold text-gray-900">
             {credits > 0 ? `${credits} credit${credits !== 1 ? "s" : ""} remaining` : "No credits left"}
           </p>
-          <p className="text-sm text-gray-400 mt-0.5">
+          <p className="text-xs text-gray-400 mt-0.5">
             {credits > 0 ? "Search another VIN any time" : "Purchase credits to run your next report"}
           </p>
         </div>
@@ -211,7 +194,7 @@ function OwnersBlock({ owners = [] }: { owners?: VehicleHistoryOwner[] }) {
           <div key={o._id} className={`rounded-xl border p-3 ${accents[i % accents.length]}`}>
             <div className="flex items-center gap-1.5 mb-1.5">
               <div className="w-4 h-4 rounded-full bg-[#FC612D]/20 text-[9px] font-bold flex items-center justify-center text-[#FC612D]">{i + 1}</div>
-              <p className="text-sm font-semibold text-gray-700">{o.type}</p>
+              <p className="text-xs font-semibold text-gray-700">{o.type}</p>
             </div>
             <p className="text-[10px] text-gray-400">Since {o.purchasedYear} · {o.state}</p>
             <p className="text-[10px] text-gray-400">{o.ownedDuration}</p>
@@ -251,7 +234,7 @@ function EventsBlock({ events = [] }: { events?: VehicleHistoryEvent[] }) {
       </div>
       {events.length > 8 && (
         <button onClick={() => setExpanded(!expanded)}
-          className="mt-5 w-full flex items-center justify-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-700 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+          className="mt-5 w-full flex items-center justify-center gap-1.5 text-xs font-medium text-gray-400 hover:text-gray-700 py-2 rounded-xl hover:bg-gray-50 transition-colors">
           {expanded ? <><ChevronUp size={12} /> Show less</> : <><ChevronDown size={12} /> Show all {events.length} events</>}
         </button>
       )}
@@ -325,14 +308,14 @@ function TitleBrandsBlock({ brands }: { brands: Record<string, string> }) {
           {flags.map(([key]) => (
             <div key={key} className="flex items-center gap-2 p-2.5 bg-red-50 rounded-xl border border-red-100">
               <XCircle size={12} className="text-red-500 shrink-0" />
-              <span className="text-sm font-medium text-red-700">{fmt(key)}</span>
+              <span className="text-xs font-medium text-red-700">{fmt(key)}</span>
             </div>
           ))}
         </div>
       )}
       <div className="space-y-1.5">
         {clean.map(([key]) => (
-          <div key={key} className="flex items-center gap-1.5 text-sm text-gray-500">
+          <div key={key} className="flex items-center gap-1.5 text-xs text-gray-500">
             <CheckCircle2 size={11} className="text-emerald-400 shrink-0" /> {fmt(key)}
           </div>
         ))}
@@ -378,8 +361,8 @@ function SalesBlock({ sales = [] }: { sales?: VehicleHistoryData["salesHistory"]
           <div key={s._id} className="flex justify-between items-center p-3 rounded-xl border border-gray-100 hover:bg-gray-50/50 transition-colors">
             <div>
               <p className="font-semibold text-gray-900 text-sm">{s.sellerCity}, {s.sellerState}</p>
-              {s.dealerName && <p className="text-sm text-gray-400">{s.dealerName}</p>}
-              {s.date && <p className="text-sm text-gray-400 flex items-center gap-1"><Calendar size={8} /> {s.date}</p>}
+              {s.dealerName && <p className="text-xs text-gray-400">{s.dealerName}</p>}
+              {s.date && <p className="text-xs text-gray-400 flex items-center gap-1"><Calendar size={8} /> {s.date}</p>}
             </div>
             <div className="text-right">
               <p className="font-bold text-gray-900">${s.price.toLocaleString()}</p>
@@ -432,68 +415,10 @@ function FullReport({ data, credits, onTopUp }: { data: VehicleHistoryData; cred
     (v) => v.toLowerCase().includes("records found") && !v.toLowerCase().startsWith("no")
   ).length;
 
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  const handleDownload = useCallback(async () => {
-    setIsDownloading(true);
-    try {
-      let logoDataUrl = "";
-      let logoAspect = 5;
-      try {
-        const resp = await fetch(autoLogo);
-        const blob = await resp.blob();
-        logoDataUrl = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.readAsDataURL(blob);
-        });
-
-        logoAspect = await new Promise<number>((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve(img.width / img.height);
-          img.onerror = () => resolve(5);
-          img.src = logoDataUrl;
-        });
-      } catch {
-        console.warn("Could not load logo for PDF");
-      }
-      await downloadPDF(data, logoDataUrl, logoAspect);
-    } catch (e) {
-      console.error("PDF generation failed", e);
-    } finally {
-      setIsDownloading(false);
-    }
-  }, [data]);
-
   return (
     <div className="space-y-5">
-      {/* Download Action Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white rounded-2xl border border-gray-100 px-5 py-3.5">
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#FC612D] to-[#FF9340] flex items-center justify-center shadow-sm shrink-0">
-            <FileText size={14} className="text-white" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-gray-800 truncate">{data.vehicleName} — Full Report</p>
-            <p className="text-[11px] text-gray-400 truncate">
-              VIN: <span className="font-mono">{data.vin}</span>
-            </p>
-          </div>
-        </div>
-        <button
-          onClick={handleDownload}
-          disabled={isDownloading}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-gray-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm shrink-0"
-        >
-          {isDownloading ? (
-            <><Loader2 size={14} className="animate-spin" /> Generating…</>
-          ) : (
-            <><Download size={14} /> Download PDF</>
-          )}
-        </button>
-      </div>
-
       <Card>
+        <div className="h-0.5 bg-[#FC612D]" />
         <div className="px-6 py-5 flex flex-col sm:flex-row gap-4 sm:items-start justify-between">
           <div>
             <div className="flex flex-wrap items-center gap-1.5 mb-2">
@@ -509,8 +434,8 @@ function FullReport({ data, credits, onTopUp }: { data: VehicleHistoryData; cred
               )}
             </div>
             <h2 className="text-xl font-bold text-gray-900">{data.vehicleName}</h2>
-            <p className="text-sm font-mono text-gray-400 tracking-widest mt-0.5">{data.vin}</p>
-            {data.summary && <p className="text-sm text-gray-500 mt-2 max-w-6xl leading-relaxed">{data.summary}</p>}
+            <p className="text-xs font-mono text-gray-400 tracking-widest mt-0.5">{data.vin}</p>
+            {data.summary && <p className="text-xs text-gray-500 mt-2 max-w-lg leading-relaxed">{data.summary}</p>}
           </div>
           {data.price?.base_msrp && (
             <div className="shrink-0 text-right">
@@ -548,7 +473,7 @@ function FullReport({ data, credits, onTopUp }: { data: VehicleHistoryData; cred
 const VinLookup = () => {
   useDocumentTitle("VIN Lookup — Fraudwall Auto");
   const [searchParams] = useSearchParams();
-  const { credits, handleTopUp, handleBuyCredits, paymentLoading, subscription, refreshSubscription } =
+  const { credits, setCredits, handleTopUp, handleBuyCredits, paymentLoading, subscription } =
     useOutletContext<OutletCtx>();
 
   const [vin, setVin] = useState("");
@@ -587,8 +512,8 @@ const VinLookup = () => {
       setReport(result);
       setPaywallVin(null);
       saveVinHistory(clean, result.vehicleName || clean);
-      // Refresh subscription status from server so credits shown in sidebar are accurate
-      refreshSubscription();
+      // Deduct credit optimistically
+      setCredits((c) => Math.max(0, c - 1));
     } catch (err: any) {
       if (err.status === 402 || err.status === 403) {
         setPaywallVin(clean);
@@ -642,13 +567,13 @@ const VinLookup = () => {
 
         {/* Credits badge */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-          <p className="text-sm text-gray-400">
+          <p className="text-xs text-gray-400">
             Each search uses <span className="font-semibold text-gray-700">1 credit</span>
           </p>
-          <div className={`flex items-center gap-1.5 text-sm font-semibold px-2.5 py-1 rounded-lg ${credits > 0 ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
+          <div className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg ${credits > 0 ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
             <Zap size={10} />
-            {credits > 0
-              ? `${credits} credit${credits !== 1 ? "s" : ""} available ${subscription?.status === "PENDING" ? "(Pending)" : ""}`
+            {credits > 0 
+              ? `${credits} credit${credits !== 1 ? "s" : ""} available ${subscription?.status === "PENDING" ? "(Pending)" : ""}` 
               : "No credits — top up first"}
           </div>
         </div>
@@ -659,7 +584,7 @@ const VinLookup = () => {
         <div className="flex flex-col items-center justify-center py-24 gap-3">
           <Loader2 size={28} className="animate-spin text-[#FC612D]" />
           <p className="text-sm font-semibold text-gray-700">Fetching vehicle history…</p>
-          <p className="text-sm text-gray-400">This may take a few seconds</p>
+          <p className="text-xs text-gray-400">This may take a few seconds</p>
         </div>
       )}
 
@@ -698,7 +623,7 @@ const VinLookup = () => {
             </div>
             <div>
               <p className="text-sm font-bold text-gray-900">You need credits to run a search</p>
-              <p className="text-sm text-gray-400 mt-0.5">Pick a plan below to get started</p>
+              <p className="text-xs text-gray-400 mt-0.5">Pick a plan below to get started</p>
             </div>
           </div>
           <PlanCards onBuy={handleBuyCredits} isLoading={paymentLoading} />
@@ -713,7 +638,7 @@ const VinLookup = () => {
           </div>
           <p className="text-base font-bold text-gray-700 mb-1">Ready to search</p>
           <p className="text-sm text-gray-400">Enter a VIN above to unlock the full vehicle history report.</p>
-          <div className="flex items-center justify-center gap-1.5 mt-3 text-sm text-gray-400">
+          <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-gray-400">
             <Zap size={11} className="text-[#FC612D]" />
             You have <span className="font-bold text-gray-700 mx-0.5">{credits}</span> credit{credits !== 1 ? "s" : ""} ready
           </div>
