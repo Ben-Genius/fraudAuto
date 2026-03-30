@@ -38,21 +38,6 @@ const Header = () => {
     }
   };
 
-  const getPricingLinkClass = () => {
-    const isCurrentPage = isActive("/pricing");
-
-    if (isScrolled) {
-      return `text-sm px-3 py-1 rounded-md transition-all duration-300 ease-in ${isCurrentPage
-        ? " text-primary-red font-semibold"
-        : "hover:text-primary-red hover:rounded-md hover:bg-white hover:px-4 hover:py-2 text-gray-900 hover:bg-secondary-dark-red"
-        }`;
-    } else {
-      return `text-sm px-3 py-1 rounded-md transition-all duration-300 ease-in ${isCurrentPage
-        ? "bg-primary-red text-white border border-primary-red font-semibold"
-        : "bg-white/20 text-gray-900 border border-white/30 hover:rounded-md hover:bg-white hover:px-4 hover:py-2 hover:text-primary-red"
-        }`;
-    }
-  };
 
   const getMobileNavLinkClass = (path: string) => {
     const baseClass = "text-sm transition-colors";
